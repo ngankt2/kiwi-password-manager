@@ -1,0 +1,86 @@
+import { DesktopApplication } from './webkit-host';
+import { test, expect } from '@playwright/test';
+import { execFile } from 'node:child_process';
+import { mkdtemp, mkdir, readFile, rm } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
+import { join, resolve } from 'node:path';
+import { promisify } from 'node:util';
+import { desktopPassword, expectDesktopUnlock, launchDesktop, t } from './helpers';
+
+test('branding is visible and item icons persist across save, discard, restart and reset', async () => {
+  const profile = await mkdtemp(join(tmpdir(), 'appkiro-branding-'));
+  let app: DesktopApplication | undefined;
+  try {
+    const { version } = JSON.parse(await readFile(resolve('package.json'), 'utf8'));
+    const source = join(profile, 'Branding.vault');
+    await promisify(execFile)('bun', [resolve('scripts/create-desktop-ui-fixture.ts'), source]);
+    await mkdir('tests/reports/branding', { recursive: true });
+    let opened = await launchDesktop(profile, { focus: false }); app = opened.app;
+    let page = opened.page;
+    const errors: string[] = [];
+    page.on('pageerror', (error) => errors.push(error.message));
+    await page.evaluate(() => { document.documentElement.dataset.theme = 'dark'; });
+    const logo = page.locator('img[alt="Kiro Password Manager"]');
+    await expect(logo).toBeVisible();
+    await expect.poll(() => logo.evaluate((image: HTMLImageElement) => image.complete && image.naturalWidth > 0)).toBe(true);
+    await expect(page.locator('.desktop-app-version')).toHaveText(`v${version}`);
+    await page.screenshot({ path: 'tests/reports/branding/welcome.png' });
+    await app!.pickFile(source);
+    await page.getByRole('button', { name: t('Mở Vault có sẵn…'), exact: true }).click();
+    await expect(logo).toBeVisible();
+    await page.screenshot({ path: 'tests/reports/branding/unlock.png' });
+    await page.getByLabel(t('Master Password'), { exact: true }).fill(desktopPassword);
+    await page.getByRole('button', { name: t('Mở khoá Vault'), exact: true }).click();
+    await expect(page.locator('.desktop-sidebar img[alt="Kiro Password Manager"]')).toBeVisible();
+    const rowName = 'Email công việc, ' + t('Đăng nhập');
+    let row = page.getByRole('option', { name: rowName, exact: true });
+    await row.click();
+    await page.getByRole('button', { name: t('Sửa'), exact: true }).click();
+    await page.getByRole('button', { name: t('Đổi biểu tượng'), exact: true }).click();
+    let picker = page.getByRole('dialog', { name: t('Đổi biểu tượng'), exact: true });
+    await expect(picker).toBeVisible();
+    await expect(picker.getByRole('button', { name: t('Chìa khoá'), exact: true })).toBeFocused();
+    await page.screenshot({ path: 'tests/reports/branding/icon-picker.png' });
+    await picker.getByRole('button', { name: t('Chìa khoá'), exact: true }).press('ArrowRight');
+    await expect(picker.getByRole('button', { name: t('Trang web'), exact: true })).toBeFocused();
+    await picker.getByRole('button', { name: 'Email', exact: true }).click();
+    await expect(picker).not.toBeVisible();
+    await expect(page.locator('.desktop-item-icon-trigger .desktop-item-tile')).toHaveText('mail');
+    await expect(row.locator('.desktop-item-tile')).toHaveText('key');
+    await page.locator('.desktop-detail-toolbar').getByRole('button', { name: t('Lưu'), exact: true }).click();
+    await expect(page.locator('.desktop-detail-identity .desktop-item-tile')).toHaveText('mail');
+    await expect(row.locator('.desktop-item-tile')).toHaveText('mail');
+    await page.screenshot({ path: 'tests/reports/branding/inside.png' });
+
+    await page.getByRole('button', { name: t('Sửa'), exact: true }).click();
+    await page.getByRole('button', { name: t('Đổi biểu tượng'), exact: true }).click();
+    await expect(picker.getByRole('button', { name: 'Email', exact: true })).toHaveAttribute('aria-pressed', 'true');
+    await picker.getByRole('button', { name: t('Trái tim'), exact: true }).click();
+    await page.locator('.desktop-detail-toolbar').getByRole('button', { name: t('Huỷ'), exact: true }).click();
+    await page.getByRole('dialog', { name: t('Bỏ các thay đổi chưa lưu?'), exact: true }).getByRole('button', { name: t('Bỏ thay đổi'), exact: true }).click();
+    await expect(page.locator('.desktop-detail-identity .desktop-item-tile')).toHaveText('mail');
+    const vaultName = 'Desktop UI Review';
+    await app.close(); app = undefined;
+
+    opened = await launchDesktop(profile, { focus: false }); app = opened.app; page = opened.page;
+    page.on('pageerror', (error) => errors.push(error.message));
+    await expectDesktopUnlock(page, vaultName);
+    await page.getByLabel(t('Master Password'), { exact: true }).fill(desktopPassword);
+    await page.getByRole('button', { name: t('Mở khoá Vault'), exact: true }).click();
+    row = page.getByRole('option', { name: rowName, exact: true });
+    await row.click();
+    await expect(row.locator('.desktop-item-tile')).toHaveText('mail');
+    await expect(page.locator('.desktop-detail-identity .desktop-item-tile')).toHaveText('mail');
+    await page.getByRole('button', { name: t('Sửa'), exact: true }).click();
+    await page.getByRole('button', { name: t('Đổi biểu tượng'), exact: true }).click();
+    picker = page.getByRole('dialog', { name: t('Đổi biểu tượng'), exact: true });
+    await picker.getByRole('button', { name: t('Dùng biểu tượng mặc định'), exact: true }).click();
+    await page.locator('.desktop-detail-toolbar').getByRole('button', { name: t('Lưu'), exact: true }).click();
+    await expect(page.locator('.desktop-detail-identity .desktop-item-tile')).toHaveText('key');
+    await expect(row.locator('.desktop-item-tile')).toHaveText('key');
+    expect(errors).toEqual([]);
+  } finally {
+    await app?.close();
+    await rm(profile, { recursive: true, force: true });
+  }
+});

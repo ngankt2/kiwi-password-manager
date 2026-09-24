@@ -1,0 +1,261 @@
+[
+  {
+    "id": "brand-gmail",
+    "file": "gmail.png",
+    "label": "Gmail",
+    "background": "#FFFFFF",
+    "source": "https://raw.githubusercontent.com/homarr-labs/dashboard-icons/cf87d9bbd47792b20893f090ff48763fe874b05d/png/gmail.png"
+  },
+  {
+    "id": "brand-google",
+    "file": "google.png",
+    "label": "Google",
+    "background": "#FFFFFF",
+    "source": "https://raw.githubusercontent.com/homarr-labs/dashboard-icons/cf87d9bbd47792b20893f090ff48763fe874b05d/png/google.png"
+  },
+  {
+    "id": "brand-claude",
+    "file": "claude.png",
+    "label": "Claude",
+    "background": "#F7F0EA",
+    "source": "https://raw.githubusercontent.com/homarr-labs/dashboard-icons/cf87d9bbd47792b20893f090ff48763fe874b05d/png/claude-ai.png"
+  },
+  {
+    "id": "brand-chatgpt",
+    "file": "chatgpt.png",
+    "label": "ChatGPT",
+    "background": "#10A37F",
+    "source": "https://raw.githubusercontent.com/homarr-labs/dashboard-icons/cf87d9bbd47792b20893f090ff48763fe874b05d/png/chatgpt.png"
+  },
+  {
+    "id": "brand-openai",
+    "file": "openai.png",
+    "label": "OpenAI",
+    "background": "#FFFFFF",
+    "source": "https://raw.githubusercontent.com/homarr-labs/dashboard-icons/cf87d9bbd47792b20893f090ff48763fe874b05d/png/openai.png"
+  },
+  {
+    "id": "brand-aws",
+    "file": "aws.png",
+    "label": "AWS",
+    "background": "#263447",
+    "source": "https://raw.githubusercontent.com/homarr-labs/dashboard-icons/cf87d9bbd47792b20893f090ff48763fe874b05d/png/aws-light.png"
+  },
+  {
+    "id": "brand-microsoft",
+    "file": "microsoft.png",
+    "label": "Microsoft",
+    "background": "#FFFFFF",
+    "source": "https://raw.githubusercontent.com/homarr-labs/dashboard-icons/cf87d9bbd47792b20893f090ff48763fe874b05d/png/microsoft.png"
+  },
+  {
+    "id": "brand-azure",
+    "file": "azure.png",
+    "label": "Azure",
+    "background": "#F0F7FF",
+    "source": "https://raw.githubusercontent.com/homarr-labs/dashboard-icons/cf87d9bbd47792b20893f090ff48763fe874b05d/png/microsoft-azure.png"
+  },
+  {
+    "id": "brand-outlook",
+    "file": "outlook.png",
+    "label": "Outlook",
+    "background": "#F0F7FF",
+    "source": "https://raw.githubusercontent.com/homarr-labs/dashboard-icons/cf87d9bbd47792b20893f090ff48763fe874b05d/png/microsoft-outlook.png"
+  },
+  {
+    "id": "brand-teams",
+    "file": "teams.png",
+    "label": "Microsoft Teams",
+    "background": "#F3F0FF",
+    "source": "https://raw.githubusercontent.com/homarr-labs/dashboard-icons/cf87d9bbd47792b20893f090ff48763fe874b05d/png/microsoft-teams.png"
+  },
+  {
+    "id": "brand-onedrive",
+    "file": "onedrive.png",
+    "label": "OneDrive",
+    "background": "#EDF5FF",
+    "source": "https://raw.githubusercontent.com/homarr-labs/dashboard-icons/cf87d9bbd47792b20893f090ff48763fe874b05d/png/microsoft-onedrive.png"
+  },
+  {
+    "id": "brand-facebook",
+    "file": "facebook.png",
+    "label": "Facebook",
+    "background": "#F0F6FF",
+    "source": "https://raw.githubusercontent.com/homarr-labs/dashboard-icons/cf87d9bbd47792b20893f090ff48763fe874b05d/png/facebook.png"
+  },
+  {
+    "id": "brand-wechat",
+    "file": "wechat.png",
+    "label": "WeChat",
+    "background": "#EDF9EF",
+    "source": "https://raw.githubusercontent.com/homarr-labs/dashboard-icons/cf87d9bbd47792b20893f090ff48763fe874b05d/png/wechat.png"
+  },
+  {
+    "id": "brand-messenger",
+    "file": "messenger.png",
+    "label": "Messenger",
+    "background": "#FFF0F8",
+    "source": "https://raw.githubusercontent.com/homarr-labs/dashboard-icons/cf87d9bbd47792b20893f090ff48763fe874b05d/png/facebook-messenger.png"
+  },
+  {
+    "id": "brand-whatsapp",
+    "file": "whatsapp.png",
+    "label": "WhatsApp",
+    "background": "#E9F9EE",
+    "source": "https://raw.githubusercontent.com/homarr-labs/dashboard-icons/cf87d9bbd47792b20893f090ff48763fe874b05d/png/whatsapp.png"
+  },
+  {
+    "id": "brand-tiktok",
+    "file": "tiktok.png",
+    "label": "TikTok",
+    "background": "#151722",
+    "source": "https://raw.githubusercontent.com/homarr-labs/dashboard-icons/cf87d9bbd47792b20893f090ff48763fe874b05d/png/tiktok-light.png"
+  },
+  {
+    "id": "brand-zalo",
+    "file": "zalo.png",
+    "label": "Zalo",
+    "background": "#FFFFFF",
+    "source": "https://raw.githubusercontent.com/homarr-labs/dashboard-icons/cf87d9bbd47792b20893f090ff48763fe874b05d/png/zalo.png"
+  },
+  {
+    "id": "brand-github",
+    "file": "github.png",
+    "label": "GitHub",
+    "background": "#FFFFFF",
+    "source": "https://raw.githubusercontent.com/homarr-labs/dashboard-icons/cf87d9bbd47792b20893f090ff48763fe874b05d/png/github.png"
+  },
+  {
+    "id": "brand-apple",
+    "file": "apple.png",
+    "label": "Apple",
+    "background": "#FFFFFF",
+    "source": "https://raw.githubusercontent.com/homarr-labs/dashboard-icons/cf87d9bbd47792b20893f090ff48763fe874b05d/png/apple.png"
+  },
+  {
+    "id": "brand-youtube",
+    "file": "youtube.png",
+    "label": "YouTube",
+    "background": "#FFFFFF",
+    "source": "https://raw.githubusercontent.com/homarr-labs/dashboard-icons/cf87d9bbd47792b20893f090ff48763fe874b05d/png/youtube.png"
+  },
+  {
+    "id": "brand-instagram",
+    "file": "instagram.png",
+    "label": "Instagram",
+    "background": "#FFF1F8",
+    "source": "https://raw.githubusercontent.com/homarr-labs/dashboard-icons/cf87d9bbd47792b20893f090ff48763fe874b05d/png/instagram.png"
+  },
+  {
+    "id": "brand-telegram",
+    "file": "telegram.png",
+    "label": "Telegram",
+    "background": "#ECF7FF",
+    "source": "https://raw.githubusercontent.com/homarr-labs/dashboard-icons/cf87d9bbd47792b20893f090ff48763fe874b05d/png/telegram.png"
+  },
+  {
+    "id": "brand-discord",
+    "file": "discord.png",
+    "label": "Discord",
+    "background": "#F1F0FF",
+    "source": "https://raw.githubusercontent.com/homarr-labs/dashboard-icons/cf87d9bbd47792b20893f090ff48763fe874b05d/png/discord.png"
+  },
+  {
+    "id": "brand-slack",
+    "file": "slack.png",
+    "label": "Slack",
+    "background": "#FFFFFF",
+    "source": "https://raw.githubusercontent.com/homarr-labs/dashboard-icons/cf87d9bbd47792b20893f090ff48763fe874b05d/png/slack.png"
+  },
+  {
+    "id": "brand-notion",
+    "file": "notion.png",
+    "label": "Notion",
+    "background": "#FFFFFF",
+    "source": "https://raw.githubusercontent.com/homarr-labs/dashboard-icons/cf87d9bbd47792b20893f090ff48763fe874b05d/png/notion.png"
+  },
+  {
+    "id": "brand-dropbox",
+    "file": "dropbox.png",
+    "label": "Dropbox",
+    "background": "#EDF4FF",
+    "source": "https://raw.githubusercontent.com/homarr-labs/dashboard-icons/cf87d9bbd47792b20893f090ff48763fe874b05d/png/dropbox.png"
+  },
+  {
+    "id": "brand-amazon",
+    "file": "amazon.png",
+    "label": "Amazon",
+    "background": "#FFFFFF",
+    "source": "https://raw.githubusercontent.com/homarr-labs/dashboard-icons/cf87d9bbd47792b20893f090ff48763fe874b05d/png/amazon.png"
+  },
+  {
+    "id": "brand-linkedin",
+    "file": "linkedin.png",
+    "label": "LinkedIn",
+    "background": "#F0F7FF",
+    "source": "https://raw.githubusercontent.com/homarr-labs/dashboard-icons/cf87d9bbd47792b20893f090ff48763fe874b05d/png/linkedin.png"
+  },
+  {
+    "id": "brand-netflix",
+    "file": "netflix.png",
+    "label": "Netflix",
+    "background": "#171717",
+    "source": "https://raw.githubusercontent.com/homarr-labs/dashboard-icons/cf87d9bbd47792b20893f090ff48763fe874b05d/png/netflix.png"
+  },
+  {
+    "id": "brand-paypal",
+    "file": "paypal.png",
+    "label": "PayPal",
+    "background": "#FFFFFF",
+    "source": "https://raw.githubusercontent.com/homarr-labs/dashboard-icons/cf87d9bbd47792b20893f090ff48763fe874b05d/png/paypal.png"
+  },
+  {
+    "id": "brand-spotify",
+    "file": "spotify.png",
+    "label": "Spotify",
+    "background": "#EEF9F1",
+    "source": "https://raw.githubusercontent.com/homarr-labs/dashboard-icons/cf87d9bbd47792b20893f090ff48763fe874b05d/png/spotify.png"
+  },
+  {
+    "id": "brand-zoom",
+    "file": "zoom.png",
+    "label": "Zoom",
+    "background": "#EDF5FF",
+    "source": "https://raw.githubusercontent.com/homarr-labs/dashboard-icons/cf87d9bbd47792b20893f090ff48763fe874b05d/png/zoom.png"
+  },
+  {
+    "id": "brand-hsbc",
+    "file": "hsbc.png",
+    "label": "HSBC",
+    "background": "#FFFFFF",
+    "source": "https://raw.githubusercontent.com/simple-icons/simple-icons/b86d5c9a0bdd4f3f5c30898a63654dd32f39fd76/icons/hsbc.svg"
+  },
+  {
+    "id": "brand-chase",
+    "file": "chase.png",
+    "label": "Chase",
+    "background": "#FFFFFF",
+    "source": "https://raw.githubusercontent.com/simple-icons/simple-icons/b86d5c9a0bdd4f3f5c30898a63654dd32f39fd76/icons/chase.svg"
+  },
+  {
+    "id": "brand-bankofamerica",
+    "file": "bankofamerica.png",
+    "label": "Bank of America",
+    "background": "#FFFFFF",
+    "source": "https://raw.githubusercontent.com/simple-icons/simple-icons/b86d5c9a0bdd4f3f5c30898a63654dd32f39fd76/icons/bankofamerica.svg"
+  },
+  {
+    "id": "brand-barclays",
+    "file": "barclays.png",
+    "label": "Barclays",
+    "background": "#FFFFFF",
+    "source": "https://raw.githubusercontent.com/simple-icons/simple-icons/b86d5c9a0bdd4f3f5c30898a63654dd32f39fd76/icons/barclays.svg"
+  },
+  {
+    "id": "brand-deutschebank",
+    "file": "deutschebank.png",
+    "label": "Deutsche Bank",
+    "background": "#FFFFFF",
+    "source": "https://raw.githubusercontent.com/simple-icons/simple-icons/b86d5c9a0bdd4f3f5c30898a63654dd32f39fd76/icons/deutschebank.svg"
+  }
+]

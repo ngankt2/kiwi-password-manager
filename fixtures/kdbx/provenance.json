@@ -1,0 +1,52 @@
+[
+  {
+    "file": "demo.kdbx",
+    "source": "https://raw.githubusercontent.com/keeweb/kdbxweb/master/resources/demo.kdbx",
+    "sha256": "685bd23124ebcf6b7bb396d438899832d7d0518f2732dd51f52bd8b005885134"
+  },
+  {
+    "file": "demo.key",
+    "source": "https://raw.githubusercontent.com/keeweb/kdbxweb/master/resources/demo.key",
+    "sha256": "17ec891318bddcea6f5800962433ec0caed59f2837b3c3bded430133cdc32521"
+  },
+  {
+    "file": "Argon2.kdbx",
+    "source": "https://raw.githubusercontent.com/keeweb/kdbxweb/master/resources/Argon2.kdbx",
+    "sha256": "6015b399dedd200210327804bd38e47ab24c002a8ff50a111969734dd71f6844"
+  },
+  {
+    "file": "Argon2id.kdbx",
+    "source": "https://raw.githubusercontent.com/keeweb/kdbxweb/master/resources/Argon2id.kdbx",
+    "sha256": "4a345f2478766541bd1f32b69a529aa33be7b3809d9e9f513ebcd01c75aad501"
+  },
+  {
+    "file": "Argon2ChaCha.kdbx",
+    "source": "https://raw.githubusercontent.com/keeweb/kdbxweb/master/resources/Argon2ChaCha.kdbx",
+    "sha256": "74dd5274c320a969443684312b57b9172ffefb26d89a5b46f6b92a9e1d851484"
+  },
+  {
+    "file": "AesChaCha.kdbx",
+    "source": "https://raw.githubusercontent.com/keeweb/kdbxweb/master/resources/AesChaCha.kdbx",
+    "sha256": "180d1620659fce95300b3c1630cd05b6b09cc1f5035b3bbe711b9387921b3ac0"
+  },
+  {
+    "file": "AesKdfKdbx4.kdbx",
+    "source": "https://raw.githubusercontent.com/keeweb/kdbxweb/master/resources/AesKdfKdbx4.kdbx",
+    "sha256": "8c4d073967f7d8876e79b05572eb92096163be921956cb037b2c59d60afec2a6"
+  },
+  {
+    "file": "KDBX4.1.kdbx",
+    "source": "https://raw.githubusercontent.com/keeweb/kdbxweb/master/resources/KDBX4.1.kdbx",
+    "sha256": "189535d9f2c097756f1b93f9985727643097d56ce07243a871f27a03268f2906"
+  },
+  {
+    "file": "KeyV2.kdbx",
+    "source": "https://raw.githubusercontent.com/keeweb/kdbxweb/master/resources/KeyV2.kdbx",
+    "sha256": "b2c9a15f9d835d257eb373c75bb87ee74f68561d60a4367301d236eaad604f17"
+  },
+  {
+    "file": "KeyV2.keyx",
+    "source": "https://raw.githubusercontent.com/keeweb/kdbxweb/master/resources/KeyV2.keyx",
+    "sha256": "49811696aba2f336dde8b60b60d043379962f4c0a02247bc646b44018167264b"
+  }
+]

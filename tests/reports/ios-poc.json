@@ -1,0 +1,39 @@
+{
+  "platform": "iOS 26.4 simulator, iPhone 15 Pro",
+  "runtime": "Expo 57 / React Native 0.86.3 / Hermes",
+  "results": [
+    {
+      "fixture": "Argon2id native reference vector",
+      "passed": true
+    },
+    {
+      "fixture": "SHA256 native",
+      "passed": true
+    },
+    {
+      "fixture": "demo.kdbx",
+      "passed": true,
+      "entries": 4
+    },
+    {
+      "fixture": "Argon2.kdbx",
+      "passed": true,
+      "entries": 4
+    },
+    {
+      "fixture": "Argon2id.kdbx",
+      "passed": true,
+      "entries": 4
+    },
+    {
+      "fixture": "Argon2ChaCha.kdbx",
+      "passed": true,
+      "entries": 4
+    },
+    {
+      "fixture": "KDBX4.1.kdbx",
+      "passed": true,
+      "entries": 3
+    }
+  ]
+}

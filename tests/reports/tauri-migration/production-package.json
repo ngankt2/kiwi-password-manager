@@ -1,0 +1,15 @@
+{
+  "version": "1.0.14",
+  "bundleIdentifier": "com.appkiro.vault.desktop",
+  "bundleVersion": "1.0.14",
+  "minimumSystemVersion": "13.0",
+  "architecture": "arm64",
+  "electronBaselineBytes": 314866910,
+  "tauriBundleBytes": 18166960,
+  "reductionPercent": 94.23,
+  "updaterArchiveBytes": 11161320,
+  "icon": "appkiro.icns",
+  "productionTestInstrumentationAbsent": true,
+  "electronRuntimeAbsent": true,
+  "codesign": "verified: ad-hoc, hardened runtime; no Developer ID/notarization"
+}

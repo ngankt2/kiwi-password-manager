@@ -41,3 +41,20 @@ example
 # generated native folders
 /ios
 /android
+
+# Local, user-supplied compatibility databases and generated build artifacts
+/tests/Passwords*.kdbx
+/fixtures/local-native-poc.json
+/modules/**/android/build/
+/modules/**/android/.cxx/
+/test-results/
+/playwright-report/
+/.desktop-stage/
+/.desktop-web/
+/desktop-release/
+/.app-build.lock/
+/mobile-release/
+/desktop/tauri/target/
+/desktop/tauri/gen/
+/desktop/tauri/test-runtime.js
+!fixtures/kdbx/*.key

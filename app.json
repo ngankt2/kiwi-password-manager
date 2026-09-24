@@ -1,26 +1,36 @@
 {
   "expo": {
-    "name": "appkiro-password-manager",
+    "name": "Kiro Password Manager",
     "slug": "appkiro-password-manager",
-    "version": "1.0.0",
-    "orientation": "portrait",
+    "version": "1.0.17",
+    "orientation": "default",
     "icon": "./assets/images/icon.png",
     "scheme": "appkiropasswordmanager",
-    "userInterfaceStyle": "automatic",
+    "userInterfaceStyle": "dark",
     "ios": {
-      "icon": "./assets/expo.icon"
+      "icon": "./assets/images/icon.png",
+      "bundleIdentifier": "com.appkiro.vault",
+      "supportsTablet": true,
+      "infoPlist": {
+        "UIFileSharingEnabled": false,
+        "LSSupportsOpeningDocumentsInPlace": false
+      },
+      "buildNumber": "18"
     },
     "android": {
+      "package": "com.appkiro.vault",
+      "allowBackup": false,
       "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE",
+        "backgroundColor": "#030621",
         "foregroundImage": "./assets/images/android-icon-foreground.png",
         "backgroundImage": "./assets/images/android-icon-background.png",
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "versionCode": 18
     },
     "web": {
-      "output": "static",
+      "output": "server",
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
@@ -28,11 +38,26 @@
       [
         "expo-splash-screen",
         {
-          "backgroundColor": "#208AEF",
+          "backgroundColor": "#121212",
           "image": "./assets/images/splash-icon.png",
-          "imageWidth": 76
+          "imageWidth": 128
         }
-      ]
+      ],
+      [
+        "expo-secure-store",
+        {
+          "configureAndroidBackup": true,
+          "faceIDPermission": "Use Face ID to unlock your encrypted vault on this device."
+        }
+      ],
+      [
+        "expo-local-authentication",
+        {
+          "faceIDPermission": "Use Face ID to confirm access to your vault."
+        }
+      ],
+      "expo-sharing",
+      "react-native-quick-crypto"
     ],
     "experiments": {
       "typedRoutes": true,

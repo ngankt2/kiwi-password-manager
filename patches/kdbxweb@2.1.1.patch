@@ -1,0 +1,51 @@
+diff --git a/dist/kdbxweb.js b/dist/kdbxweb.js
+index 7d330745e3ebc4c99c09a573824ae3bb08583565..7525f20441b52d6398a0721ef4c3b60765ac34e2 100644
+--- a/dist/kdbxweb.js
++++ b/dist/kdbxweb.js
+@@ -2278,7 +2278,7 @@ exports.KdbxEntry = KdbxEntry;
+ 
+ Object.defineProperty(exports, "__esModule", ({ value: true }));
+ exports.KdbxFormat = void 0;
+-const fflate_1 = __webpack_require__(/*! fflate */ "../node_modules/fflate/lib/index.cjs");
++const fflate_1 = require('./kiro-compression.cjs');
+ const consts_1 = __webpack_require__(/*! ../defs/consts */ "./defs/consts.ts");
+ const kdbx_error_1 = __webpack_require__(/*! ../errors/kdbx-error */ "./errors/kdbx-error.ts");
+ const binary_stream_1 = __webpack_require__(/*! ../utils/binary-stream */ "./utils/binary-stream.ts");
+@@ -5325,7 +5325,7 @@ VarDictionary.ValueType = ValueType;
+ 
+ Object.defineProperty(exports, "__esModule", ({ value: true }));
+ exports.protectPlainValues = exports.protectUnprotectedValues = exports.unprotectValues = exports.updateProtectedValuesSalt = exports.setProtectedValues = exports.traverse = exports.setProtectedBinary = exports.getProtectedBinary = exports.setProtectedText = exports.getProtectedText = exports.setUuid = exports.getUuid = exports.strToBoolean = exports.setBoolean = exports.getBoolean = exports.setNumber = exports.getNumber = exports.setDate = exports.getDate = exports.setBytes = exports.getBytes = exports.setTags = exports.getTags = exports.setText = exports.getText = exports.addChildNode = exports.getChildNode = exports.create = exports.serialize = exports.parse = void 0;
+-const fflate_1 = __webpack_require__(/*! fflate */ "../node_modules/fflate/lib/index.cjs");
++const fflate_1 = require('./kiro-compression.cjs');
+ const kdbx_error_1 = __webpack_require__(/*! ../errors/kdbx-error */ "./errors/kdbx-error.ts");
+ const consts_1 = __webpack_require__(/*! ../defs/consts */ "./defs/consts.ts");
+ const XmlNames = __webpack_require__(/*! ../defs/xml-names */ "./defs/xml-names.ts");
+diff --git a/node_modules/kdbxweb/dist/kiro-compression.cjs b/dist/kiro-compression.cjs
+new file mode 100644
+index 0000000000000000000000000000000000000000..32a129c4f6889682c2a76a2e7a52dee63fd2cce0
+--- /dev/null
++++ b/dist/kiro-compression.cjs
+@@ -0,0 +1,23 @@
++// Application integration patch: use maintained fflate with bounded streaming output.
++// No compression algorithm is implemented here.
++const { Gunzip, gzipSync } = require('fflate');
++const MAX_OUTPUT = 64 * 1024 * 1024;
++
++function gunzipSync(data) {
++  const chunks = [];
++  let length = 0;
++  const decoder = new Gunzip((chunk) => {
++    length += chunk.length;
++    if (length > MAX_OUTPUT) throw new Error('KDBX decompressed data exceeds the supported limit');
++    chunks.push(chunk);
++  });
++  for (let offset = 0; offset < data.length; offset += 1024) {
++    decoder.push(data.subarray(offset, offset + 1024), offset + 1024 >= data.length);
++  }
++  const result = new Uint8Array(length);
++  let offset = 0;
++  for (const chunk of chunks) { result.set(chunk, offset); offset += chunk.length; }
++  return result;
++}
++
++module.exports = { gunzipSync, gzipSync };

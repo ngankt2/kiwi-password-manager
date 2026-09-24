@@ -1,0 +1,250 @@
+{
+  "observations": [
+    {
+      "screen": "01-welcome",
+      "width": 1320,
+      "height": 860,
+      "overflow": [],
+      "alignment": []
+    },
+    {
+      "screen": "02-create",
+      "width": 1320,
+      "height": 860,
+      "overflow": [],
+      "alignment": []
+    },
+    {
+      "screen": "03-unlock",
+      "width": 1320,
+      "height": 860,
+      "overflow": [],
+      "alignment": []
+    },
+    {
+      "screen": "04-vault",
+      "width": 1320,
+      "height": 860,
+      "overflow": [],
+      "alignment": []
+    },
+    {
+      "screen": "05-detail",
+      "width": 1320,
+      "height": 860,
+      "overflow": [],
+      "alignment": []
+    },
+    {
+      "screen": "06-history",
+      "width": 1320,
+      "height": 860,
+      "overflow": [],
+      "alignment": []
+    },
+    {
+      "screen": "07-history-changes",
+      "width": 1320,
+      "height": 860,
+      "overflow": [],
+      "alignment": []
+    },
+    {
+      "screen": "08-editor",
+      "width": 1320,
+      "height": 860,
+      "overflow": [],
+      "alignment": []
+    },
+    {
+      "screen": "09-generator",
+      "width": 1320,
+      "height": 860,
+      "overflow": [],
+      "alignment": []
+    },
+    {
+      "screen": "10-search",
+      "width": 1320,
+      "height": 860,
+      "overflow": [],
+      "alignment": []
+    },
+    {
+      "screen": "11-folder-dialog",
+      "width": 1320,
+      "height": 860,
+      "overflow": [],
+      "alignment": []
+    },
+    {
+      "screen": "12-settings",
+      "width": 1320,
+      "height": 860,
+      "overflow": [],
+      "alignment": []
+    },
+    {
+      "screen": "13-backup",
+      "width": 1320,
+      "height": 860,
+      "overflow": [],
+      "alignment": []
+    },
+    {
+      "screen": "14-export",
+      "width": 1320,
+      "height": 860,
+      "overflow": [],
+      "alignment": []
+    },
+    {
+      "screen": "15-manage",
+      "width": 1320,
+      "height": 860,
+      "overflow": [],
+      "alignment": []
+    },
+    {
+      "screen": "16-layout-A",
+      "width": 1320,
+      "height": 860,
+      "overflow": [],
+      "alignment": []
+    },
+    {
+      "screen": "17-minimum-A",
+      "width": 760,
+      "height": 580,
+      "overflow": [],
+      "alignment": []
+    },
+    {
+      "screen": "18-minimum-editor-A",
+      "width": 760,
+      "height": 580,
+      "overflow": [],
+      "alignment": []
+    },
+    {
+      "screen": "19-minimum-settings-A",
+      "width": 760,
+      "height": 580,
+      "overflow": [],
+      "alignment": []
+    },
+    {
+      "screen": "16-layout-B",
+      "width": 1320,
+      "height": 860,
+      "overflow": [],
+      "alignment": []
+    },
+    {
+      "screen": "17-minimum-B",
+      "width": 760,
+      "height": 580,
+      "overflow": [],
+      "alignment": []
+    },
+    {
+      "screen": "18-minimum-editor-B",
+      "width": 760,
+      "height": 580,
+      "overflow": [],
+      "alignment": []
+    },
+    {
+      "screen": "19-minimum-settings-B",
+      "width": 760,
+      "height": 580,
+      "overflow": [],
+      "alignment": []
+    },
+    {
+      "screen": "16-layout-C",
+      "width": 1320,
+      "height": 860,
+      "overflow": [],
+      "alignment": []
+    },
+    {
+      "screen": "16-layout-C-search",
+      "width": 1320,
+      "height": 860,
+      "overflow": [],
+      "alignment": []
+    },
+    {
+      "screen": "17-minimum-C",
+      "width": 760,
+      "height": 580,
+      "overflow": [],
+      "alignment": []
+    },
+    {
+      "screen": "18-minimum-editor-C",
+      "width": 760,
+      "height": 580,
+      "overflow": [],
+      "alignment": []
+    },
+    {
+      "screen": "19-minimum-settings-C",
+      "width": 760,
+      "height": 580,
+      "overflow": [],
+      "alignment": []
+    },
+    {
+      "screen": "24-long-detail",
+      "width": 1320,
+      "height": 860,
+      "overflow": [],
+      "alignment": []
+    },
+    {
+      "screen": "25-minimum-long-detail",
+      "width": 760,
+      "height": 580,
+      "overflow": [],
+      "alignment": []
+    },
+    {
+      "screen": "26-minimum-long-history",
+      "width": 760,
+      "height": 580,
+      "overflow": [],
+      "alignment": []
+    },
+    {
+      "screen": "20-json-import",
+      "width": 1320,
+      "height": 860,
+      "overflow": [],
+      "alignment": []
+    },
+    {
+      "screen": "21-keepass-import",
+      "width": 1320,
+      "height": 860,
+      "overflow": [],
+      "alignment": []
+    },
+    {
+      "screen": "22-recovery",
+      "width": 1320,
+      "height": 860,
+      "overflow": [],
+      "alignment": []
+    },
+    {
+      "screen": "23-minimum-recovery",
+      "width": 760,
+      "height": 580,
+      "overflow": [],
+      "alignment": []
+    }
+  ],
+  "errors": []
+}

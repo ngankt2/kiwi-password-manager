@@ -1,0 +1,82 @@
+{
+  "layout": [
+    {
+      "width": 1320,
+      "dialogOverflow": false,
+      "tabsOverflow": false,
+      "tabsVerticalFit": true,
+      "labels": [
+        {
+          "text": "Biểu tượng",
+          "lines": 1,
+          "overflow": false
+        },
+        {
+          "text": "Logo thương hiệu",
+          "lines": 1,
+          "overflow": false
+        },
+        {
+          "text": "Ảnh từ URL",
+          "lines": 1,
+          "overflow": false
+        }
+      ]
+    },
+    {
+      "width": 390,
+      "dialogOverflow": false,
+      "tabsOverflow": false,
+      "tabsVerticalFit": true,
+      "labels": [
+        {
+          "text": "Biểu tượng",
+          "lines": 1,
+          "overflow": false
+        },
+        {
+          "text": "Logo thương hiệu",
+          "lines": 1,
+          "overflow": false
+        },
+        {
+          "text": "Ảnh từ URL",
+          "lines": 1,
+          "overflow": false
+        }
+      ]
+    },
+    {
+      "width": 320,
+      "dialogOverflow": false,
+      "tabsOverflow": false,
+      "tabsVerticalFit": true,
+      "labels": [
+        {
+          "text": "Biểu tượng",
+          "lines": 1,
+          "overflow": false
+        },
+        {
+          "text": "Logo thương hiệu",
+          "lines": 1,
+          "overflow": false
+        },
+        {
+          "text": "Ảnh từ URL",
+          "lines": 1,
+          "overflow": false
+        }
+      ]
+    }
+  ],
+  "datedRows": 10,
+  "selectableBrands": 37,
+  "selectedNewBrands": [
+    "WeChat",
+    "Messenger",
+    "HSBC",
+    "Deutsche Bank"
+  ],
+  "updatedAfterSave": true
+}

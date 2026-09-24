@@ -1,0 +1,9 @@
+{
+  "signature": true,
+  "fuses": true,
+  "asarIntegrity": true,
+  "noPrivateFixtures": true,
+  "checkedAssets": 36,
+  "arch": "arm64",
+  "minimumMacOS": "13.0"
+}

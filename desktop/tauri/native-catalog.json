@@ -1,0 +1,88 @@
+{
+  "defaults": {
+    "language": "vi",
+    "theme": "system",
+    "lastOpenedVaultId": null,
+    "autoLockSeconds": 300,
+    "backgroundLockSeconds": 180,
+    "clipboardSeconds": 30,
+    "requireAuthenticationToReveal": false,
+    "automaticBackups": true,
+    "backupRetention": 10,
+    "desktopLayout": "A",
+    "compactRows": false,
+    "reduceMotion": false
+  },
+  "locales": {
+    "vi": {
+      "Khoá Vault": "Khoá kho",
+      "Xem": "Xem",
+      "Lưu file không mã hoá": "Lưu file không mã hoá",
+      "Lưu kho mã hoá": "Lưu kho mã hoá",
+      "File xuất": "File xuất",
+      "Kho mã hoá": "Kho mã hoá",
+      "Chọn thư mục lưu Vault": "Chọn thư mục lưu Vault",
+      "Mở kho hoặc file để nhập": "Mở kho hoặc file để nhập",
+      "Kho và file nhập": "Kho và file nhập",
+      "Tất cả file": "Tất cả file",
+      "Chọn thư mục sao lưu mã hoá": "Chọn thư mục sao lưu mã hoá",
+      "Kiểm tra cập nhật…": "Kiểm tra cập nhật…"
+    },
+    "en": {
+      "Khoá Vault": "Lock vault",
+      "Xem": "View",
+      "Lưu file không mã hoá": "Save unencrypted export",
+      "Lưu kho mã hoá": "Save encrypted vault",
+      "File xuất": "Export file",
+      "Kho mã hoá": "Encrypted vault",
+      "Chọn thư mục lưu Vault": "Choose vault folder",
+      "Mở kho hoặc file để nhập": "Open a vault or import file",
+      "Kho và file nhập": "Vaults and import files",
+      "Tất cả file": "All files",
+      "Chọn thư mục sao lưu mã hoá": "Choose encrypted backup folder",
+      "Kiểm tra cập nhật…": "Check for updates…"
+    },
+    "es": {
+      "Khoá Vault": "Bloquear bóveda",
+      "Xem": "Ver",
+      "Lưu file không mã hoá": "Guardar archivo sin cifrar",
+      "Lưu kho mã hoá": "Guardar bóveda cifrada",
+      "File xuất": "Archivo de exportación",
+      "Kho mã hoá": "Bóveda cifrada",
+      "Chọn thư mục lưu Vault": "Elegir carpeta de la bóveda",
+      "Mở kho hoặc file để nhập": "Abrir bóveda o archivo para importar",
+      "Kho và file nhập": "Bóvedas y archivos de importación",
+      "Tất cả file": "Todos los archivos",
+      "Chọn thư mục sao lưu mã hoá": "Elegir carpeta para copias cifradas",
+      "Kiểm tra cập nhật…": "Buscar actualizaciones…"
+    },
+    "fr": {
+      "Khoá Vault": "Verrouiller le coffre",
+      "Xem": "Présentation",
+      "Lưu file không mã hoá": "Enregistrer l’export non chiffré",
+      "Lưu kho mã hoá": "Enregistrer le coffre chiffré",
+      "File xuất": "Fichier d’export",
+      "Kho mã hoá": "Coffre chiffré",
+      "Chọn thư mục lưu Vault": "Choisir le dossier du coffre",
+      "Mở kho hoặc file để nhập": "Ouvrir un coffre ou un fichier à importer",
+      "Kho và file nhập": "Coffres et fichiers à importer",
+      "Tất cả file": "Tous les fichiers",
+      "Chọn thư mục sao lưu mã hoá": "Choisir le dossier des sauvegardes chiffrées",
+      "Kiểm tra cập nhật…": "Rechercher des mises à jour…"
+    },
+    "zh-CN": {
+      "Khoá Vault": "锁定密码库",
+      "Xem": "视图",
+      "Lưu file không mã hoá": "保存未加密导出文件",
+      "Lưu kho mã hoá": "保存加密密码库",
+      "File xuất": "导出文件",
+      "Kho mã hoá": "加密密码库",
+      "Chọn thư mục lưu Vault": "选择密码库文件夹",
+      "Mở kho hoặc file để nhập": "打开密码库或导入文件",
+      "Kho và file nhập": "密码库和导入文件",
+      "Tất cả file": "所有文件",
+      "Chọn thư mục sao lưu mã hoá": "选择加密备份文件夹",
+      "Kiểm tra cập nhật…": "检查更新…"
+    }
+  }
+}

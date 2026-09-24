@@ -1,0 +1,5 @@
+{
+  "platforms": ["apple", "android"],
+  "apple": { "modules": ["KiroSecurityModule"] },
+  "android": { "modules": ["expo.modules.kirosecurity.KiroSecurityModule"] }
+}

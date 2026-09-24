@@ -1,0 +1,144 @@
+.desktop-sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0}
+
+.desktop-unlock-password{display:flex;flex-direction:column;gap:10px;min-width:0}
+.desktop-unlock-input input{padding-right:114px}
+.desktop-unlock-actions{position:absolute;right:6px;top:6px;display:flex;align-items:center;gap:4px}
+.desktop-unlock-input .desktop-unlock-actions .desktop-icon-button,.desktop-unlock-input .desktop-unlock-actions .desktop-unlock-submit{position:static;width:28px;height:28px;flex-shrink:0}
+.desktop-unlock-actions .desktop-icon-button:disabled{opacity:.4;cursor:default}
+.desktop-password-preview{border:1px solid var(--color-border);border-radius:10px;padding:12px 14px;background:var(--color-surface);display:flex;flex-direction:column;gap:9px}
+.desktop-password-preview-heading{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:500;color:var(--color-accent)}
+.desktop-password-preview-value{font-size:14px;line-height:1.7;letter-spacing:.04em;white-space:pre-wrap;overflow-wrap:anywhere;max-height:144px;overflow-y:auto;user-select:none;-webkit-user-select:none;font-variant-ligatures:none}
+.desktop-password-preview-hint{font-size:10.5px;line-height:1.5;color:var(--color-muted)}
+@media(pointer:coarse),(max-width:760px){
+  .desktop-unlock-input input{height:52px;padding-right:144px}
+  .desktop-unlock-actions{top:4px;right:4px;gap:0}
+  .desktop-unlock-input .desktop-unlock-actions .desktop-icon-button,.desktop-unlock-input .desktop-unlock-actions .desktop-unlock-submit{width:44px;height:44px}
+}
+
+/* Folder rows share a stable hit area for selection, dragging and the menu. */
+.desktop-folder-tree{min-width:0}
+.desktop-folder-row{position:relative;height:28px;min-width:0;padding-right:8px;gap:2px;user-select:none}
+.desktop-folder-row[draggable=true] .desktop-folder-icon{cursor:grab}
+.desktop-folder-tree.is-dragging .desktop-folder-row,.desktop-folder-tree.is-dragging .desktop-folder-row *,.desktop-folder-tree.is-dragging .desktop-folder-root-drop{cursor:grabbing}
+.desktop-folder-row:hover{background:var(--color-nav-hover)}
+.desktop-folder-row.selected{background:var(--color-nav-selected)}
+.desktop-folder-row.dragging{opacity:.45}
+.desktop-folder-name{height:28px;gap:8px}
+.desktop-folder-toggle{width:18px;height:28px;color:var(--color-muted)!important}
+.desktop-folder-name>.desktop-nav-count{min-width:22px;text-align:right}
+.desktop-folder-menu{position:absolute;right:4px;top:1px;width:24px;height:26px;opacity:0;pointer-events:none;color:var(--color-folder-menu)}
+.desktop-folder-row.has-children .desktop-folder-menu{right:24px}
+.desktop-folder-row:hover .desktop-folder-menu,.desktop-folder-row:focus-within .desktop-folder-menu{opacity:1;pointer-events:auto}
+.desktop-folder-row:hover .desktop-nav-count,.desktop-folder-row:focus-within .desktop-nav-count{opacity:0}
+.desktop-folder-row.drop-inside{background:var(--color-drop-fill);box-shadow:inset 0 0 0 1.5px var(--color-accent)}
+.desktop-folder-row.drop-before::before,.desktop-folder-row.drop-after::after{content:'';position:absolute;left:8px;right:5px;height:2px;background:var(--color-accent);border-radius:2px;z-index:2;pointer-events:none}
+.desktop-folder-row.drop-before::before{top:-1px}.desktop-folder-row.drop-after::after{bottom:-1px}
+.desktop-folder-root-drop{display:flex;align-items:center;gap:8px;min-height:48px;padding:9px 10px;margin:8px 4px;border:1px dashed var(--color-drop-border);border-radius:8px;color:var(--color-drop-text);font-size:11.5px;line-height:1.5;background:var(--color-drop-bg)}
+.desktop-folder-root-drop.active{border-style:solid;border-color:var(--color-accent);background:var(--color-drop-fill);color:var(--color-accent-strong)}
+.desktop-folder-tree.is-dragging .desktop-folder-menu{visibility:hidden}
+@media(pointer:coarse),(max-width:760px){
+  .desktop-nav-item{min-height:44px}
+  .desktop-folder-row{height:44px}
+  .desktop-folder-name{height:44px}
+  .desktop-folder-name>.desktop-nav-count:empty{display:none}
+  .desktop-folder-toggle{width:44px;height:44px}
+  .desktop-folder-menu{position:static;width:44px;height:44px;opacity:1;pointer-events:auto}
+  .desktop-folder-row:hover .desktop-nav-count,.desktop-folder-row:focus-within .desktop-nav-count{opacity:1}
+}
+
+.desktop-setting-copy{line-height:1.5;overflow-wrap:anywhere}
+.desktop-setting-control{display:flex;flex:0 0 180px;min-width:0;justify-content:flex-end;align-items:center}
+.desktop-quick-unlock-control{flex:0 0 auto}
+.desktop-setting-control>.desktop-select,.desktop-setting-control>.desktop-language-picker{width:100%;max-width:100%}
+.desktop-setting-control input[type=checkbox]{width:17px;height:17px;margin:0;cursor:pointer}
+.desktop-security-note{display:flex;align-items:flex-start;gap:7px;padding:8px 0;line-height:1.5}
+.desktop-security-note>.desktop-icon{margin-top:2px}
+.desktop-setting-control .desktop-language-picker select{width:100%;min-width:0}
+.desktop-canvas.reduce-motion *{scroll-behavior:auto!important}
+.desktop-canvas.reduce-motion .desktop-spinner{animation:none;opacity:.7}
+
+/* Keep long names and paths from dictating the width of their panes. */
+.desktop-detail,.desktop-sidebar:not(.desktop-rail),.desktop-list{overflow-x:clip}
+.desktop-detail-identity{min-width:0}.desktop-detail-identity>div{min-width:0}
+.desktop-detail-content{overflow-wrap:anywhere}
+.desktop-tag{max-width:100%;height:auto;min-height:24px;padding:3px 10px;overflow-wrap:anywhere;text-align:left}
+.desktop-recent-name,.desktop-unlock-heading h1{overflow-wrap:anywhere}
+.desktop-list-title>span,.desktop-nav-count{flex-shrink:0}
+.desktop-credential-value{max-width:100%}
+.desktop-information{grid-template-columns:120px minmax(0,1fr)}
+.desktop-section-heading{flex-wrap:wrap}
+.desktop-form-actions,.desktop-editor-save{flex-wrap:wrap}
+.desktop-attachment .desktop-icon-button{flex-shrink:0}
+.desktop-setting-row select{max-width:100%}
+.desktop-menu{max-width:min(360px,calc(100vw - 16px))}
+.desktop-menu-heading{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.desktop-menu-item{height:auto;min-height:32px;padding-top:6px;padding-bottom:6px;line-height:1.4}
+.desktop-menu-item .grow{overflow-wrap:anywhere}
+.desktop-menu-item>.tiny{flex-shrink:0}
+.desktop-back{min-height:28px;padding-right:8px}
+.desktop-link-button{min-height:28px;line-height:1.5}
+.desktop-search-trigger .grow{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.desktop-palette-result>.grow{min-width:0}
+.desktop-palette-result>.desktop-row-text{display:block}
+.desktop-palette-result .desktop-row-title,.desktop-palette-result .desktop-row-subtitle{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.desktop-data-tool{gap:16px}
+.desktop-dialog-header{position:sticky;top:0;background:var(--color-background);z-index:1}
+.desktop-dialog-footer{position:sticky;bottom:0;background:var(--color-background);z-index:1}
+.desktop-dialog-content:empty{display:none}
+.desktop-history-row-text{min-width:0}.desktop-history-row-text p{overflow-wrap:anywhere}
+.desktop-toast{max-width:min(560px,calc(100vw - 32px));overflow-wrap:anywhere}
+.desktop-sidebar-scroll,.desktop-detail-scroll,.desktop-item-list{overscroll-behavior:contain}
+
+/* Pane width, rather than screen width, determines how fields fit. */
+.desktop-canvas{--effective-sidebar-width:clamp(190px,var(--sidebar-width),26vw);--effective-list-width:clamp(260px,var(--list-width),calc(100vw - var(--effective-sidebar-width) - 380px))}
+.desktop-sidebar:not(.desktop-rail){width:var(--effective-sidebar-width);flex-basis:var(--effective-sidebar-width)}
+.desktop-list{flex-basis:var(--effective-list-width);container-type:inline-size;container-name:item-list}
+.desktop-detail{container-type:inline-size;container-name:detail}
+.desktop-detail-content{width:100%}
+.desktop-hint,.desktop-nav-count,.desktop-section-label,.desktop-list-footer{color:var(--color-description)}
+.desktop-change-values{grid-template-columns:70px minmax(0,1fr)}
+.desktop-table-columns>span:nth-child(3){display:block}
+@container item-list (max-width:600px){
+  .desktop-table-columns{grid-template-columns:minmax(0,1.5fr) minmax(0,1fr) 88px;gap:10px}
+  .desktop-table-columns>span:nth-child(3){display:none}
+}
+@container item-list (max-width:430px){
+  .desktop-table-columns{grid-template-columns:minmax(0,1.4fr) minmax(0,1fr)}
+  .desktop-table-columns>span:nth-child(4){display:none}
+}
+@container detail (max-width:500px){
+  .desktop-detail-content{padding-left:20px;padding-right:20px}
+  .desktop-custom-row{grid-template-columns:minmax(0,1fr) 104px 28px}
+  .desktop-custom-row>.desktop-field:nth-child(3){grid-column:1/3;grid-row:2}
+  .desktop-custom-row>.desktop-icon-button{grid-column:3;grid-row:1/3;align-self:center}
+  .desktop-credential{flex-wrap:wrap;gap:4px}
+  .desktop-credential>.grow{flex-basis:100%}
+  .desktop-credential-actions{margin-left:auto;padding-top:0}
+  .desktop-information{grid-template-columns:90px minmax(0,1fr)}
+  .desktop-setting-row{flex-wrap:wrap;gap:8px 12px}
+  .desktop-setting-copy{flex-basis:100%}
+  .desktop-setting-control{flex:1 1 100%;justify-content:flex-start}
+  .desktop-setting-control>.desktop-select,.desktop-setting-control>.desktop-language-picker{width:100%}
+}
+@media(max-width:1000px){
+  .desktop-detail-toolbar>.desktop-back.desktop-mobile-only{display:flex}
+}
+/* Keep the icon rail visible beside its folder drawer on narrow screens. */
+@media(max-width:759px){
+  .desktop-workspace.show-sidebar .desktop-rail{width:72px}
+  .desktop-workspace.show-sidebar .desktop-folder-flyout{max-width:calc(100vw - 72px)}
+  .native-desktop .desktop-workspace.show-sidebar .desktop-rail{width:88px}
+  .native-desktop .desktop-workspace.show-sidebar .desktop-folder-flyout{max-width:calc(100vw - 88px)}
+}
+/* The minimum macOS window uses two useful panes instead of three cramped ones. */
+@media(min-width:760px) and (max-width:1000px){
+  .desktop-sidebar:not(.desktop-rail){display:flex!important;flex-basis:190px;width:190px}
+  .desktop-rail{display:flex!important}
+  .desktop-resizer{display:none}
+  .desktop-mobile-only{display:none}
+  .desktop-detail-toolbar>.desktop-mobile-only{display:inline-grid}
+  .desktop-workspace>.desktop-list,.layout-C .desktop-workspace>.desktop-list{flex:1 1 0;min-width:0}
+  .desktop-workspace>.desktop-detail{display:none}
+  .desktop-workspace.has-detail>.desktop-list{display:none}
+  .desktop-workspace.has-detail>.desktop-detail{display:flex;flex:1 1 0;min-width:0}
+}

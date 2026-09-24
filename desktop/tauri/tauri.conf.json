@@ -1,0 +1,68 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "Kiro Password Manager",
+  "version": "../../package.json",
+  "identifier": "com.appkiro.vault.desktop",
+  "build": {
+    "frontendDist": "../../.desktop-web"
+  },
+  "app": {
+    "windows": [
+      {
+        "label": "main",
+        "create": false,
+        "title": "Kiro Password Manager",
+        "width": 1320,
+        "height": 860,
+        "minWidth": 760,
+        "minHeight": 580,
+        "visible": false,
+        "titleBarStyle": "Overlay",
+        "hiddenTitle": true,
+        "trafficLightPosition": {
+          "x": 16,
+          "y": 14
+        },
+        "contentProtected": true,
+        "incognito": true,
+        "backgroundThrottling": "disabled",
+        "dragDropEnabled": false
+      }
+    ],
+    "security": {
+      "csp": "default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; worker-src 'self'; connect-src 'self' ipc: http://ipc.localhost; object-src 'none'; frame-src 'none'; base-uri 'self'; form-action 'none'",
+      "capabilities": [
+        "desktop"
+      ]
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": [
+      "app"
+    ],
+    "category": "Productivity",
+    "copyright": "Appkiro",
+    "icon": [
+      "../../assets/images/macos-icon.png",
+      "../../.desktop-stage/appkiro.icns"
+    ],
+    "resources": {
+      "../../.desktop-stage/kiro-security": "kiro-security"
+    },
+    "macOS": {
+      "minimumSystemVersion": "13.0",
+      "signingIdentity": "-"
+    },
+    "createUpdaterArtifacts": true
+  },
+  "plugins": {
+    "updater": {
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDEwMzcxOTk4NkFENkY2NUUKUldSZTl0WnFtQmszRURlY3FlQjh5NFFDYWJnNTB3eEhRUEszY20ydVpBUlNaaC9Edk1ic01tYWUK",
+      "endpoints": [
+        "https://raw.githubusercontent.com/ngankt2/appkiro.com/main/updates/appkiro-password-manager/latest.json"
+      ],
+      "requireSignedVersion": true
+    }
+  }
+}

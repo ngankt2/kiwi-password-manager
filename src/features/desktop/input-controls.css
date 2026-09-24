@@ -1,0 +1,6 @@
+/* Scope utilities to the new controls and preserve the existing app reset. */
+@layer theme, utilities;
+@import 'tailwindcss/theme.css' layer(theme) prefix(ui);
+@import 'tailwindcss/utilities.css' layer(utilities) prefix(ui) source(none);
+@source './input-field.tsx';
+@source './search-select.tsx';

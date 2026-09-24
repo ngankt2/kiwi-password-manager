@@ -1,0 +1,5 @@
+# Preserve fixture bytes so upstream checksums and encrypted files survive checkout.
+fixtures/kdbx/*.kdbx -text
+fixtures/kdbx/*.key -text
+fixtures/kdbx/*.keyx -text
+fixtures/vault/*.vault -text
