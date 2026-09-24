@@ -96,3 +96,5 @@ The final local artifacts are in `desktop-release/tauri-1.0.14/`: `Appkiro Passw
 After native parity checks, the old main/preload host, Node filesystem/backup/linked-file adapters and abandoned updater implementation were removed. `electron`, `@electron/packager`, `@electron/fuses` and the unused JavaScript `tar` dependency were removed. The Argon2 worker, application TypeScript, Expo Router and mobile adapters remain in place.
 
 The final source scan found no live Electron APIs or host implementation. Historical audit/baseline documentation intentionally mentions Electron. `electron-to-chromium` remains only as Browserslist compatibility metadata in the lockfile, not as an application runtime.
+
+[Appkiro website](https://appkiro.com)

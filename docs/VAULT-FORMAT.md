@@ -55,3 +55,5 @@ Generation filenames order committed revisions; hashes in revision tokens detect
 Conflicts offer Reload, Save As, Review Changes and Cancel. Save As verifies the password against the last verified revision, preserves the in-memory draft and writes a separate vault with a fresh ID, salt and key. No automatic merge is promised.
 
 Filesystem durability still depends on the disk and operating system. Immutable generations and external encrypted backups reduce recovery risk; they cannot guarantee survival of every hardware failure.
+
+[Appkiro website](https://appkiro.com)

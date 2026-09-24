@@ -1,86 +1,88 @@
-# Báo cáo bản kiểm thử macOS
+# Historical macOS test report
 
-Báo cáo này ghi lại baseline trước migration. Trạng thái Tauri hiện tại nằm trong [DESKTOP-MIGRATION.md](DESKTOP-MIGRATION.md).
+This report records the baseline before the desktop migration. See [DESKTOP-MIGRATION.md](DESKTOP-MIGRATION.md) for the Tauri migration results.
 
-Ngày: 24/09/2026. Môi trường thực tế: macOS 26.4.1, Apple Silicon arm64, Electron 44.4.5, Expo 57.0.24, React Native 0.86.3, React 19.2.3, Bun 1.4.2.
+Date: September 24, 2026. Test environment: macOS 26.4.1, Apple Silicon arm64, Electron 44.4.5, Expo 57.0.24, React Native 0.86.3, React 19.2.3, and Bun 1.4.2.
 
-Mục tiêu của đợt này là ứng dụng desktop macOS để kiểm thử. Không build lại iOS hoặc Android. Đây là bản ad-hoc để chạy cục bộ, chưa phải bản phát hành đã notarize hoặc đã audit bảo mật độc lập.
+This test cycle covered the macOS desktop app. iOS and Android were not rebuilt. The package was an ad hoc signed local test build, without Apple notarization or an independent security audit.
 
-## Đã triển khai
+## Implemented functionality
 
-| Nhóm | Nội dung | Bằng chứng |
+| Area | Coverage | Evidence |
 | --- | --- | --- |
-| Vault | Tạo, mở, khóa, lưu, đổi tên, Save As, đổi mật khẩu, xóa có xác thực | Unit/integration session, filesystem và E2E |
-| Định dạng | Ba version độc lập, AES-256-GCM với AAD, Argon2id có calibration, schema 1→2 | Crypto/tamper/KDF tests, hai fixture vault cũ |
-| An toàn ghi | Ghi độc quyền, fsync, verify, generation mới, bản phục hồi trước đó, conflict | Storage fault injection; filesystem macOS thật |
-| KeePass | Chọn file/key file, giải mã, preview, chuyển đổi sang vault riêng | Bảy fixture upstream và file kiểm thử riêng |
-| Dữ liệu | Chín loại mục, trường riêng, nhóm/thẻ, favorite/archive/trash, lịch sử, attachment, OTP | Domain tests; UI dùng chung domain; không tuyên bố đã E2E mọi loại mục |
-| Luồng desktop | Danh sách/chi tiết, tìm kiếm, sửa, phím tắt, generator, ba bố cục và cửa sổ nhỏ | Electron E2E; 32 ảnh/màn hình ở 1320×860 và 760×580, không phát hiện tràn ngang hoặc lỗi renderer |
-| Thư mục | Kéo đổi thứ tự, lồng nhau, đưa ra gốc; tự mở thư mục thu gọn; menu và phím tắt | Domain và Electron drag-and-drop E2E, giữ thứ tự sau khi khởi động lại, chặn chu trình |
-| Clipboard | Helper AppKit, ownership bằng changeCount, timeout, clear khi khóa | Policy race regressions và Electron E2E với clipboard thật |
-| Session | Mặc định khóa sau 3 phút rời app; giữ bản nháp trong thời gian chờ; xóa key/reference và unmount khi khóa | Deadline/async-race tests và Electron lifecycle E2E, kể cả khi hộp chọn file đang mở |
-| Thiết lập | Lưu thời gian khóa, bố cục, mật độ danh sách và giảm chuyển động | Electron restart E2E và migration preferences |
-| Backup | Tự động/thủ công, retention, thư mục ngoài, verify/preview/restore và recovery copy | Session/storage tests, external-folder retention, desktop E2E |
-| Import/export | Vault mã hóa; JSON theo schema có preview; plaintext export cảnh báo/xác thực | Validation/domain tests, desktop export E2E |
-| Ranh giới desktop | Sandbox, context isolation, CSP, IPC hạn chế, offline assets, một process mỗi profile | Electron security E2E và kiểm tra bundle |
+| Vaults | Create, open, lock, save, rename, Save As, change password, and delete with authentication | Session and filesystem unit/integration tests, plus E2E tests |
+| Format | Three independent version fields, AES-256-GCM with AAD, calibrated Argon2id, schema 1→2 | Cryptography, tampering, and KDF tests; two legacy vault fixtures |
+| Safe writes | Exclusive writes, fsync, verification, new generations, retained recovery copies, and conflicts | Storage fault injection and the real macOS filesystem |
+| KeePass | File and key-file selection, decryption, preview, and conversion to an application vault | Seven upstream fixtures and a private test file |
+| Data | Nine entry types, custom fields, groups/tags, favorites/archive/trash, history, attachments, and OTP | Domain tests shared by the UI; full E2E coverage of every entry type was not claimed |
+| Desktop workflows | List/detail views, search, editing, shortcuts, generation, three layouts, and small windows | Electron E2E; 32 screenshots at 1320×860 and 760×580, with no horizontal overflow or renderer errors detected |
+| Folders | Drag to reorder, nest, or move to the root; expand collapsed folders; menus and shortcuts | Domain and Electron drag-and-drop E2E tests, including order persistence after restart and cycle prevention |
+| Clipboard | AppKit helper, ownership through changeCount, timeouts, and clearing on lock | Race-condition regression tests and Electron E2E with the system clipboard |
+| Sessions | Default three-minute lock delay after leaving the app; draft retention during the delay; key/reference clearing and unmounting on lock | Deadline and asynchronous race tests, plus Electron lifecycle E2E, including an open file dialog |
+| Settings | Persist lock delays, layout, list density, and reduced-motion preferences | Electron restart E2E and preference migration |
+| Backups | Automatic/manual backups, retention, external folders, verification, preview, restore, and recovery copies | Session/storage tests, external-folder retention, and desktop E2E |
+| Import/export | Encrypted vaults; schema-based JSON with a preview; warning and authentication for plaintext export | Validation/domain tests and desktop export E2E |
+| Desktop boundaries | Sandbox, context isolation, CSP, restricted IPC, offline assets, and one process per profile | Electron security E2E and bundle inspection |
 
-## Chưa triển khai hoặc chưa được xác minh đủ
+## Not implemented or not sufficiently verified at this baseline
 
-- Touch ID/device-bound key wrapping cho macOS và biometric trên web.
-- KDBX export/chỉnh sửa KDBX tại chỗ; CSV mapping; hardware challenge-response; KDB 1.x; đồng bộ đám mây.
-- Chứng nhận tương thích mọi plugin/property của KeePass. Dữ liệu không map trực tiếp được giữ lại thay vì âm thầm bỏ.
-- Mở attachment lớn theo cơ chế lazy, benchmark hàng chục nghìn mục và kiểm thử hiệu năng trên nhiều cấu hình máy.
-- Bản Intel được tạo bởi script khi chạy trên x64, nhưng chưa kiểm thử trên phần cứng Intel trong đợt này.
-- Developer ID signing, notarization, auto-updater, audit độc lập, kiểm thử mất điện/disk-full thực và bảo vệ screenshot trên mọi công cụ macOS.
-- E2E tương ứng trên thiết bị iOS/Android thật không thuộc kết quả desktop này.
+- Touch ID and device-bound key wrapping on macOS, and biometric unlock on the web.
+- KDBX export or in-place KDBX editing, CSV mapping, hardware challenge-response, KDB 1.x, and cloud sync.
+- Compatibility certification for every KeePass plugin and property. Unmapped data is retained rather than silently discarded.
+- Lazy loading of large attachments, benchmarks with tens of thousands of entries, and performance testing across multiple hardware configurations.
+- The script creates Intel builds when run on x64, but this cycle did not test Intel hardware.
+- Developer ID signing, notarization, automatic updates, an independent audit, physical power-loss/disk-full testing, and screenshot protection against every macOS capture tool.
+- Equivalent E2E coverage on physical iOS and Android devices was outside this desktop test cycle.
 
 ## KDBX compatibility matrix
 
-Mỗi fixture dưới đây đã chạy: KDBX → preview → vault nội bộ → encrypted save → reopen → edit → reopen. Nội dung fields/folders/tags/history/attachments và metadata được so sánh. Nguồn và SHA-256 nằm ở `fixtures/kdbx/provenance.json`; credentials là dữ liệu giả upstream.
+Each fixture below completed this flow: KDBX → preview → internal vault → encrypted save → reopen → edit → reopen. Fields, folders, tags, history, attachments, and metadata were compared. Sources and SHA-256 checksums are recorded in `fixtures/kdbx/provenance.json`; upstream credentials are synthetic test data.
 
-| Fixture | Header thực tế | Cipher | KDF | Key file | Kết quả core |
+| Fixture | Actual header | Cipher | KDF | Key file | Core result |
 | --- | --- | --- | --- | --- | --- |
-| demo.kdbx | 3.1 | AES-256 | AES-KDF | demo.key | Qua; có history/custom fields/attachments |
-| Argon2.kdbx | 4.0 | AES-256 | Argon2d v19 | demo.key | Qua |
-| Argon2id.kdbx | 4.0 | AES-256 | Argon2id v19 | demo.key | Qua |
-| Argon2ChaCha.kdbx | 4.0 | ChaCha20 | Argon2d v19 | demo.key | Qua |
-| AesChaCha.kdbx | 3.1 | ChaCha20 | AES-KDF | demo.key | Qua |
-| AesKdfKdbx4.kdbx | **3.1**, dù tên có “4” | AES-256 | AES-KDF | Không | Qua |
-| KDBX4.1.kdbx | 4.1 | AES-256 | AES-KDF | Không | Qua; group tags/quality metadata |
-| File kiểm thử người dùng | 4.0, KeePassXC | AES-256 | Argon2d v19, 64 MiB, 108 passes, 4 lanes | Không | Qua; 1 mục, 1 thư mục |
+| demo.kdbx | 3.1 | AES-256 | AES-KDF | demo.key | Passed, including history, custom fields, and attachments |
+| Argon2.kdbx | 4.0 | AES-256 | Argon2d v19 | demo.key | Passed |
+| Argon2id.kdbx | 4.0 | AES-256 | Argon2id v19 | demo.key | Passed |
+| Argon2ChaCha.kdbx | 4.0 | ChaCha20 | Argon2d v19 | demo.key | Passed |
+| AesChaCha.kdbx | 3.1 | ChaCha20 | AES-KDF | demo.key | Passed |
+| AesKdfKdbx4.kdbx | **3.1**, despite the “4” in its name | AES-256 | AES-KDF | None | Passed |
+| KDBX4.1.kdbx | 4.1 | AES-256 | AES-KDF | None | Passed, including group tags and quality metadata |
+| User-supplied test file | 4.0, KeePassXC | AES-256 | Argon2d v19, 64 MiB, 108 passes, 4 lanes | None | Passed; one entry and one folder |
 
-File riêng được kiểm tra không thay đổi byte nguồn; chỉ ghi số lượng vào kết quả. Giới hạn KDF cho phép chi phí gốc của file đó và không hạ tham số bảo mật để mở được. Các tổ hợp chưa có fixture, bao gồm KDBX 4.x ChaCha20 + Argon2id và XML key-file v2, chưa được đánh dấu tương thích dù thư viện có khả năng xử lý. Fixture KeyV2 hiện chỉ được lưu tham khảo, chưa nằm trong matrix đã xác minh.
+The private test file's source bytes remained unchanged, and results recorded only counts. KDF limits allowed the file's original cost without reducing its security parameters. Combinations without fixtures, including KDBX 4.x ChaCha20 + Argon2id and XML key-file v2, were not marked as compatible even where the library might support them. At this baseline, the KeyV2 fixture was retained for reference and was not part of the verified matrix.
 
 ## Migration compatibility matrix
 
-| Format / crypto / schema | Cách xử lý | Kết quả |
+| Format / crypto / schema | Handling | Result |
 | --- | --- | --- |
-| 1 / 1 / 1 | Validate schema 1 → migrate in memory → schema 2 → verify file mới; backup nguyên bản trước lưu | Qua |
-| 1 / 1 / 2 | Validate và mở trực tiếp | Qua |
-| Version mới hơn reader | Từ chối trước khi ghi | Qua |
-| Header/ciphertext sửa hoặc sai mật khẩu | Authentication/validation thất bại; không thay đổi file | Qua |
+| 1 / 1 / 1 | Validate schema 1 → migrate in memory → schema 2 → verify the new file; back up the original before saving | Passed |
+| 1 / 1 / 2 | Validate and open directly | Passed |
+| Version newer than the reader | Reject before writing | Passed |
+| Modified header/ciphertext or incorrect password | Authentication/validation fails; the file remains unchanged | Passed |
 
-## Kết quả kiểm thử
+## Test results
 
-| Kiểm tra | Trạng thái |
+| Check | Result |
 | --- | --- |
-| Unit + integration + compatibility | 71 qua, 0 lỗi; 12 file test |
-| Lint và TypeScript | Qua |
-| Electron E2E với file KDBX riêng | 9 qua, 0 lỗi; bao gồm kéo thả thư mục, thời gian khóa, lưu thiết lập và mở lại process |
-| Đóng gói và mở `.app` đã ký | Qua; chữ ký hợp lệ, chạy bằng hồ sơ kiểm thử riêng và hiển thị giao diện kho mới |
-| Chữ ký, ASAR và fuses | Qua; Node/inspector CLI bị tắt, integrity được bật |
-| Kiểm tra dữ liệu trong bundle | Qua; 36 asset code/HTML/JSON không chứa file riêng hoặc credential E2E |
-| Expo dependency compatibility | `expo install --check`: tương thích |
-| Dependency advisory scan | `bun audit --json` và `--production`: `{}` sau các bản vá |
+| Unit, integration, and compatibility tests | 71 passed, 0 failed, across 12 test files |
+| Lint and TypeScript | Passed |
+| Electron E2E with a private KDBX file | 9 passed, 0 failed, including folder drag and drop, lock timing, settings persistence, and process reopening |
+| Packaging and launching the signed `.app` | Passed; valid signature, isolated test profile, and the new-vault interface displayed |
+| Signature, ASAR, and fuses | Passed; Node/inspector CLI access disabled and integrity enabled |
+| Bundle data inspection | Passed; 36 code/HTML/JSON assets contained no private test file or E2E credentials |
+| Expo dependency compatibility | `expo install --check`: compatible |
+| Dependency advisory scan | `bun audit --json` and `--production`: `{}` after patches |
 
-Không ghi decrypted vault vào cache hoặc log. Các E2E dùng thư mục tạm riêng và xóa sau test; xuất JSON plaintext chỉ diễn ra với fixture giả ở đường dẫn được test chọn và được xóa khi kết thúc. Nhật ký Playwright không bật trace/video hoặc tự chụp màn hình của file riêng. Bản ảnh UI nếu có chỉ dùng credential giả.
+Decrypted vault contents were not written to caches or logs. E2E runs used separate temporary directories and removed them afterward. Plaintext JSON exports used only synthetic fixtures in paths chosen by the tests and were removed at the end. Playwright tracing, video, and automatic screenshots of private files were disabled. UI screenshots, where present, contained only synthetic credentials.
 
-Playwright kiểm thử runtime staging có cùng main/preload/web bundle; inspector cần cho Playwright được giữ ở Electron dùng để test. Bản `.app` cuối được kiểm tra riêng bằng native accessibility sau khi đóng các fuse inspector. Các mốc 179/180/181 giây được xác minh bằng đồng hồ renderer có điều khiển; sự kiện khóa màn hình/sleep được mô phỏng, không thay cho kiểm thử vật lý trên thiết bị. Các test tương tác chờ macOS xác nhận cửa sổ thực sự có focus. CI đã được cấu hình nhưng chưa chạy trên GitHub trong phiên này.
+Playwright exercised a staging runtime with the same main, preload, and web bundles. The inspector required by Playwright remained enabled in the test runtime. The final `.app` was checked separately through native accessibility after the inspector fuses were disabled. The 179/180/181-second boundaries were verified with a controlled renderer clock. Screen-lock and sleep events were simulated and do not replace physical device testing. Interaction tests waited for macOS to confirm that the window had focus. CI was configured but had not run on GitHub during that test cycle.
 
-## Giới hạn nền tảng và quyết định bảo mật
+## Platform limits and security decisions
 
-Desktop chỉ chấp nhận IPC từ main frame của ứng dụng và chỉ cho file port truy cập đường dẫn vault/backup hợp lệ. File bên ngoài cần Finder dialog. Tên vault, recent metadata và vị trí backup không được coi là dữ liệu bí mật; nội dung mục và chỉ mục tìm kiếm nằm trong bộ nhớ hoặc file mã hóa.
+The desktop host accepts IPC only from the application's main frame and restricts file operations to valid vault and backup paths. External files require a Finder dialog. Vault names, recent metadata, and backup locations are not treated as secrets; entry contents and search indexes remain in memory or encrypted files.
 
-Chuyển app, ẩn hoặc thu nhỏ cửa sổ bắt đầu thời gian chờ **3 phút**; có thể chỉnh tại Cài đặt → Bảo mật → Khoá sau khi rời ứng dụng. Quay lại sớm hủy thời hạn đó và giữ nguyên bản nháp. Thiết lập không thao tác là bộ đếm riêng, mặc định 5 phút. Hộp chọn file trong app không tự kích hoạt thời gian rời app; chuyển sang ứng dụng khác khi hộp đó mở vẫn bắt đầu bộ đếm. Khóa màn hình hoặc sleep khóa kho ngay. SessionBoundary loại bỏ giao diện chứa bí mật khi khóa thực sự. JavaScript không thể bảo đảm xóa sạch mọi bản sao string trong bộ nhớ; xem threat model.
+Switching apps, hiding the window, or minimizing it starts a **three-minute** delay, configurable under **Settings → Security → Lock after leaving the app**. Returning before the deadline cancels the timer and preserves drafts. The separate inactivity timer defaults to five minutes. Opening an in-app file dialog does not itself start the away timer, but switching to another app while the dialog is open does. Screen lock and sleep lock the vault immediately. SessionBoundary removes secret-bearing UI when the vault locks. JavaScript cannot guarantee that every string copy is erased from memory; see the threat model.
 
-Clipboard chỉ xóa khi ownership còn khớp. Ứng dụng khác vẫn có thể đọc hoặc lưu nội dung đã sao chép. ScreenCaptureKit có thể vượt qua Electron content protection; app không cam kết chống được mọi screenshot. Backup cũ giữ mật khẩu cũ. Rủi ro phần cứng, OS hoặc dependency bị xâm nhập cần được đánh giá trước phát hành thực tế.
+The clipboard is cleared only while its ownership still matches. Other applications may read or retain copied contents. ScreenCaptureKit can bypass Electron content protection, so the app does not promise protection against every screenshot method. Existing backups keep their original passwords. Risks from compromised hardware, the operating system, or dependencies require assessment before production distribution.
+
+[Appkiro website](https://appkiro.com)

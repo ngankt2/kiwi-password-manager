@@ -47,3 +47,5 @@ python3 /Users/ngannv/app/appkiro.com/scripts/publish-release.py appkiro-passwor
 ```
 
 Publishing is a separate explicit action. Until the registration and a tested release are published, the public channel will not offer an update. Earlier desktop binaries without an updater need one manual installation of this first Tauri release. Release tags use `appkiro-password-manager-v<version>` and never change another app's channel.
+
+[Appkiro website](https://appkiro.com)

@@ -76,3 +76,5 @@ At 760–1000 px, the desktop window keeps its sidebar and shows either the list
 8. Unit/integration/E2E, lint, typecheck, desktop build and signed-bundle launch checks.
 
 Native device results, browser results, physical security tests and remaining release gates must be reported separately. Passing a JavaScript suite is not a native security audit.
+
+[Appkiro website](https://appkiro.com)

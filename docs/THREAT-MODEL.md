@@ -36,3 +36,5 @@ Imported source archives and history intentionally retain old secrets until expl
 The supplied macOS package is an ad-hoc signed local test build. Developer ID signing, notarization, independent security review, physical device lock/sleep testing, disk-full/power-loss testing on real filesystems and distribution/update policy remain release gates. The core has fault-injection regression tests; they do not substitute for destructive hardware testing.
 
 If mobile targets are resumed, run Argon2 fixtures and file fault tests on both physical iOS and Android devices, including biometric enrollment changes and screenshot/app-switcher behavior. Those tests are not implied by desktop results. Dependency advisory scans are useful evidence, not an independent audit of kdbxweb, cryptographic primitives or the application.
+
+[Appkiro website](https://appkiro.com)

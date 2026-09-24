@@ -50,3 +50,5 @@ Modifications: cropped transparent margins, resized proportionally and centered 
 | `bankofamerica.png` | Bank of America | [SVG](https://raw.githubusercontent.com/simple-icons/simple-icons/b86d5c9a0bdd4f3f5c30898a63654dd32f39fd76/icons/bankofamerica.svg) |
 | `barclays.png` | Barclays | [SVG](https://raw.githubusercontent.com/simple-icons/simple-icons/b86d5c9a0bdd4f3f5c30898a63654dd32f39fd76/icons/barclays.svg) |
 | `deutschebank.png` | Deutsche Bank | [SVG](https://raw.githubusercontent.com/simple-icons/simple-icons/b86d5c9a0bdd4f3f5c30898a63654dd32f39fd76/icons/deutschebank.svg) |
+
+[Appkiro website](https://appkiro.com)

@@ -38,3 +38,5 @@ Both production and complete `bun audit --json` scans returned an empty advisory
 Expo FileSystem/DocumentPicker handle mobile documents; desktop uses Rust filesystem operations behind validated native commands. IndexedDB is the browser fallback. Plaintext SQLite, AsyncStorage persistence of the session, and browser localStorage for vault contents were rejected.
 
 Expo SecureStore/LocalAuthentication handle supported mobile biometric key envelopes. There is no macOS/web biometric implementation in this build; a real device-bound OS key wrapper is required before adding Touch ID. The clipboard Swift helper is compiled with Xcode Command Line Tools and bundled inside the Tauri app resources. Tauri is packaged for the host architecture; Intel and Apple Silicon releases need separate verification.
+
+[Appkiro website](https://appkiro.com)
