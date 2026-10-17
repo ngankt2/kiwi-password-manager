@@ -1,6 +1,6 @@
 [package]
 name = "appkiro-password-manager-desktop"
-version = "1.0.22"
+version = "1.0.26"
 edition = "2021"
 description = "Kiwi Password desktop host"
 default-run = "appkiro-password-manager"

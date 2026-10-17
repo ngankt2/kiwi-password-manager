@@ -47,7 +47,7 @@ test('URL icons and bundled brands survive save and reopening offline, and websi
     await picker(page).getByRole('button', { name: t('Tải và dùng ảnh'), exact: true }).click();
     await expect(picker(page).getByText(t('Ảnh đã lưu'), { exact: true })).toBeVisible();
     await expect(draftImage(page)).toHaveAttribute('src', logo);
-    await picker(page).getByRole('button', { name: t('Màu {color}', { color: '#93C5FD' }), exact: true }).click();
+    await picker(page).getByRole('button', { name: t('Màu {color}', { color: '#2F7CF6' }), exact: true }).click();
     await picker(page).locator('.desktop-dialog-footer').getByRole('button', { name: t('Đóng'), exact: true }).click();
     await save(page).click();
     await expect(savedImage(page)).toHaveAttribute('src', logo);

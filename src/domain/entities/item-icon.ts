@@ -9,7 +9,11 @@ const imageKey = 'appkiro.iconImage';
 const choiceKey = 'appkiro.iconChoice';
 export type ItemIconImage = IconData & { version: 1; source: 'url' | 'website' | 'brand'; sourceUrl: string; brand?: string; background?: string };
 const images = new WeakMap<object, ItemIconImage | null>();
-export const ITEM_COLORS = ['#C4B5FD', '#93C5FD', '#67E8F9', '#5EEAD4', '#86EFAC', '#BEF264', '#FDE047', '#FDBA74', '#FCA5A5', '#FDA4AF', '#F0ABFC', '#CBD5E1'] as const;
+// Deep system tones that keep a white glyph at 3.5:1 or better, as in the KeyNest design.
+export const ITEM_COLORS = ['#8E5BE0', '#2F7CF6', '#0A8BC2', '#11878F', '#24914A', '#5E8C12', '#A87A00', '#D9670B', '#E0362C', '#D92D6B', '#B444C4', '#68707C'] as const;
+// Earlier releases stored pastel tones with a black glyph; show each as its deep equivalent.
+const LEGACY_ITEM_COLORS: Record<string, string> = Object.fromEntries(['#C4B5FD', '#93C5FD', '#67E8F9', '#5EEAD4', '#86EFAC', '#BEF264', '#FDE047', '#FDBA74', '#FCA5A5', '#FDA4AF', '#F0ABFC', '#CBD5E1']
+  .map((legacy, index) => [legacy, ITEM_COLORS[index]]));
 type Metadata = ItemSnapshot['metadata'];
 
 export function isItemIcon(value: unknown): value is ItemIconId {
@@ -63,7 +67,9 @@ export const sameItemIconChoice = (left: Metadata, right: Metadata) => left[imag
 export const isItemColor = (value: unknown): value is string => typeof value === 'string' && /^#[\da-f]{6}$/i.test(value);
 export function getItemColor(metadata?: Metadata): string | null {
   const value = metadata?.[colorKey];
-  return isItemColor(value) ? value.toUpperCase() : null;
+  if (!isItemColor(value)) return null;
+  const color = value.toUpperCase();
+  return LEGACY_ITEM_COLORS[color] ?? color;
 }
 export function withItemColor(metadata: Metadata, color: string | null): Metadata {
   if (color !== null && !isItemColor(color)) throw new Error('Invalid icon color.');
@@ -77,6 +83,8 @@ export const randomItemColor = () => ITEM_COLORS[Math.floor(Math.random() * ITEM
 /** Choose the higher-contrast foreground for any user-selected background. */
 export function iconForeground(color: string): '#000000' | '#FFFFFF' {
   if (!isItemColor(color)) return '#000000';
+  // The built-in palette is tuned for a white glyph.
+  if ((ITEM_COLORS as readonly string[]).includes(color.toUpperCase())) return '#FFFFFF';
   const channels = [1, 3, 5].map((start) => parseInt(color.slice(start, start + 2), 16) / 255)
     .map((value) => value <= 0.04045 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4);
   const luminance = channels[0] * 0.2126 + channels[1] * 0.7152 + channels[2] * 0.0722;

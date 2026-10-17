@@ -1,5 +1,5 @@
 import { expect, test } from 'bun:test';
-import { canFetchAutomaticIcon, getItemIcon, getItemIconImage, withItemColor, withItemIcon, withItemIconImage } from '../src/domain/entities/item-icon';
+import { canFetchAutomaticIcon, getItemColor, getItemIcon, getItemIconImage, iconForeground, ITEM_COLORS, withItemColor, withItemIcon, withItemIconImage } from '../src/domain/entities/item-icon';
 import { BRAND_ICONS } from '../src/shared/brand-icons';
 import { validateCachedIcon } from '../src/core/icon-image';
 import { validateVault } from '../src/domain/entities/vault';
@@ -63,4 +63,20 @@ test('missing, malformed and unknown icon metadata safely uses the type default'
   for (const metadata of cases) {
     expect(getItemIcon(metadata)).toBeNull();
   }
+});
+
+test('palette colors keep a readable white glyph and legacy pastels display as their deep tone', () => {
+  const contrast = (color: string) => {
+    const [r, g, b] = [1, 3, 5].map((start) => parseInt(color.slice(start, start + 2), 16) / 255)
+      .map((value) => value <= 0.04045 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4);
+    return 1.05 / (0.2126 * r + 0.7152 * g + 0.0722 * b + 0.05);
+  };
+  for (const color of ITEM_COLORS) {
+    expect(iconForeground(color)).toBe('#FFFFFF');
+    expect(contrast(color)).toBeGreaterThanOrEqual(3.5);
+  }
+  expect(getItemColor(withItemColor({}, '#fda4af'))).toBe('#D92D6B');
+  expect(getItemColor(withItemColor({}, '#93C5FD'))).toBe('#2F7CF6');
+  expect(getItemColor(withItemColor({}, '#123456'))).toBe('#123456');
+  expect(iconForeground('#FDE047')).toBe('#000000');
 });

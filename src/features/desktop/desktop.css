@@ -10,7 +10,7 @@ html,body,#root{margin:0;min-height:100%;background:var(--color-canvas)}
 .desktop-canvas button:disabled,.desktop-dialog button:disabled{opacity:.45;cursor:default}
 .desktop-canvas button:focus-visible,.desktop-dialog button:focus-visible,.desktop-menu button:focus-visible{outline:2px solid var(--color-accent);outline-offset:2px}
 .desktop-canvas ::selection,.desktop-dialog ::selection{background:var(--color-selection)}
-.desktop-canvas a,.desktop-dialog a{color:var(--color-accent);text-decoration:none}
+.desktop-canvas a,.desktop-dialog a{color:var(--color-accent-text);text-decoration:none}
 .desktop-canvas a:hover,.desktop-dialog a:hover{color:var(--color-link-hover);text-decoration:underline}
 .desktop-canvas h1,.desktop-canvas h2,.desktop-canvas h3,.desktop-canvas p,.desktop-dialog h2,.desktop-dialog p{margin:0}
 .desktop-canvas .mono,.desktop-dialog .mono{font-family:'Geist Mono',ui-monospace,'SF Mono',Menlo,monospace}

@@ -65,27 +65,27 @@
   /* Labels (Apple label, secondaryLabel, tertiaryLabel, quaternaryLabel) */
   --color-text: light-dark(rgba(0,0,0,.86), rgba(255,255,255,.9));
   --color-text-strong: light-dark(rgba(0,0,0,.86), rgba(255,255,255,.9));
-  --color-label: light-dark(rgba(0,0,0,.62), rgba(255,255,255,.65));
-  --color-secondary: light-dark(rgba(0,0,0,.56), rgba(255,255,255,.6));
-  --color-muted: light-dark(rgba(0,0,0,.5), rgba(255,255,255,.5));
-  --color-dim: light-dark(rgba(0,0,0,.45), rgba(255,255,255,.45));
-  --color-description: light-dark(rgba(0,0,0,.52), rgba(255,255,255,.5));
+  --color-label: light-dark(rgba(0,0,0,.66), rgba(255,255,255,.7));
+  --color-secondary: light-dark(rgba(0,0,0,.62), rgba(255,255,255,.66));
+  --color-muted: light-dark(rgba(0,0,0,.58), rgba(255,255,255,.6));
+  --color-dim: light-dark(rgba(0,0,0,.58), rgba(255,255,255,.6));
+  --color-description: light-dark(rgba(0,0,0,.58), rgba(255,255,255,.6));
   --color-tag-text: light-dark(rgba(0,0,0,.75), rgba(255,255,255,.82));
-  --color-folder-menu: light-dark(rgba(0,0,0,.55), rgba(255,255,255,.6));
-  --color-placeholder: light-dark(rgba(0,0,0,.3), rgba(255,255,255,.35));
+  --color-folder-menu: light-dark(rgba(0,0,0,.6), rgba(255,255,255,.64));
+  --color-placeholder: light-dark(rgba(0,0,0,.42), rgba(255,255,255,.42));
   --color-empty-icon: light-dark(rgba(0,0,0,.25), rgba(255,255,255,.28));
 
-  /* System colors used as sidebar tiles */
-  --color-nav-all: light-dark(#8E8E93, #8E8E93);
-  --color-nav-favorites: light-dark(#FF9500, #FF9F0A);
-  --color-nav-recent: light-dark(#34C759, #30D158);
-  --color-nav-archive: light-dark(#A2845E, #AC8E68);
-  --color-nav-trash: light-dark(#8E8E93, #636366);
+  /* System colors used as sidebar tiles; each keeps its white glyph at 3:1 or better. */
+  --color-nav-all: #6E6E73;
+  --color-nav-favorites: #C77700;
+  --color-nav-recent: #248A3D;
+  --color-nav-archive: #8A6D45;
+  --color-nav-trash: #636366;
   --color-nav-folders: light-dark(#5856D6, #5E5CE6);
-  --color-nav-generator: light-dark(#AF52DE, #BF5AF2);
-  --color-nav-settings: light-dark(#8E8E93, #8E8E93);
-  --color-nav-lock: light-dark(#007AFF, #0A84FF);
-  --color-nav-shortcuts: light-dark(#8E8E93, #8E8E93);
+  --color-nav-generator: light-dark(#A550D6, #BF5AF2);
+  --color-nav-settings: light-dark(#6E6E73, #8E8E93);
+  --color-nav-lock: #007AFF;
+  --color-nav-shortcuts: light-dark(#6E6E73, #8E8E93);
   --color-folder-group: light-dark(#007AFF, #0A84FF);
   --color-folder-list: light-dark(#5856D6, #7D7AFF);
   --color-drop-text: light-dark(#0062CC, #64B5FF);
@@ -93,6 +93,8 @@
   /* Accent and status */
   --color-accent: light-dark(#007AFF, #0A84FF);
   --color-accent-strong: light-dark(#0062CC, #409CFF);
+  /* Accent for text and glyphs on plain surfaces: 4.5:1 on panes and cards in both themes. */
+  --color-accent-text: light-dark(#0062CC, #4DA3FF);
   --color-link-hover: light-dark(#0062CC, #409CFF);
   --color-inverse-bg: light-dark(rgba(40,40,44,.92), rgba(72,72,76,.92));
   --color-danger: light-dark(#D70015, #FF6961);
@@ -102,9 +104,9 @@
   --color-success-bg: light-dark(rgba(52,199,89,.12), rgba(48,209,88,.14));
   --color-added-text: light-dark(#1F7A36, #5EDB7E);
   --color-success-soft: light-dark(#34C759, #30D158);
-  --color-success: light-dark(#248A3D, #30D158);
+  --color-success: light-dark(#1E7B34, #30D158);
   --color-warning: light-dark(#C93400, #FF9F0A);
-  --color-favorite: light-dark(#FFB800, #FFD60A);
+  --color-favorite: light-dark(#B07D00, #FFD60A);
   --color-warning-bg: light-dark(rgba(255,149,0,.12), rgba(255,159,10,.1));
   --color-warning-ring: light-dark(rgba(255,149,0,.3), rgba(255,159,10,.3));
   --color-warning-text: light-dark(#8A4B00, #FFC266);

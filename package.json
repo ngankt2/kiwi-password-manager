@@ -1,7 +1,7 @@
 {
   "name": "appkiro-password-manager",
   "main": "expo-router/entry",
-  "version": "1.0.22",
+  "version": "1.0.26",
   "dependencies": {
     "@expo-google-fonts/dm-sans": "^0.4.2",
     "@expo-google-fonts/jetbrains-mono": "^0.4.1",
