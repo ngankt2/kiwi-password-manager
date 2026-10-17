@@ -11,6 +11,7 @@ import '@/features/desktop/input-controls.css';
 import '@/features/desktop/desktop.css';
 import '@/features/desktop/refinements.css';
 import '@/features/desktop/apple.css';
+import '@/features/desktop/sidebar.css';
 
 const subscribeHydration = () => () => {};
 const clientSnapshot = () => true;
