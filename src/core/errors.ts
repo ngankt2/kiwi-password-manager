@@ -6,8 +6,8 @@ export type VaultErrorCode =
   | 'QUICK_UNLOCK_UNSUPPORTED' | 'QUICK_UNLOCK_UNAVAILABLE' | 'FILE_EXISTS';
 
 export const ERROR_MESSAGES: Record<VaultErrorCode, string> = {
-  INVALID_FILE: 'This is not a valid Kiro vault file.',
-  UNSUPPORTED_VERSION: 'This vault needs a newer version of Kiro. The file has not been changed.',
+  INVALID_FILE: 'This is not a valid Kiwi Password vault file.',
+  UNSUPPORTED_VERSION: 'This vault needs a newer version of Kiwi Password. The file has not been changed.',
   AUTHENTICATION: 'The password is incorrect, or the encrypted file was damaged.',
   CORRUPT: 'This vault could not be verified. You can open an encrypted backup instead.',
   MIGRATION: 'This vault could not be upgraded. Your original file is unchanged.',

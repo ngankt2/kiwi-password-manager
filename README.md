@@ -1,4 +1,4 @@
-# Kiro Password Manager
+# Kiwi Password
 
 [Appkiro website](https://appkiro.com) · [App overview](https://github.com/ngankt2/appkiro.com/tree/main/apps/appkiro-password-manager) · [Downloads](https://github.com/ngankt2/appkiro.com/releases?q=appkiro-password-manager)
 

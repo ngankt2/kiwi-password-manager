@@ -135,7 +135,7 @@ export async function previewKeePass(crypto: CryptoProvider, bytes: Uint8Array, 
       customIcons: json([...database.meta.customIcons].map(([id, icon]) => ({ id, ...icon, data: toBase64(new Uint8Array(icon.data)) }))),
     };
     const warnings = [
-      'KeePass auto-type rules, icons, plugin settings and original timestamps are preserved as encrypted metadata; Kiro does not execute auto-type rules.',
+      'KeePass auto-type rules, icons, plugin settings and original timestamps are preserved as encrypted metadata; Kiwi Password does not execute auto-type rules.',
       'The original encrypted KDBX is preserved inside this vault. Keep its original password to open that source archive.',
     ];
     if (vault.items.some((item) => invalidOtpFieldIds(item.fields).size)) warnings.push('Some TOTP configurations are invalid or unsupported. Their original values are preserved.');

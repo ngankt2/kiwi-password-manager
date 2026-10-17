@@ -4,11 +4,11 @@ export const privacy = {
   'Chính sách quyền riêng tư': ['Privacy Policy', 'Política de privacidad', 'Politique de confidentialité', '隐私政策'],
   'Liên hệ hỗ trợ': ['Contact support', 'Contactar con soporte', 'Contacter l’assistance', '联系支持'],
   'Cập nhật lần cuối: {date}': ['Last updated: {date}', 'Última actualización: {date}', 'Dernière mise à jour : {date}', '最后更新：{date}'],
-  'Chính sách này giải thích cách Kiro Password Manager do AppKiro phát triển xử lý dữ liệu của bạn.': [
-    'This policy explains how Kiro Password Manager, built by AppKiro, handles your data.',
-    'Esta política explica cómo Kiro Password Manager, desarrollado por AppKiro, trata tus datos.',
-    'Cette politique explique comment Kiro Password Manager, développé par AppKiro, traite vos données.',
-    '本政策说明由 AppKiro 开发的 Kiro Password Manager 如何处理你的数据。',
+  'Chính sách này giải thích cách Kiwi Password do AppKiro phát triển xử lý dữ liệu của bạn.': [
+    'This policy explains how Kiwi Password, built by AppKiro, handles your data.',
+    'Esta política explica cómo Kiwi Password, desarrollado por AppKiro, trata tus datos.',
+    'Cette politique explique comment Kiwi Password, développé par AppKiro, traite vos données.',
+    '本政策说明由 AppKiro 开发的 Kiwi Password 如何处理你的数据。',
   ],
   'Dữ liệu chúng tôi thu thập': ['Data we collect', 'Datos que recopilamos', 'Données que nous collectons', '我们收集的数据'],
   'AppKiro không thu thập, lưu trữ hay nhận bất kỳ dữ liệu nào bạn nhập vào ứng dụng. Ứng dụng không có tài khoản trực tuyến, không có phân tích sử dụng, quảng cáo hay theo dõi.': [

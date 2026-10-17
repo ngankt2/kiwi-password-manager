@@ -94,7 +94,7 @@ export function DesktopWelcome({ mode = 'welcome' }: { mode?: 'welcome' | 'creat
     {mode === 'welcome' && <div className="desktop-welcome">
       <div className="desktop-welcome-heading">
         <BrandSymbol size={84} />
-        <h1>Kiro Password Manager</h1>
+        <h1>Kiwi Password</h1>
         <p>{t("Mật khẩu của bạn được mã hoá và chỉ lưu trên thiết bị này.")}</p>
       </div>
       <div className="desktop-welcome-actions">
@@ -135,7 +135,7 @@ export function DesktopWelcome({ mode = 'welcome' }: { mode?: 'welcome' | 'creat
     {mode === 'unlock' && <form className="desktop-unlock" onSubmit={(event) => { event.preventDefault(); submit(); }} onKeyDown={(event) => { if (event.key === 'Escape') hidePassword(); }}>
       <div className="desktop-unlock-heading">
         <BrandSymbol size={84} />
-        <span className="desktop-brand-caption">Kiro Password Manager</span>
+        <span className="desktop-brand-caption">Kiwi Password</span>
         <h1>{file ? stripVaultFileExtension(file.name) : recent?.name ?? t("Mở khoá Vault")}</h1>
         <p className="mono">{file?.sourceLocation ?? file?.name ?? (desktopBridge() ? recent?.location : recent ? t('{name} · Lưu trong trình duyệt', { name: vaultFileName(recent.name) }) : location)}</p>
       </div>

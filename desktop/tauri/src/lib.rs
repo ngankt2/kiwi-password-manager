@@ -87,7 +87,7 @@ fn update_menu(app: &AppHandle, settings: &Value) -> tauri::Result<()> {
         app,
         None,
         Some(AboutMetadata {
-            name: Some("Kiro Password Manager".into()),
+            name: Some("Kiwi Password".into()),
             version: Some(app.package_info().version.to_string()),
             copyright: Some("Appkiro".into()),
             ..Default::default()
@@ -109,7 +109,7 @@ fn update_menu(app: &AppHandle, settings: &Value) -> tauri::Result<()> {
     )?;
     let application = Submenu::with_items(
         app,
-        "Kiro Password Manager",
+        "Kiwi Password",
         true,
         &[
             &about,

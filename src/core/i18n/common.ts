@@ -5,7 +5,7 @@ export const common = {
   '{name} (khôi phục)': ['{name} (recovered)', '{name} (recuperado)', '{name} (récupéré)', '{name}（恢复）'],
   'Ngôn ngữ hiển thị': ['Display language', 'Idioma de la aplicación', 'Langue de l’application', '显示语言'],
   'Lựa chọn được lưu trên thiết bị này.': ['Your choice is saved on this device.', 'Tu elección se guarda en este dispositivo.', 'Votre choix est enregistré sur cet appareil.', '语言设置会保存在此设备上。'],
-  'Đang mở Kiro Password Manager…': ['Opening Kiro Password Manager…', 'Abriendo Kiro Password Manager…', 'Ouverture de Kiro Password Manager…', '正在打开 Kiro Password Manager…'],
+  'Đang mở Kiwi Password…': ['Opening Kiwi Password…', 'Abriendo Kiwi Password…', 'Ouverture de Kiwi Password…', '正在打开 Kiwi Password…'],
   'Huỷ': ['Cancel', 'Cancelar', 'Annuler', '取消'],
   'Lưu': ['Save', 'Guardar', 'Enregistrer', '保存'],
   'Sửa': ['Edit', 'Editar', 'Modifier', '编辑'],

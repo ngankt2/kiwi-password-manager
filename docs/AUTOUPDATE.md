@@ -22,8 +22,8 @@ bun run build:macos --notes-file /absolute/path/to/release-notes.txt
 
 The resulting `desktop-release/tauri-<version>/` contains:
 
-- `Kiro Password Manager.app`
-- `KiroPasswordManager_<version>_<arch>.app.tar.gz` and its `.sig`
+- `Kiwi Password.app`
+- `KiwiPassword_<version>_<arch>.app.tar.gz` and its `.sig`
 - `latest.json`, containing only the architecture that was built
 - `updater.pub`
 

@@ -18,7 +18,7 @@ async function requestResource(url: URL, kind: 'html' | 'image', signal: AbortSi
     const request = httpsRequest(url, {
       method: 'GET', agent: false, signal,
       lookup: (_hostname, options, callback) => options.all ? callback(null, addresses) : callback(null, addresses[0].address, addresses[0].family),
-      headers: { Accept: kind === 'html' ? 'text/html,application/xhtml+xml' : 'image/*', 'Accept-Encoding': 'identity', 'User-Agent': 'Kiro-Icon/1.0' },
+      headers: { Accept: kind === 'html' ? 'text/html,application/xhtml+xml' : 'image/*', 'Accept-Encoding': 'identity', 'User-Agent': 'KiwiPassword-Icon/1.0' },
     }, (response) => {
       if ([301, 302, 303, 307, 308].includes(response.statusCode ?? 0) && response.headers.location) {
         response.destroy(); resolve({ redirect: response.headers.location }); return;

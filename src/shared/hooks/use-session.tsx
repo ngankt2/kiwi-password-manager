@@ -19,7 +19,7 @@ export function SessionBoundary({ children }: { children: ReactNode }) {
   const { visible } = useActivity();
   const { privacyEpoch } = useSession();
   return <View key={privacyEpoch} style={{ flex: 1 }}>
-    {visible ? children : <View style={{ flex: 1, backgroundColor: colors.surface, alignItems: 'center', justifyContent: 'center' }}><Text style={{ color: colors.text, fontSize: 20 }}>Kiro Password Manager</Text></View>}
+    {visible ? children : <View style={{ flex: 1, backgroundColor: colors.surface, alignItems: 'center', justifyContent: 'center' }}><Text style={{ color: colors.text, fontSize: 20 }}>Kiwi Password</Text></View>}
   </View>;
 }
 

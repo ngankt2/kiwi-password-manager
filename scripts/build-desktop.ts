@@ -31,13 +31,13 @@ await withVersionedBuild(root, async (version) => {
   if (prepare) { process.stdout.write(`Desktop runtime prepared: ${version}\n`); return; }
   const directory = join(root, 'desktop-release', `tauri-${version}`);
   await mkdir(directory, { recursive: true });
-  const source = join(root, 'desktop/tauri/target/release/bundle/macos/Kiro Password Manager.app');
-  const application = join(directory, 'Kiro Password Manager.app');
+  const source = join(root, 'desktop/tauri/target/release/bundle/macos/Kiwi Password.app');
+  const application = join(directory, 'Kiwi Password.app');
   await cp(source, application, { recursive: true, force: false, errorOnExist: true, verbatimSymlinks: true });
   runBuildCommand(root, 'codesign', ['--verify', '--deep', '--strict', application]);
   if (updater) {
     const notesIndex = process.argv.indexOf('--notes-file');
-    const notes = notesIndex < 0 ? `Kiro Password Manager ${version}.` : await readFile(resolve(process.argv[notesIndex + 1]), 'utf8');
+    const notes = notesIndex < 0 ? `Kiwi Password ${version}.` : await readFile(resolve(process.argv[notesIndex + 1]), 'utf8');
     await prepareDesktopRelease(root, directory, version, notes);
   }
   process.stdout.write(`${application}\n`);

@@ -26,7 +26,7 @@ export function JsonImportScreen() {
     finally { wipe(file.bytes); }
   });
   return <SafeAreaView style={{ flex: 1, backgroundColor: colors.background }}><ScrollView contentContainerStyle={{ padding: 24, alignItems: 'center', paddingBottom: 60 }} keyboardShouldPersistTaps="handled">
-    <View style={{ width: '100%', maxWidth: 660, gap: 20 }}><PageHeader title={t("Nhập JSON")} detail={t("Đọc file xuất từ Kiro và kiểm tra trước khi nhập.")} onBack={() => router.canGoBack() ? router.back() : router.replace('/')} />
+    <View style={{ width: '100%', maxWidth: 660, gap: 20 }}><PageHeader title={t("Nhập JSON")} detail={t("Đọc file xuất từ Kiwi Password và kiểm tra trước khi nhập.")} onBack={() => router.canGoBack() ? router.back() : router.replace('/')} />
       <T muted>{t("File JSON không được mã hóa. Ứng dụng chỉ đọc trong bộ nhớ và sẽ lưu dữ liệu vào vault mã hóa sau khi bạn xác nhận.")}</T>
       <Button title={t("Chọn file JSON")} icon={FileJson} onPress={choose} loading={pending} />
       {preview && <><Divider /><Eyebrow>{t("XEM TRƯỚC")}</Eyebrow><T weight="semibold">{preview.name}</T><T>{t('{count} mục', { count: preview.items.length })} · {t('{count} thư mục', { count: preview.folders.length })} · {t('{count} phiên bản', { count: preview.items.reduce((count, item) => count + item.history.length, 0) })}</T>

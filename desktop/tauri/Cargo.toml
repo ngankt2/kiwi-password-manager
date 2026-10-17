@@ -2,7 +2,7 @@
 name = "appkiro-password-manager-desktop"
 version = "1.0.22"
 edition = "2021"
-description = "Kiro Password Manager desktop host"
+description = "Kiwi Password desktop host"
 default-run = "appkiro-password-manager"
 
 [lib]

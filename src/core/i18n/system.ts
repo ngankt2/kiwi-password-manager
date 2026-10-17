@@ -1,8 +1,8 @@
 import type { Translations } from './locales';
 
 export const system = {
-  'File này không phải kho Kiro hợp lệ.': ['This is not a valid Kiro vault file.', 'Este archivo no es una bóveda válida de Kiro.', 'Ce fichier n’est pas un coffre Kiro valide.', '这不是有效的 Kiro 密码库文件。'],
-  'Kho này cần phiên bản Kiro mới hơn. File chưa bị thay đổi.': ['This vault needs a newer version of Kiro. The file has not been changed.', 'Esta bóveda requiere una versión más reciente de Kiro. El archivo no se ha modificado.', 'Ce coffre nécessite une version plus récente de Kiro. Le fichier n’a pas été modifié.', '此密码库需要更新版本的 Kiro，文件未被更改。'],
+  'File này không phải kho Kiwi Password hợp lệ.': ['This is not a valid Kiwi Password vault file.', 'Este archivo no es una bóveda válida de Kiwi Password.', 'Ce fichier n’est pas un coffre Kiwi Password valide.', '这不是有效的 Kiwi Password 密码库文件。'],
+  'Kho này cần phiên bản Kiwi Password mới hơn. File chưa bị thay đổi.': ['This vault needs a newer version of Kiwi Password. The file has not been changed.', 'Esta bóveda requiere una versión más reciente de Kiwi Password. El archivo no se ha modificado.', 'Ce coffre nécessite une version plus récente de Kiwi Password. Le fichier n’a pas été modifié.', '此密码库需要更新版本的 Kiwi Password，文件未被更改。'],
   'Mật khẩu chưa đúng hoặc file mã hoá đã bị hỏng.': ['The password is incorrect, or the encrypted file is damaged.', 'La contraseña es incorrecta o el archivo cifrado está dañado.', 'Le mot de passe est incorrect ou le fichier chiffré est endommagé.', '密码不正确，或加密文件已损坏。'],
   'Không thể xác minh kho này. Bạn có thể mở một bản sao lưu mã hoá.': ['This vault could not be verified. Try opening an encrypted backup.', 'No se pudo verificar esta bóveda. Prueba a abrir una copia cifrada.', 'Ce coffre n’a pas pu être vérifié. Essayez d’ouvrir une sauvegarde chiffrée.', '无法验证此密码库，请尝试打开加密备份。'],
   'Không thể nâng cấp kho này. File gốc vẫn được giữ nguyên.': ['This vault could not be upgraded. Your original file is unchanged.', 'No se pudo actualizar esta bóveda. El archivo original se conserva.', 'Ce coffre n’a pas pu être mis à niveau. Le fichier d’origine est intact.', '无法升级此密码库，原始文件保持不变。'],
@@ -36,8 +36,8 @@ export const system = {
 } as const satisfies Record<string, Translations>;
 
 export const errorKeys = {
-  INVALID_FILE: 'File này không phải kho Kiro hợp lệ.',
-  UNSUPPORTED_VERSION: 'Kho này cần phiên bản Kiro mới hơn. File chưa bị thay đổi.',
+  INVALID_FILE: 'File này không phải kho Kiwi Password hợp lệ.',
+  UNSUPPORTED_VERSION: 'Kho này cần phiên bản Kiwi Password mới hơn. File chưa bị thay đổi.',
   AUTHENTICATION: 'Mật khẩu chưa đúng hoặc file mã hoá đã bị hỏng.',
   CORRUPT: 'Không thể xác minh kho này. Bạn có thể mở một bản sao lưu mã hoá.',
   MIGRATION: 'Không thể nâng cấp kho này. File gốc vẫn được giữ nguyên.',

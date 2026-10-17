@@ -67,7 +67,7 @@ await withVersionedBuild(root, async (version) => {
       '-exportPath', join(output, 'export'), '-allowProvisioningUpdates'],
       // Xcode's IPA packaging expects Apple's rsync; Homebrew's rsync rejects its arguments.
       { ...process.env, PATH: `/usr/bin:${process.env.PATH ?? ''}` });
-    process.stdout.write(`${upload ? 'Uploaded' : 'Exported'} Kiro Password Manager ${version}: ${output}\n`);
+    process.stdout.write(`${upload ? 'Uploaded' : 'Exported'} Kiwi Password ${version}: ${output}\n`);
     return;
   }
   const passthrough = args.filter((arg) => arg !== '--local');

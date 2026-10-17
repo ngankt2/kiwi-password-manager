@@ -10,6 +10,7 @@ export const RELEASE_NOTES: ReleaseNote[] = [
   {
     version: '1.0.23',
     notes: [
+      'Ứng dụng được đổi tên thành Kiwi Password.',
       'Giao diện mới theo phong cách macOS: thanh bên nổi dạng kính, danh sách gọn hơn và trang chi tiết với các trường được nhóm rõ ràng.',
       'Hộp thoại, menu, thông báo và màn hình mở khoá được làm mới theo Apple Human Interface Guidelines, ở cả chế độ Sáng và Tối.',
       'Ứng dụng di động dùng màu và phông chữ hệ thống của iOS.',

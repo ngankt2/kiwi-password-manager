@@ -120,7 +120,7 @@ pub fn fetch_resource(input: &str, kind: &str) -> Result<Value> {
                     "image/*"
                 },
             )
-            .header("User-Agent", "Kiro-Icon/1.0")
+            .header("User-Agent", "KiwiPassword-Icon/1.0")
             .send()
             .map_err(|_| "NOT_FOUND")?;
         if [301, 302, 303, 307, 308].contains(&response.status().as_u16()) {

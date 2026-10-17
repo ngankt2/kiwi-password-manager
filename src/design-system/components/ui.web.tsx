@@ -70,8 +70,8 @@ export function Chip({ label, selected, onPress, icon: Icon }: { label: string; 
 export function Divider() { return <View style={s.divider} />; }
 export function Logo({ small }: { small?: boolean }) {
   return <View style={s.logo}><View style={[s.logoMark, small && { width: 32, height: 36 }]}><Shield size={small ? 22 : 28} color={colors.primary} strokeWidth={1.8} /><View style={s.keyDot} /></View>
-    <View><T weight="bold" style={{ fontSize: small ? 21 : 26, letterSpacing: -0.8 }}>Kiro</T>
-      <T muted style={{ fontSize: small ? 8 : 10, letterSpacing: 1.2 }}>PASSWORD MANAGER</T></View>
+    <View><T weight="bold" style={{ fontSize: small ? 21 : 26, letterSpacing: -0.8 }}>Kiwi</T>
+      <T muted style={{ fontSize: small ? 8 : 10, letterSpacing: 1.2 }}>PASSWORD</T></View>
   </View>;
 }
 export function StatusPill({ text = 'Local & encrypted' }: { text?: string }) { return <View style={s.statusPill}><View style={s.dot} /><T style={{ fontSize: 11, color: colors.secondary }}>{text}</T></View>; }

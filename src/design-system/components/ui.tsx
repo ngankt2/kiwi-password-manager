@@ -72,8 +72,8 @@ export function Chip({ label, selected, onPress, icon: Icon }: { label: string; 
 export function Divider() { return <View style={s.divider} />; }
 export function Logo({ small }: { small?: boolean }) {
   return <View style={s.logo}><BrandSymbol size={small ? 36 : 48} />
-    <View><T weight="bold" style={{ fontSize: small ? 20 : 26, letterSpacing: -0.4 }}>Kiro</T>
-      <T muted style={{ fontSize: small ? 11 : 13 }}>Password Manager</T></View>
+    <View><T weight="bold" style={{ fontSize: small ? 20 : 26, letterSpacing: -0.4 }}>Kiwi</T>
+      <T muted style={{ fontSize: small ? 11 : 13 }}>Password</T></View>
   </View>;
 }
 export function StatusPill({ text = 'Local & encrypted' }: { text?: string }) { return <View style={s.statusPill}><View style={s.dot} /><T style={{ fontSize: 12, color: colors.secondary }}>{text}</T></View>; }

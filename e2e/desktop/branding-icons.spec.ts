@@ -20,7 +20,7 @@ test('branding is visible and item icons persist across save, discard, restart a
     const errors: string[] = [];
     page.on('pageerror', (error) => errors.push(error.message));
     await page.evaluate(() => { document.documentElement.dataset.theme = 'dark'; });
-    const logo = page.locator('img[alt="Kiro Password Manager"]');
+    const logo = page.locator('img[alt="Kiwi Password"]');
     await expect(logo).toBeVisible();
     await expect.poll(() => logo.evaluate((image: HTMLImageElement) => image.complete && image.naturalWidth > 0)).toBe(true);
     await expect(page.locator('.desktop-app-version')).toHaveText(`v${version}`);
@@ -31,7 +31,7 @@ test('branding is visible and item icons persist across save, discard, restart a
     await page.screenshot({ path: 'tests/reports/branding/unlock.png' });
     await page.getByLabel(t('Master Password'), { exact: true }).fill(desktopPassword);
     await page.getByRole('button', { name: t('Mở khoá Vault'), exact: true }).click();
-    await expect(page.locator('.desktop-sidebar img[alt="Kiro Password Manager"]')).toBeVisible();
+    await expect(page.locator('.desktop-sidebar img[alt="Kiwi Password"]')).toBeVisible();
     const rowName = 'Email công việc, ' + t('Đăng nhập');
     let row = page.getByRole('option', { name: rowName, exact: true });
     await row.click();

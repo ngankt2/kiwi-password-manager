@@ -1,6 +1,6 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "Kiro Password Manager",
+  "productName": "Kiwi Password",
   "version": "../../package.json",
   "identifier": "com.appkiro.vault.desktop",
   "build": {
@@ -11,7 +11,7 @@
       {
         "label": "main",
         "create": false,
-        "title": "Kiro Password Manager",
+        "title": "Kiwi Password",
         "width": 1320,
         "height": 860,
         "minWidth": 760,

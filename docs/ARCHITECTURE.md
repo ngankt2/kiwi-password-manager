@@ -1,4 +1,4 @@
-# Kiro Password Manager architecture
+# Kiwi Password architecture
 
 Decision record, updated 24 September 2026. This is a local-first application with a macOS desktop test target, and no accounts, analytics, or remote credential storage. Browser hosting includes a bounded icon-download API; it receives only image URLs or website origins, never vault contents.
 

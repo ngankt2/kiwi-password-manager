@@ -1,8 +1,8 @@
-# Kiro Password Manager Privacy Policy
+# Kiwi Password Privacy Policy
 
 Last updated: October 17, 2026
 
-This policy explains how Kiro Password Manager, built by AppKiro, handles your data. The in-app version is in `src/core/i18n/privacy.ts` and `src/features/about/privacy.ts`; keep both in sync and publish this page at the Privacy Policy URL in App Store Connect.
+This policy explains how Kiwi Password, built by AppKiro, handles your data. The in-app version is in `src/core/i18n/privacy.ts` and `src/features/about/privacy.ts`; keep both in sync and publish this page at the Privacy Policy URL in App Store Connect.
 
 ## Data we collect
 

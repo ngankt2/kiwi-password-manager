@@ -214,7 +214,7 @@ export function DesktopWorkspace({ children, detailId, search = false, fullWidth
         {mobileSidebar && <button className="desktop-sidebar-backdrop desktop-mobile-only" aria-label={t("Đóng thanh bên")} onClick={() => setMobileSidebar(false)} />}
         <aside className={'desktop-sidebar' + (rail ? ' desktop-rail' : '')} aria-label={t("Điều hướng Vault")}>
           <TrafficLights />
-          {rail ? <div className="desktop-rail-brand"><BrandSymbol size={34} /></div> : <div className="desktop-vault-name"><BrandSymbol size={28} /><span>Kiro Password Manager</span></div>}
+          {rail ? <div className="desktop-rail-brand"><BrandSymbol size={34} /></div> : <div className="desktop-vault-name"><BrandSymbol size={28} /><span>Kiwi Password</span></div>}
           <nav className={rail ? 'desktop-rail-nav' : 'desktop-sidebar-scroll'}>
             {!rail && <div className="desktop-section-label">{t("Vault")}</div>}
             {navigation.map((entry) => <button key={entry.filter} data-nav={entry.filter} className={'desktop-nav-item' + (filter === entry.filter && activeNav ? ' selected' : '')}

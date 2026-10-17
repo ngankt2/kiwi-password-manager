@@ -53,7 +53,7 @@ export async function withVersionedBuild<T>(root: string, build: (version: strin
   }
   try {
     const version = await bumpBuildVersion(root);
-    process.stdout.write(`Building Kiro Password Manager ${version}\n`);
+    process.stdout.write(`Building Kiwi Password ${version}\n`);
     return await build(version);
   } finally {
     await rm(lock, { recursive: true, force: true });

@@ -3,8 +3,8 @@ import { join } from 'node:path';
 
 export async function prepareDesktopRelease(root: string, directory: string, version: string, notes: string) {
   if (process.platform !== 'darwin' || !['arm64', 'x64'].includes(process.arch)) throw new Error('Only the locally built macOS architecture can be published.');
-  const filename = `KiroPasswordManager_${version}_${process.arch}.app.tar.gz`;
-  const source = join(root, 'desktop/tauri/target/release/bundle/macos/Kiro Password Manager.app.tar.gz');
+  const filename = `KiwiPassword_${version}_${process.arch}.app.tar.gz`;
+  const source = join(root, 'desktop/tauri/target/release/bundle/macos/Kiwi Password.app.tar.gz');
   const signature = (await readFile(source + '.sig', 'utf8')).trim();
   // Tauri v2 binds its signed archive to the announced version.
   const decoded = Buffer.from(signature, 'base64').toString('utf8');

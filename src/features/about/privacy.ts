@@ -12,7 +12,7 @@ export const SUPPORT_URL = `https://appkiro.com/contact?utm_source=${encodeURICo
 
 export type PrivacySection = { title: MessageKey; paragraphs: MessageKey[] };
 
-export const PRIVACY_INTRO: MessageKey = 'Chính sách này giải thích cách Kiro Password Manager do AppKiro phát triển xử lý dữ liệu của bạn.';
+export const PRIVACY_INTRO: MessageKey = 'Chính sách này giải thích cách Kiwi Password do AppKiro phát triển xử lý dữ liệu của bạn.';
 
 export const PRIVACY_SECTIONS: PrivacySection[] = [
   { title: 'Dữ liệu chúng tôi thu thập', paragraphs: ['AppKiro không thu thập, lưu trữ hay nhận bất kỳ dữ liệu nào bạn nhập vào ứng dụng. Ứng dụng không có tài khoản trực tuyến, không có phân tích sử dụng, quảng cáo hay theo dõi.'] },

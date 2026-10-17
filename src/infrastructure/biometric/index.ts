@@ -9,7 +9,7 @@ import type { QuickUnlockOptions, QuickUnlockSupport } from '@/core/security/qui
 const storageKey = (id: string) => `kiro.biometric.${id.replace(/[^a-zA-Z0-9_.-]/g, '')}`;
 const options: SecureStore.SecureStoreOptions = {
   requireAuthentication: true, keychainAccessible: SecureStore.WHEN_PASSCODE_SET_THIS_DEVICE_ONLY,
-  authenticationPrompt: 'Unlock your Kiro vault', keychainService: 'com.appkiro.vault.biometric',
+  authenticationPrompt: 'Unlock your Kiwi Password vault', keychainService: 'com.appkiro.vault.biometric',
 };
 const requestedOptions = (request: QuickUnlockOptions) => ({ ...options, authenticationPrompt: request.prompt ?? options.authenticationPrompt });
 const check = (request: QuickUnlockOptions) => { if (request.signal?.aborted) throw new VaultError('CANCELLED'); };

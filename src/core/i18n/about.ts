@@ -26,5 +26,6 @@ export const about = {
     '对话框、菜单、通知和解锁界面在浅色与深色外观下均遵循 Apple 人机界面指南。',
   ],
   'Ứng dụng di động dùng màu và phông chữ hệ thống của iOS.': ['The mobile app uses iOS system colors and fonts.', 'La aplicación móvil usa los colores y fuentes del sistema iOS.', 'L’application mobile utilise les couleurs et polices système d’iOS.', '移动应用采用 iOS 系统颜色和字体。'],
+  'Ứng dụng được đổi tên thành Kiwi Password.': ['The app is now called Kiwi Password.', 'La aplicación ahora se llama Kiwi Password.', 'L’application s’appelle désormais Kiwi Password.', '应用现已更名为 Kiwi Password。'],
   'Thêm trang Giới thiệu với nhật ký phát hành.': ['A new About page with the release log.', 'Nueva página Acerca de con el historial de versiones.', 'Nouvelle page À propos avec le journal des versions.', '新增包含版本日志的“关于”页面。'],
 } as const satisfies Record<string, Translations>;

@@ -138,8 +138,8 @@ export class PasskeyUnlock implements QuickUnlockPort {
       const challenge = this.crypto.random(32);
       const prfInput = this.crypto.random(32);
       const credential = await this.client.create({ signal: options.signal, publicKey: {
-        rp: { id: this.client.rpId, name: 'Kiro Password Manager' },
-        user: { id: buffer(await this.crypto.sha256(utf8(id))), name: options.name || 'Kiro Password Manager', displayName: options.name || 'Kiro Password Manager' },
+        rp: { id: this.client.rpId, name: 'Kiwi Password' },
+        user: { id: buffer(await this.crypto.sha256(utf8(id))), name: options.name || 'Kiwi Password', displayName: options.name || 'Kiwi Password' },
         challenge: buffer(challenge), pubKeyCredParams: [{ type: 'public-key', alg: -7 }], timeout: 60_000,
         authenticatorSelection: { userVerification: 'required', residentKey: 'required', requireResidentKey: true },
         attestation: 'none', extensions: { prf: { eval: { first: buffer(prfInput) } } },

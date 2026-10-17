@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "Kiro Password Manager",
+    "name": "Kiwi Password",
     "slug": "appkiro-password-manager",
     "version": "1.0.22",
     "orientation": "default",
@@ -9,7 +9,7 @@
     "userInterfaceStyle": "dark",
     "ios": {
       "icon": "./assets/images/icon.png",
-      "bundleIdentifier": "com.appkiro.vault",
+      "bundleIdentifier": "com.appkiro.kiwipassword",
       "supportsTablet": true,
       "infoPlist": {
         "UIFileSharingEnabled": false,
@@ -18,7 +18,7 @@
       "buildNumber": "23"
     },
     "android": {
-      "package": "com.appkiro.vault",
+      "package": "com.appkiro.kiwipassword",
       "allowBackup": false,
       "adaptiveIcon": {
         "backgroundColor": "#FFFFFF",
