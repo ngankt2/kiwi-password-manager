@@ -7,36 +7,6 @@ from PIL import Image, ImageChops, ImageDraw, ImageFilter, ImageOps
 ROOT = Path(__file__).resolve().parent.parent
 BRAND = ROOT / 'assets' / 'branding'
 IMAGES = ROOT / 'assets' / 'images'
-source = Image.open(BRAND / 'appkiro-original.png').convert('RGBA')
-width, height = source.size
-alpha = source.getchannel('A')
-remaining = bytearray(1 if value > 24 else 0 for value in alpha.tobytes())
-kept = bytearray(width * height)
-
-# Remove disconnected background specks without redrawing the supplied artwork.
-for start in range(width * height):
-    if not remaining[start]:
-        continue
-    remaining[start] = 0
-    queue = deque([start])
-    component = []
-    while queue:
-        index = queue.popleft()
-        component.append(index)
-        x, y = index % width, index // width
-        for neighbor in (index - 1 if x else -1, index + 1 if x < width - 1 else -1,
-                         index - width if y else -1, index + width if y < height - 1 else -1):
-            if neighbor >= 0 and remaining[neighbor]:
-                remaining[neighbor] = 0
-                queue.append(neighbor)
-    if len(component) >= 100:
-        for index in component:
-            kept[index] = 255
-mask = Image.frombytes('L', source.size, bytes(kept)).filter(ImageFilter.MaxFilter(3))
-source.putalpha(ImageChops.multiply(alpha, mask))
-lockup = source.crop(source.getchannel('A').getbbox())
-lockup.thumbnail((1200, 1200), Image.Resampling.LANCZOS)
-lockup.save(BRAND / 'appkiro-logo.png', optimize=True)
 
 
 def centered(art, side, extent, background=(0, 0, 0, 0)):
@@ -118,10 +88,13 @@ def squircle_mask(side, body):
     return mask.resize((side, side), Image.Resampling.LANCZOS)
 
 
-# The supplied icon is a white squircle (70..953) on a dark matte. Crop the tile and paint the
-# matte, its antialiased rim and any corner marks white so every platform starts from a clean square.
-supplied = Image.open(BRAND / 'appkiro-app-icon-original.png').convert('RGB')
-tile = supplied.crop((70, 70, 954, 954))
+# The supplied icon is a white squircle on a dark matte. Crop the tile and paint the matte, its
+# antialiased rim and any corner marks white so every platform starts from a clean square. The tile
+# is located from its white pixels, so the source may be any size; marks on the matte are cropped away.
+supplied = Image.open(BRAND / 'kiwi-password-icon-original.png').convert('RGB')
+red, green, blue = supplied.split()
+lightest = ImageChops.darker(ImageChops.darker(red, green), blue).point(lambda value: 255 if value > 235 else 0)
+tile = supplied.crop(lightest.getbbox())
 matte = flood_from_edges(tile, lambda pixel: min(pixel) < 235)
 tile.paste('white', mask=matte.filter(ImageFilter.MaxFilter(3)))
 tile = tile.resize((1024, 1024), Image.Resampling.LANCZOS)
@@ -141,7 +114,7 @@ tile.alpha_composite(fitted, ((1024 - fitted.width) // 2, (1024 - fitted.height)
 tile = tile.convert('RGB')
 
 # The in-app symbol and splash reuse the icon artwork so every surface shows the same kiwi lock.
-centered(icon_artwork, 1024, 960).save(BRAND / 'appkiro-symbol.png', optimize=True)
+centered(icon_artwork, 1024, 960).save(BRAND / 'kiwi-password-symbol.png', optimize=True)
 # iOS requires an opaque square and applies its own mask.
 tile.save(IMAGES / 'icon.png', optimize=True)
 # Keep all visible artwork inside Android's central 66/108 safe circle.

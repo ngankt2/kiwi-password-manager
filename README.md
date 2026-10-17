@@ -26,7 +26,7 @@ Every application build, including `desktop:prepare` and rebuilds, increases the
 
 Build the web app with `bun run build:web` and preview it with `bun run preview:web`. Expo server output (`dist/client` and `dist/server`) provides the same-origin `/api/icon` endpoint, which downloads images from websites that do not allow browser CORS requests. Deploy both the client and server with an Expo Server adapter; static hosting alone cannot provide image downloads from URLs. The desktop wrapper exports a static renderer and downloads icons through the native host. Build mobile apps on EAS with `bun run build:ios --profile production` or `bun run build:android --profile production`; EAS uses the locally increased version.
 
-The original logo is in `assets/branding/appkiro-original.png`. The interface uses its symbol for clarity at small sizes. The app icon uses separate artwork with a gradient background from `assets/branding/appkiro-app-icon-original.png`. Regenerate transparent PNGs, favicons, splash images, and platform icons with `python3 scripts/prepare-branding.py` (requires Pillow).
+The app icon and logo come from `assets/branding/kiwi-password-icon-original.png`. The interface uses its artwork as the symbol `assets/branding/kiwi-password-symbol.png`. Regenerate transparent PNGs, favicons, splash images, and platform icons with `python3 scripts/prepare-branding.py` (requires Pillow).
 
 ## Testing
 
