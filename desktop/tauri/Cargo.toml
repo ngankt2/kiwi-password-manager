@@ -1,6 +1,6 @@
 [package]
 name = "appkiro-password-manager-desktop"
-version = "1.0.17"
+version = "1.0.22"
 edition = "2021"
 description = "Kiro Password Manager desktop host"
 default-run = "appkiro-password-manager"

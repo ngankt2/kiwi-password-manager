@@ -5,7 +5,7 @@ import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { router } from 'expo-router';
 import * as Linking from 'expo-linking';
 import { Archive, ArrowLeft, ArrowUpRight, Check, ChevronRight, Copy, Eye, EyeOff, FolderInput, History, MoreHorizontal, Paperclip, Pencil, RotateCcw, Star, Trash2 } from 'lucide-react-native';
-import { Button, Chip, Dialog, Divider, EmptyState, Eyebrow, IconButton, Select, T } from '@/design-system/components/ui';
+import { Button, Chip, Dialog, EmptyState, Eyebrow, IconButton, Select, T } from '@/design-system/components/ui';
 import { ReauthDialog } from '@/design-system/components/reauth-dialog';
 import { colors } from '@/design-system/tokens';
 import { isSecret, type CustomField, type VaultItem } from '@/domain/entities/vault';
@@ -49,13 +49,13 @@ export function CredentialField({ field, fields, authorize, literal = false }: {
     if (!['https:', 'http:'].includes(url.protocol)) throw new VaultError('VALIDATION');
     await Linking.openURL(url.toString());
   });
-  return <View style={styles.field}><View style={{ flex: 1, gap: 5, minWidth: 0 }}><T muted style={{ fontSize: 11 }}>{field.label}</T>
+  return <View style={styles.field}><View style={{ flex: 1, gap: 2, minWidth: 0 }}><T muted style={{ fontSize: 13 }}>{field.label}</T>
     <T mono={secret || field.kind === 'number'} selectable={!secret || revealed} accessibilityLabel={secret && !revealed && !otpError ? `${field.label}, hidden` : undefined}
       accessibilityElementsHidden={secret && !revealed && !otpError} importantForAccessibility={secret && !revealed && !otpError ? 'no-hide-descendants' : 'auto'}
-      style={{ fontSize: secret ? 14 : 14, lineHeight: 24, letterSpacing: secret && !revealed ? 2 : 0, color: otpError ? colors.warning : colors.text }} numberOfLines={revealed ? undefined : 2}>
+      style={{ fontSize: 17, lineHeight: 22, letterSpacing: secret && !revealed ? 2 : 0, color: otpError ? colors.warning : colors.text }} numberOfLines={revealed ? undefined : 2}>
       {otpError ? t('Chưa tạo được mã TOTP') : secret && !revealed ? '••••••••••••••' : value || t('(trống)')}
-    </T>{otpError && <T style={{ fontSize: 11, color: colors.warning }}>{t('Chọn Sửa để kiểm tra khóa bí mật và thiết lập TOTP.')}</T>}
-    {remaining !== null && <T muted style={{ fontSize: 10 }}>{t('Làm mới sau {count} giây', { count: remaining })}</T>}
+    </T>{otpError && <T style={{ fontSize: 13, color: colors.warning }}>{t('Chọn Sửa để kiểm tra khóa bí mật và thiết lập TOTP.')}</T>}
+    {remaining !== null && <T muted style={{ fontSize: 12, fontVariant: ['tabular-nums'] }}>{t('Làm mới sau {count} giây', { count: remaining })}</T>}
   </View><View style={{ flexDirection: 'row', alignItems: 'center' }}>
     {secret && !otpError && <IconButton icon={revealed ? EyeOff : Eye} label={revealed ? `Hide ${field.label}` : `Reveal ${field.label}`} active={revealed} onPress={() => settings.requireAuthenticationToReveal && !revealed ? authorize(reveal) : run(reveal)} />}
     {field.kind === 'url' && !secret && <IconButton icon={ArrowUpRight} label={`Open ${field.label}`} onPress={openWebsite} />}
@@ -80,8 +80,8 @@ export function NoteSection({ notes, authorize }: { notes: string; authorize: (a
         })} />
       </>}
     </View>
-    <View style={{ padding: 14, borderWidth: 1, borderColor: colors.border, borderRadius: 10 }}>
-      <T selectable={revealed} mono={!!notes && !revealed} muted={!!notes && !revealed} accessibilityLabel={notes && !revealed ? t('{name}, đang ẩn', { name: t('Ghi chú') }) : undefined} style={{ fontSize: 13, lineHeight: 23 }}>
+    <View style={{ padding: 16, backgroundColor: colors.surface, borderRadius: 12 }}>
+      <T selectable={revealed} mono={!!notes && !revealed} muted={!!notes && !revealed} accessibilityLabel={notes && !revealed ? t('{name}, đang ẩn', { name: t('Ghi chú') }) : undefined} style={{ fontSize: 17, lineHeight: 23 }}>
         {!notes ? t('Chưa có ghi chú.') : revealed ? notes : '••••••••••••'}
       </T>
     </View>
@@ -101,20 +101,20 @@ export function DetailPanel({ item, onBack }: { item?: VaultItem; onBack?: () =>
   const organize = (patch: Partial<Pick<VaultItem, 'archivedAt' | 'deletedAt'>>) => run(async () => { await session.mutate((vault) => updateItems(vault, [item.id], patch, () => session.id())); setMenu(false); });
   const infoDate = (value: string) => new Date(value).toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' });
   return <View style={{ flex: 1, backgroundColor: colors.background }}>
-    <View style={styles.toolbar}>{onBack && <IconButton icon={ArrowLeft} label="Back to items" onPress={onBack} />}<T muted style={{ flex: 1, fontSize: 11 }}>{TYPE_LABELS[item.type]}</T><IconButton icon={Star} label={item.favorite ? 'Remove favorite' : 'Add favorite'} active={item.favorite} onPress={favorite} /><Button title="Edit" icon={Pencil} variant="secondary" small onPress={() => router.push({ pathname: '/item/[id]/edit', params: { id: item.id } })} /><IconButton icon={MoreHorizontal} label="Item actions" onPress={() => setMenu(true)} /></View>
+    <View style={styles.toolbar}>{onBack && <IconButton icon={ArrowLeft} label="Back to items" onPress={onBack} />}<View style={{ flex: 1 }} /><IconButton icon={Star} label={item.favorite ? 'Remove favorite' : 'Add favorite'} active={item.favorite} onPress={favorite} /><Button title="Edit" icon={Pencil} variant="secondary" small onPress={() => router.push({ pathname: '/item/[id]/edit', params: { id: item.id } })} /><IconButton icon={MoreHorizontal} label="Item actions" onPress={() => setMenu(true)} /></View>
     <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
-      {(item.deletedAt || item.archivedAt) && <View style={styles.lifecycleBanner}><T muted style={{ flex: 1, fontSize: 12 }}>{item.deletedAt ? 'This item is in Trash.' : 'This item is archived.'}</T><Button title="Restore" variant="ghost" icon={RotateCcw} onPress={() => organize({ deletedAt: null, archivedAt: null })} /></View>}
-      <View style={styles.identity}><ItemIcon type={item.type} metadata={item.metadata} large /><View style={{ flex: 1, gap: 5 }}><T weight="bold" style={styles.title}>{item.title || 'Untitled item'}</T><T muted style={{ fontSize: 12 }}>{folderPath(vault, item.folderId) || TYPE_LABELS[item.type]}</T></View></View>
+      {(item.deletedAt || item.archivedAt) && <View style={styles.lifecycleBanner}><T muted style={{ flex: 1, fontSize: 15 }}>{item.deletedAt ? 'This item is in Trash.' : 'This item is archived.'}</T><Button title="Restore" variant="ghost" icon={RotateCcw} onPress={() => organize({ deletedAt: null, archivedAt: null })} /></View>}
+      <View style={styles.identity}><ItemIcon type={item.type} metadata={item.metadata} large /><View style={{ flex: 1, gap: 5 }}><T weight="bold" style={styles.title}>{item.title || 'Untitled item'}</T><T muted style={{ fontSize: 15 }}>{folderPath(vault, item.folderId) || TYPE_LABELS[item.type]}</T></View></View>
       {item.type === 'env' && <EnvPanel key={item.id + ':' + item.updatedAt} raw={envContent(item)} renderVariable={(field) => <CredentialField field={field} fields={[]} authorize={authorize} literal />} />}
-      {fields.some((field) => field.value) && <View style={styles.section}><Eyebrow>{item.type === 'login' ? 'CREDENTIALS' : 'DETAILS'}</Eyebrow><View style={styles.fieldBox}>{fields.map((field) => <CredentialField key={item.id + ':' + field.id} field={field} fields={item.fields} authorize={authorize} />)}</View></View>}
+      {fields.some((field) => field.value) && <View style={styles.section}><Eyebrow>{item.type === 'login' ? 'Credentials' : 'Details'}</Eyebrow><View style={styles.fieldBox}>{fields.map((field) => <CredentialField key={item.id + ':' + field.id} field={field} fields={item.fields} authorize={authorize} />)}</View></View>}
       {(item.notes || item.type === 'secure-note') && <NoteSection key={item.id} notes={item.notes} authorize={authorize} />}
-      {custom.length > 0 && <View style={styles.section}><Eyebrow>CUSTOM FIELDS</Eyebrow><View style={styles.fieldBox}>{custom.map((field) => <CredentialField key={item.id + ':' + field.id} field={field} fields={item.fields} authorize={authorize} />)}</View></View>}
-      {item.attachments.length > 0 && <View style={styles.section}><Eyebrow>ATTACHMENTS</Eyebrow>{item.attachments.map((attachment) => <Pressable accessibilityRole="button" accessibilityLabel={`Export attachment ${attachment.name}`} key={attachment.id} style={styles.attachment} onPress={() => authorize(async () => { const bytes = fromBase64(attachment.data); try { await exportFile(attachment.name, bytes, true); } finally { wipe(bytes); } })}>
-        <Paperclip size={16} color={colors.secondary} /><T style={{ flex: 1, fontSize: 12 }} numberOfLines={1}>{attachment.name}</T><T muted style={{ fontSize: 10 }}>{Math.max(1, Math.round(attachment.size / 1024))} KB</T><ArrowUpRight size={15} color={colors.secondary} />
+      {custom.length > 0 && <View style={styles.section}><Eyebrow>Custom fields</Eyebrow><View style={styles.fieldBox}>{custom.map((field) => <CredentialField key={item.id + ':' + field.id} field={field} fields={item.fields} authorize={authorize} />)}</View></View>}
+      {item.attachments.length > 0 && <View style={styles.section}><Eyebrow>Attachments</Eyebrow>{item.attachments.map((attachment) => <Pressable accessibilityRole="button" accessibilityLabel={`Export attachment ${attachment.name}`} key={attachment.id} style={styles.attachment} onPress={() => authorize(async () => { const bytes = fromBase64(attachment.data); try { await exportFile(attachment.name, bytes, true); } finally { wipe(bytes); } })}>
+        <Paperclip size={17} color={colors.primary} /><T style={{ flex: 1, fontSize: 17 }} numberOfLines={1}>{attachment.name}</T><T muted style={{ fontSize: 13 }}>{Math.max(1, Math.round(attachment.size / 1024))} KB</T><ArrowUpRight size={15} color={colors.secondary} />
       </Pressable>)}</View>}
-      {item.tags.length > 0 && <View style={styles.section}><Eyebrow>TAGS</Eyebrow><View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 7 }}>{item.tags.map((tag) => <Chip key={tag} label={tag} onPress={() => router.push({ pathname: '/vault', params: { filter: `tag:${tag}` } })} />)}</View></View>}
-      <Divider /><View style={{ gap: 11 }}><Eyebrow>INFORMATION</Eyebrow><View style={styles.information}><T muted style={{ fontSize: 11 }}>Created</T><T style={{ fontSize: 11 }}>{infoDate(item.createdAt)}</T></View><View style={styles.information}><T muted style={{ fontSize: 11 }}>Last modified</T><T style={{ fontSize: 11 }}>{infoDate(item.updatedAt)}</T></View>
-        <Pressable accessibilityRole="button" accessibilityLabel="Version history" onPress={() => router.push({ pathname: '/item/[id]/history', params: { id: item.id } })} style={styles.historyLink}><History size={16} color={colors.secondary} /><T style={{ flex: 1, fontSize: 12 }}>Version history</T><T muted style={{ fontSize: 11 }}>{item.history.length}</T><ChevronRight size={15} color={colors.secondary} /></Pressable>
+      {item.tags.length > 0 && <View style={styles.section}><Eyebrow>Tags</Eyebrow><View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 7 }}>{item.tags.map((tag) => <Chip key={tag} label={tag} onPress={() => router.push({ pathname: '/vault', params: { filter: `tag:${tag}` } })} />)}</View></View>}
+      <View style={{ gap: 8 }}><Eyebrow>Information</Eyebrow><View style={{ borderRadius: 12, overflow: 'hidden' }}><View style={styles.information}><T muted style={{ fontSize: 17 }}>Created</T><T style={{ fontSize: 17, fontVariant: ['tabular-nums'] }}>{infoDate(item.createdAt)}</T></View><View style={[styles.information, { borderTopWidth: StyleSheet.hairlineWidth, borderColor: colors.border }]}><T muted style={{ fontSize: 17 }}>Last modified</T><T style={{ fontSize: 17, fontVariant: ['tabular-nums'] }}>{infoDate(item.updatedAt)}</T></View></View>
+        <Pressable accessibilityRole="button" accessibilityLabel="Version history" onPress={() => router.push({ pathname: '/item/[id]/history', params: { id: item.id } })} style={styles.historyLink}><History size={18} color={colors.primary} /><T style={{ flex: 1, fontSize: 17 }}>Version history</T><T muted style={{ fontSize: 17 }}>{item.history.length}</T><ChevronRight size={16} color={colors.muted} /></Pressable>
       </View>
     </ScrollView>
     <Dialog open={menu} title="Item actions" onClose={() => setMenu(false)}>
@@ -131,9 +131,9 @@ export function DetailPanel({ item, onBack }: { item?: VaultItem; onBack?: () =>
   </View>;
 }
 const styles = StyleSheet.create({
-  toolbar: { height: 80, borderBottomWidth: 1, borderColor: colors.border, paddingHorizontal: 25, gap: 7, flexDirection: 'row', alignItems: 'center' }, content: { padding: 30, paddingBottom: 55 },
-  identity: { flexDirection: 'row', alignItems: 'center', gap: 18, marginBottom: 36, marginTop: 8 }, title: { fontSize: 28, lineHeight: 34, letterSpacing: -0.7 }, section: { gap: 13, marginBottom: 29 },
-  fieldBox: { borderWidth: 1, borderColor: colors.border, borderRadius: 12, overflow: 'hidden', backgroundColor: '#171717' }, field: { paddingLeft: 17, paddingRight: 5, paddingVertical: 12, minHeight: 77, gap: 7, flexDirection: 'row', alignItems: 'center', borderBottomWidth: 1, borderColor: colors.border },
-  information: { flexDirection: 'row', justifyContent: 'space-between', gap: 12 }, historyLink: { flexDirection: 'row', alignItems: 'center', minHeight: 50, gap: 10, borderTopWidth: 1, borderColor: colors.border, marginTop: 6 },
-  attachment: { flexDirection: 'row', alignItems: 'center', minHeight: 48, borderWidth: 1, borderColor: colors.border, paddingHorizontal: 12, borderRadius: 8, gap: 10 }, lifecycleBanner: { flexDirection: 'row', alignItems: 'center', paddingLeft: 13, borderWidth: 1, borderColor: colors.border, borderRadius: 8, marginBottom: 20 },
+  toolbar: { minHeight: 56, paddingHorizontal: 12, gap: 4, flexDirection: 'row', alignItems: 'center' }, content: { paddingHorizontal: 20, paddingTop: 8, paddingBottom: 56 },
+  identity: { flexDirection: 'row', alignItems: 'center', gap: 16, marginBottom: 28, marginTop: 4 }, title: { fontSize: 28, lineHeight: 34, letterSpacing: 0.2 }, section: { gap: 8, marginBottom: 26 },
+  fieldBox: { borderRadius: 12, overflow: 'hidden', backgroundColor: colors.surface }, field: { paddingLeft: 16, paddingRight: 4, paddingVertical: 10, minHeight: 64, gap: 6, flexDirection: 'row', alignItems: 'center', borderBottomWidth: StyleSheet.hairlineWidth, borderColor: colors.border },
+  information: { flexDirection: 'row', justifyContent: 'space-between', gap: 12, minHeight: 44, alignItems: 'center', paddingHorizontal: 16, backgroundColor: colors.surface }, historyLink: { flexDirection: 'row', alignItems: 'center', minHeight: 48, gap: 10, paddingHorizontal: 16, backgroundColor: colors.surface, borderRadius: 12, marginTop: 14 },
+  attachment: { flexDirection: 'row', alignItems: 'center', minHeight: 50, backgroundColor: colors.surface, paddingHorizontal: 16, borderRadius: 12, gap: 10 }, lifecycleBanner: { flexDirection: 'row', alignItems: 'center', paddingLeft: 16, backgroundColor: colors.surface, borderRadius: 12, marginBottom: 20 },
 });

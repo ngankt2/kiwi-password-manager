@@ -5,12 +5,14 @@ import { dataTools } from './data-tools';
 import { quickUnlock } from './quick-unlock';
 import { customization } from './customization';
 import { updates } from './updates';
+import { about } from './about';
+import { privacy } from './privacy';
 import { usesSingular } from './plurals';
 import { system, errorKeys } from './system';
 import { FORMAT_LOCALES, LOCALES, type Locale, type LocalizedMessage, type Translations } from './locales';
 
 export { LANGUAGE_NAMES, LOCALES, type Locale } from './locales';
-export const catalog = { ...common, ...desktop, ...dataTools, ...system, ...quickUnlock, ...customization, ...updates };
+export const catalog = { ...common, ...desktop, ...dataTools, ...system, ...quickUnlock, ...customization, ...updates, ...about, ...privacy };
 export type MessageKey = keyof typeof catalog;
 export type MessageValues = Record<string, string | number>;
 export type Translator = (key: MessageKey, values?: MessageValues) => string;

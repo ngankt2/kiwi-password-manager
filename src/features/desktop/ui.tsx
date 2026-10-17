@@ -94,11 +94,13 @@ export function ItemTile({ type, size = 28, metadata, icon, folder = false }: { 
   const image = icon === undefined ? getItemIconImage(metadata) : null;
   const color = getItemColor(metadata) ?? image?.background;
   const [failed, setFailed] = useState<string | null>(null);
-  return <span className="desktop-item-tile" style={{ width: size, height: size, borderRadius: size >= 44 ? 12 : size < 24 ? 5 : 8,
+  // Apple-style squircle: the corner radius scales with the tile, as on app icons.
+  const background = color ?? (folder ? '#0A84FF' : item.tint);
+  return <span className="desktop-item-tile" style={{ width: size, height: size, borderRadius: Math.round(size * 0.24),
     '--tile-chroma': folder ? 0.12 : item.chroma, '--tile-hue': folder ? 75 : item.hue,
-    ...(color ? { background: color, color: iconForeground(color) } : {}) } as CSSProperties}>
+    background, color: color ? iconForeground(color) : '#FFFFFF' } as CSSProperties}>
     {image && failed !== image.dataUri ? <img className="desktop-cached-icon" src={image.dataUri} alt="" draggable={false} onError={() => setFailed(image.dataUri)} />
-      : <Icon name={selected ? ITEM_ICON_OPTIONS[selected].symbol : folder ? 'folder' : item.icon} size={size >= 44 ? 24 : size < 28 ? 14 : 18} />}
+      : <Icon name={selected ? ITEM_ICON_OPTIONS[selected].symbol : folder ? 'folder' : item.icon} filled size={size >= 56 ? 30 : size >= 44 ? 24 : size < 28 ? 14 : size >= 32 ? 18 : 16} />}
   </span>;
 }
 

@@ -10,6 +10,7 @@ import { useDesktopTheme } from '@/features/desktop/theme';
 import '@/features/desktop/input-controls.css';
 import '@/features/desktop/desktop.css';
 import '@/features/desktop/refinements.css';
+import '@/features/desktop/apple.css';
 
 const subscribeHydration = () => () => {};
 const clientSnapshot = () => true;

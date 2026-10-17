@@ -1,12 +1,18 @@
 import { Platform } from 'react-native';
 
+// Apple Human Interface Guidelines dark palette (iOS 26 system colors), matching the KeyNest reference.
 export const colors = {
-  background: '#121212', surface: '#181818', elevated: '#282828', strong: '#333333',
-  primary: '#1DB954', primaryHover: '#1ED760', primaryMuted: '#173523',
-  text: '#FFFFFF', secondary: '#A7A7A7', muted: '#797979', border: '#282828',
-  warning: '#F59B23', error: '#E22134', dangerMuted: '#371A20',
+  background: '#000000', surface: '#1C1C1E', elevated: '#2C2C2E', strong: '#3A3A3C',
+  primary: '#0A84FF', primaryHover: '#409CFF', primaryMuted: 'rgba(10,132,255,0.18)', onPrimary: '#FFFFFF',
+  text: '#FFFFFF', secondary: 'rgba(235,235,245,0.6)', muted: 'rgba(235,235,245,0.38)', border: 'rgba(84,84,88,0.6)',
+  warning: '#FF9F0A', error: '#FF453A', errorText: '#FF6961', dangerMuted: 'rgba(255,69,58,0.16)',
+  success: '#30D158', favorite: '#FFD60A',
+  fill: 'rgba(120,120,128,0.24)', fillHover: 'rgba(120,120,128,0.32)', selected: 'rgba(255,255,255,0.1)',
+  overlay: 'rgba(0,0,0,0.5)', chrome: 'rgba(28,28,30,0.94)',
 };
-export const fonts = { regular: 'DMSans_400Regular', medium: 'DMSans_500Medium', semibold: 'DMSans_600SemiBold', bold: 'DMSans_700Bold', mono: 'JetBrainsMono_400Regular' };
-export const layout = { sidebar: 236, list: 356, tablet: 760, desktop: 1120, touch: 44, radius: 10 };
+// San Francisco is the platform default; omitting a family keeps Dynamic Type and optical sizes.
+export const fonts = { regular: undefined, medium: undefined, semibold: undefined, bold: undefined, mono: Platform.select({ ios: 'Menlo', default: 'monospace' }) };
+export const weights = { regular: '400', medium: '500', semibold: '600', bold: '700' } as const;
+export const layout = { sidebar: 260, list: 340, tablet: 760, desktop: 1120, touch: 44, radius: 12 };
 export const motion = { fast: 140, normal: 200 };
 export const monoFallback = Platform.select({ ios: 'Menlo', android: 'monospace', default: 'monospace' });

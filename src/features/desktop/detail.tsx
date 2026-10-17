@@ -57,9 +57,9 @@ export function Credential({ field, fields, itemType, literal = false }: { field
       {remaining !== null && <div className="tiny muted">{t('Làm mới sau {count} giây', { count: remaining })}</div>}
     </div>
     <div className="desktop-credential-actions">
-      {secret && !otpError && <button className="desktop-text-action" onClick={() => revealed ? setRevealed(false) : authorize(async () => { setNow(Date.now()); setRevealed(true); })}>{revealed ? t("Ẩn") : t("Hiện")}</button>}
-      {field.kind === 'url' && !secret && <button className="desktop-text-action" onClick={() => openUrl(field.value)}>{t("Mở")}</button>}
-      <button className="desktop-text-action primary" onClick={copyValue} disabled={otpError}>{t("Sao chép")}</button>
+      {secret && !otpError && <IconButton icon={revealed ? 'visibility_off' : 'visibility'} label={revealed ? t("Ẩn") : t("Hiện")} onClick={() => revealed ? setRevealed(false) : authorize(async () => { setNow(Date.now()); setRevealed(true); })} />}
+      {field.kind === 'url' && !secret && <IconButton icon="open_in_new" label={t("Mở")} onClick={() => openUrl(field.value)} />}
+      <IconButton icon="content_copy" label={t("Sao chép")} onClick={copyValue} disabled={otpError} />
     </div>
     {authDialog}
   </div>;
@@ -105,15 +105,16 @@ export function Detail({ item, onEdit, onHistory, onMenu, onBack, onTag }: {
   const custom = item.fields.filter((field) => !template.has(field.id) && field.value);
   const favorite = () => run(() => session.mutate((vault) => updateItems(vault, [item.id], { favorite: !item.favorite }, () => session.id())));
   return <>
-    <div className="desktop-detail-toolbar">
+    <div className="desktop-detail-toolbar desktop-detail-header">
       <button className="desktop-back desktop-mobile-only" onClick={onBack}><Icon name="chevron_left" />{t("Danh sách")}</button>
-      <div className="grow" />
-      <IconButton icon="star" label={item.favorite ? t("Bỏ yêu thích") : t("Thêm vào Yêu thích")} active={item.favorite} onClick={favorite} />
-      <IconButton icon="more_horiz" label={t("Thêm thao tác")} onClick={onMenu} />
-      {!item.deletedAt && <Button small onClick={onEdit} title={t("Sửa (⌘E)")}>{t("Sửa")}</Button>}
+      <div className="desktop-detail-identity grow"><ItemTile type={item.type} metadata={item.metadata} size={60} /><div className="grow"><h1>{item.title || t("Chưa đặt tên")}</h1><p>{itemTypes[item.type].label}{item.folderId ? ' · ' + folderPath(vault, item.folderId) : ''}</p></div></div>
+      <div className="desktop-detail-actions">
+        <IconButton icon="star" label={item.favorite ? t("Bỏ yêu thích") : t("Thêm vào Yêu thích")} active={item.favorite} onClick={favorite} />
+        <IconButton icon="more_horiz" label={t("Thêm thao tác")} onClick={onMenu} />
+        {!item.deletedAt && <Button small onClick={onEdit} title={t("Sửa (⌘E)")}>{t("Sửa")}</Button>}
+      </div>
     </div>
     <div className="desktop-detail-scroll"><div className="desktop-detail-content">
-      <div className="desktop-detail-identity"><ItemTile type={item.type} metadata={item.metadata} size={48} /><div className="grow"><h1>{item.title || t("Chưa đặt tên")}</h1><p>{itemTypes[item.type].label}{item.folderId ? ' · ' + folderPath(vault, item.folderId) : ''}</p></div></div>
       {(item.archivedAt || item.deletedAt) && <div className="desktop-banner"><Icon name={item.deletedAt ? 'delete' : 'archive'} /><span className="grow">{item.deletedAt ? t("Mục này đang ở trong Thùng rác.") : t("Mục này đã được lưu trữ.")}</span><Button small onClick={() => run(() => session.mutate((vault) => updateItems(vault, [item.id], { deletedAt: null, archivedAt: null }, () => session.id())))}>{t("Khôi phục")}</Button></div>}
       {item.type === 'env' && <EnvPanel key={item.id + ':' + item.updatedAt} raw={envContent(item)} renderVariable={(field) => <Credential field={field} fields={[]} itemType="env" literal />} />}
       {fields.length > 0 && <section className="desktop-detail-section"><h2>{item.type === 'login' ? t("Thông tin đăng nhập") : t('Thông tin')}</h2><div className="desktop-credential-group">{fields.map((field) => <Credential key={item.id + ':' + field.id} field={field} fields={item.fields} itemType={item.type} />)}</div></section>}

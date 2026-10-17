@@ -1,0 +1,371 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>App Store Review Audit</title>
+<style>
+:root{
+  --bg:#f6f6f4;--surface:#ffffff;--surface-2:#f0efeb;--text:#1c1c1e;--muted:#5f5f66;--border:#e2e1dc;
+  --crit:#c4312b;--crit-bg:#fbe9e7;--high:#b55d00;--high-bg:#fdf0e1;--med:#8a6d00;--med-bg:#fbf5d9;
+  --low:#2f6db5;--low-bg:#e7f0fb;--ok:#25804a;--ok-bg:#e5f4ea;--verify:#6b4fbb;--verify-bg:#efeafb;
+  --code-bg:#f0efeb;--accent:#2f6db5;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#141416;--surface:#1d1d20;--surface-2:#26262a;--text:#ececef;--muted:#a3a3ab;--border:#323238;
+    --crit:#ff7b72;--crit-bg:#3a1d1b;--high:#f5a54a;--high-bg:#3a2a16;--med:#e5c84a;--med-bg:#353015;
+    --low:#7fb2f0;--low-bg:#1a2a3d;--ok:#6fd398;--ok-bg:#163223;--verify:#b9a3f5;--verify-bg:#2a2340;
+    --code-bg:#26262a;--accent:#7fb2f0;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#141416;--surface:#1d1d20;--surface-2:#26262a;--text:#ececef;--muted:#a3a3ab;--border:#323238;
+  --crit:#ff7b72;--crit-bg:#3a1d1b;--high:#f5a54a;--high-bg:#3a2a16;--med:#e5c84a;--med-bg:#353015;
+  --low:#7fb2f0;--low-bg:#1a2a3d;--ok:#6fd398;--ok-bg:#163223;--verify:#b9a3f5;--verify-bg:#2a2340;
+  --code-bg:#26262a;--accent:#7fb2f0;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:15px/1.6 -apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,sans-serif}
+.wrap{max-width:980px;margin:0 auto;padding:32px 16px 64px}
+h1{font-size:28px;line-height:1.2;margin:0 0 6px;letter-spacing:-.4px}
+h2{font-size:20px;margin:40px 0 12px;letter-spacing:-.2px}
+h3{font-size:16px;margin:0}
+p{margin:6px 0}
+a{color:var(--accent)}
+code{font:12.5px/1.5 ui-monospace,"SF Mono",Menlo,monospace;background:var(--code-bg);padding:1px 5px;border-radius:5px;word-break:break-word}
+pre{background:var(--code-bg);padding:10px 12px;border-radius:8px;overflow-x:auto;font:12.5px/1.5 ui-monospace,"SF Mono",Menlo,monospace;margin:8px 0}
+pre code{background:none;padding:0}
+.meta{color:var(--muted);font-size:13px}
+.verdict{background:var(--surface);border:1px solid var(--border);border-left:4px solid var(--crit);border-radius:10px;padding:14px 16px;margin:20px 0}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin:18px 0}
+.stat{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px 14px}
+.stat b{display:block;font-size:26px;line-height:1.1}
+.stat span{font-size:12.5px;color:var(--muted)}
+.filters{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 16px}
+.filters button{font:inherit;font-size:13px;border:1px solid var(--border);background:var(--surface);color:var(--text);border-radius:999px;padding:5px 12px;cursor:pointer}
+.filters button[aria-pressed="true"]{background:var(--text);color:var(--bg);border-color:var(--text)}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px;margin:12px 0}
+.card-head{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-bottom:8px}
+.badge{font-size:11.5px;font-weight:600;border-radius:999px;padding:2px 9px;white-space:nowrap}
+.b-crit{color:var(--crit);background:var(--crit-bg)}.b-high{color:var(--high);background:var(--high-bg)}
+.b-med{color:var(--med);background:var(--med-bg)}.b-low{color:var(--low);background:var(--low-bg)}
+.b-ok{color:var(--ok);background:var(--ok-bg)}.b-verify{color:var(--verify);background:var(--verify-bg)}
+.gl{font-size:12px;color:var(--muted);border:1px solid var(--border);border-radius:6px;padding:1px 7px}
+.label{font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);margin-top:10px}
+ul{margin:4px 0;padding-left:20px}
+li{margin:3px 0}
+table{width:100%;border-collapse:collapse;background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;font-size:14px}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--border);vertical-align:top}
+th{background:var(--surface-2);font-size:12.5px;color:var(--muted);font-weight:600}
+tr:last-child td{border-bottom:none}
+.tbl{overflow-x:auto}
+.toc{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:14px}
+.hidden{display:none}
+footer{margin-top:48px;color:var(--muted);font-size:12.5px;border-top:1px solid var(--border);padding-top:14px}
+@media (max-width:600px){h1{font-size:23px}.wrap{padding-top:20px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Đánh giá tuân thủ App Store Review Guidelines</h1>
+  <p class="meta">Ứng dụng: <b>Kiro Password Manager</b> · Bundle ID <code>com.appkiro.vault</code> · v1.0.22 (build 23) · Expo SDK 57 / React Native 0.86 · Ngày đánh giá: 17/10/2026</p>
+  <p class="meta">Công cụ: skill <code>safaiyeh/app-store-review-skill</code> v1.5.0. Skill này cập nhật theo bản App Review Guidelines ngày 16/10/2026. Bằng chứng lấy từ mã nguồn, <code>ios/</code> sinh bởi prebuild, và bản archive <code>mobile-release/ios/1.0.22</code>.</p>
+
+  <div class="verdict">
+    <h3>Kết luận: <span style="color:var(--crit)">chưa sẵn sàng nộp</span></h3>
+    <p>Phần lõi của ứng dụng đáp ứng tốt các mục 1.6, 2.5, 3.1 và 5.1.2: không có tài khoản, không có IAP, không tracking, không tải mã từ xa, và mã hoá mạnh. Tuy vậy có <b>3 lỗi gần như chắc chắn bị từ chối</b>:</p>
+    <ul>
+      <li>Bản build đang dùng <b>icon mặc định của Expo</b>.</li>
+      <li>Không có <b>chính sách quyền riêng tư</b> trong ứng dụng.</li>
+      <li>Không có <b>thông tin liên hệ hỗ trợ</b>.</li>
+    </ul>
+    <p>Ngoài ra có 4 vấn đề rủi ro cao nên sửa trước khi nộp.</p>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><b style="color:var(--crit)">3</b><span>Nghiêm trọng (chặn duyệt)</span></div>
+    <div class="stat"><b style="color:var(--high)">4</b><span>Rủi ro cao</span></div>
+    <div class="stat"><b style="color:var(--med)">4</b><span>Rủi ro trung bình</span></div>
+    <div class="stat"><b style="color:var(--low)">4</b><span>Thấp / dọn dẹp</span></div>
+    <div class="stat"><b style="color:var(--ok)">18</b><span>Mục đã đạt</span></div>
+    <div class="stat"><b style="color:var(--verify)">10</b><span>Cần kiểm tra trên App Store Connect</span></div>
+  </div>
+
+  <nav class="toc">
+    <a href="#issues">1. Vấn đề cần cải tiến</a>
+    <a href="#pass">2. Mục đã tuân thủ</a>
+    <a href="#asc">3. Kiểm tra trên App Store Connect</a>
+    <a href="#plan">4. Thứ tự xử lý đề xuất</a>
+  </nav>
+
+  <h2 id="issues">1. Vấn đề cần cải tiến</h2>
+  <div class="filters" role="group" aria-label="Lọc theo mức độ">
+    <button type="button" data-f="all" aria-pressed="true">Tất cả (15)</button>
+    <button type="button" data-f="crit" aria-pressed="false">Nghiêm trọng</button>
+    <button type="button" data-f="high" aria-pressed="false">Cao</button>
+    <button type="button" data-f="med" aria-pressed="false">Trung bình</button>
+    <button type="button" data-f="low" aria-pressed="false">Thấp</button>
+  </div>
+
+  <!-- CRITICAL -->
+  <article class="card" data-sev="crit">
+    <div class="card-head"><span class="badge b-crit">Nghiêm trọng</span><h3>C1. Bản build iOS dùng icon mặc định của Expo, không phải logo Kiro</h3><span class="gl">2.1 · 2.3.8 · 4.1 · 5.2.1</span></div>
+    <div class="label">Bằng chứng</div>
+    <ul>
+      <li><code>ios/KiroVault.xcodeproj/project.pbxproj:389,426</code> đặt <code>ASSETCATALOG_COMPILER_APPICON_NAME = expo</code>.</li>
+      <li><code>ios/KiroVault/expo.icon/icon.json</code> chỉ chứa <code>expo-symbol 2.svg</code> và <code>grid.png</code>, tức logo Expo trên nền lưới mẫu.</li>
+      <li>Info.plist trong archive 1.0.22 có <code>CFBundleIconName = "expo"</code> và <code>CFBundleIconFiles = expo60x60</code>.</li>
+      <li>Icon thật <code>assets/images/icon.png</code> nằm trong <code>AppIcon.appiconset</code> nhưng bản build không dùng.</li>
+    </ul>
+    <p>Nguyên nhân: thư mục <code>assets/expo.icon</code> còn sót lại từ template. Bước <code>expo prebuild --no-clean</code> trong <code>scripts/build-native.ts:27</code> lại không làm mới cấu hình icon.</p>
+    <div class="label">Tác động</div>
+    <p>Icon trên Home Screen và App Store sẽ là logo của Expo. Reviewer sẽ coi là ứng dụng chưa hoàn thiện (2.1), metadata không khớp (2.3.8), hoặc dùng thương hiệu của bên khác (4.1(c), 5.2.1).</p>
+    <div class="label">Cách sửa</div>
+    <ul>
+      <li>Xoá <code>assets/expo.icon</code> và chạy prebuild sạch cho iOS:<pre><code>bunx expo prebuild --clean -p ios</code></pre></li>
+      <li>Hoặc tạo file <code>.icon</code> bằng Icon Composer từ logo Kiro, rồi khai báo <code>"ios": { "icon": "./assets/kiro.icon" }</code> để có icon Liquid Glass.</li>
+      <li>Sau khi build, mở <code>Info.plist</code> trong archive và xác nhận <code>CFBundleIconName</code> không còn là <code>expo</code>.</li>
+    </ul>
+  </article>
+
+  <article class="card" data-sev="crit">
+    <div class="card-head"><span class="badge b-crit">Nghiêm trọng</span><h3>C2. Không có liên kết Chính sách quyền riêng tư trong ứng dụng</h3><span class="gl">5.1.1(i)</span></div>
+    <div class="label">Bằng chứng</div>
+    <p>Không tìm thấy URL privacy policy hay điều khoản nào trong <code>src/</code>. Màn Giới thiệu (<code>src/features/vault/about-screen.tsx:13,33</code>) chỉ có một liên kết duy nhất là <code>appkiro.com</code>.</p>
+    <div class="label">Tác động</div>
+    <p>Apple yêu cầu privacy policy ở cả App Store Connect lẫn trong ứng dụng, kể cả khi ứng dụng không thu thập dữ liệu nào.</p>
+    <div class="label">Cách sửa</div>
+    <ul>
+      <li>Đăng một trang privacy policy, ví dụ <code>https://appkiro.com/kiro/privacy</code>. Trang này cần nêu rõ:
+        <ul>
+          <li>Ứng dụng không thu thập hay gửi dữ liệu kho về máy chủ của AppKiro.</li>
+          <li>Dữ liệu được lưu cục bộ, có mã hoá, và có thể nằm trong bản sao lưu iCloud/iTunes của thiết bị.</li>
+          <li>Khi tải favicon, ứng dụng kết nối trực tiếp tới website của mục (xem H1).</li>
+          <li>Người dùng xoá dữ liệu bằng cách xoá kho hoặc gỡ ứng dụng.</li>
+          <li>Thông tin liên hệ.</li>
+        </ul>
+      </li>
+      <li>Thêm dòng “Chính sách quyền riêng tư” vào màn Giới thiệu và Cài đặt, mở bằng <code>expo-web-browser</code> (<code>openBrowserAsync</code>).</li>
+      <li>Điền cùng URL đó vào trường Privacy Policy URL trên App Store Connect.</li>
+    </ul>
+  </article>
+
+  <article class="card" data-sev="crit">
+    <div class="card-head"><span class="badge b-crit">Nghiêm trọng</span><h3>C3. Thiếu thông tin liên hệ / hỗ trợ</h3><span class="gl">1.5</span></div>
+    <div class="label">Bằng chứng</div>
+    <p>Không có <code>mailto:</code>, trang hỗ trợ hay form liên hệ nào trong ứng dụng. Trang <code>appkiro.com</code> chưa được xác minh có thông tin liên hệ.</p>
+    <div class="label">Cách sửa</div>
+    <ul>
+      <li>Tạo Support URL, ví dụ <code>https://appkiro.com/kiro/support</code>, có email liên hệ thật. Điền URL này vào App Store Connect.</li>
+      <li>Trong màn Giới thiệu, thêm “Hỗ trợ / Liên hệ” (mở email hoặc trang hỗ trợ) và “Điều khoản sử dụng”. Đây là tuỳ chọn nhưng nên có.</li>
+    </ul>
+  </article>
+
+  <!-- HIGH -->
+  <article class="card" data-sev="high">
+    <div class="card-head"><span class="badge b-high">Cao</span><h3>H1. Ứng dụng tự tải favicon từ website của mục, trái với lời cam kết “ở trên thiết bị / không theo dõi”</h3><span class="gl">5.1.1 · 5.1.2(i) · 2.3 (metadata chính xác)</span></div>
+    <div class="label">Bằng chứng</div>
+    <ul>
+      <li><code>src/shared/hooks/use-icon-image.ts:72-75</code> tự gọi tải icon sau 800 ms khi một mục có URL và chưa chọn icon. Điều kiện nằm ở <code>canFetchAutomaticIcon</code> (<code>src/domain/entities/item-icon.ts:57</code>).</li>
+      <li>Phần tải nằm ở <code>src/infrastructure/icons/fetch-icon.ts:11</code> và <code>download.ts:39-42</code>. Ứng dụng tải <code>/</code>, <code>/favicon.ico</code> và <code>/apple-touch-icon.png</code> của từng tên miền.</li>
+      <li>Giao diện lại ghi “Local-first · No account · No tracking” và “Your vault stays on this device…” (<code>src/features/vault/welcome-screen.tsx:105,107</code>).</li>
+      <li>Cài đặt không có tuỳ chọn tắt tính năng tự tải.</li>
+    </ul>
+    <div class="label">Tác động</div>
+    <p>Với mỗi mục, IP của người dùng và danh sách tên miền họ có tài khoản bị lộ cho website bên thứ ba. AppKiro không nhận dữ liệu này, nên nhãn “Data Not Collected” vẫn có thể đúng. Nhưng một trình quản lý mật khẩu quảng bá “stays on this device” mà vẫn gửi request ra ngoài là rủi ro về độ chính xác của metadata, và dễ bị người dùng hay reviewer phản ánh.</p>
+    <div class="label">Cách sửa</div>
+    <ul>
+      <li>Thêm toggle “Tự động tải biểu tượng website” trong Cài đặt. Mặc định nên là tắt, hoặc hỏi người dùng ở lần đầu.</li>
+      <li>Ghi rõ hành vi này trong privacy policy và phần mô tả trên App Store.</li>
+      <li>Đổi câu chân trang thành “Dữ liệu kho được mã hoá và lưu trên thiết bị”.</li>
+    </ul>
+  </article>
+
+  <article class="card" data-sev="high">
+    <div class="card-head"><span class="badge b-high">Cao</span><h3>H2. Ngôn ngữ mặc định là tiếng Việt, iOS không có chỗ đổi ngôn ngữ, giao diện lẫn Anh–Việt</h3><span class="gl">2.1 · 2.3 · 4.0 Design</span></div>
+    <div class="label">Bằng chứng</div>
+    <ul>
+      <li><code>src/core/security/settings.ts:5</code> đặt <code>language: z.enum(LOCALES).default('vi')</code> và không đọc ngôn ngữ của thiết bị.</li>
+      <li>Bộ chọn ngôn ngữ chỉ có ở <code>src/features/desktop/language-picker.tsx</code> (desktop/web). <code>settings-screen.tsx</code> trên iOS không có.</li>
+      <li>Nhiều màn native ghi cứng tiếng Anh, ví dụ <code>"Settings"</code> và <code>"Lock after inactivity"</code> ở <code>settings-screen.tsx:32-61</code>, và toàn bộ <code>welcome-screen.tsx</code>. Trong khi đó các chuỗi qua <code>t()</code> lại hiển thị tiếng Việt, ví dụ nút “Giới thiệu”.</li>
+    </ul>
+    <div class="label">Tác động</div>
+    <p>Reviewer, thường dùng tiếng Anh, sẽ thấy giao diện trộn hai ngôn ngữ và không có cách đổi. Ứng dụng có thể bị đánh giá là chưa hoàn thiện. Nếu metadata khai báo 5 ngôn ngữ thì cũng không khớp với trải nghiệm thực tế.</p>
+    <div class="label">Cách sửa</div>
+    <ul>
+      <li>Lấy mặc định theo ngôn ngữ thiết bị bằng <code>expo-localization</code> (<code>getLocales()</code>), fallback sang <code>en</code>.</li>
+      <li>Thêm mục chọn ngôn ngữ vào Cài đặt trên iOS.</li>
+      <li>Đưa toàn bộ chuỗi ghi cứng vào catalog i18n.</li>
+      <li>Thêm <code>CFBundleLocalizations</code> qua <code>ios.infoPlist</code>, hoặc dùng <code>locales</code> trong <code>app.json</code>, để App Store hiển thị đúng danh sách ngôn ngữ.</li>
+    </ul>
+  </article>
+
+  <article class="card" data-sev="high">
+    <div class="card-head"><span class="badge b-high">Cao</span><h3>H3. Thiếu khai báo mã hoá xuất khẩu (<code>ITSAppUsesNonExemptEncryption</code>)</h3><span class="gl">Export Compliance · 2.1(a) metadata</span></div>
+    <div class="label">Bằng chứng</div>
+    <p>Ứng dụng dùng AES-256-GCM và Argon2id làm chức năng lõi (<code>src/infrastructure/crypto/provider.ts:17-36</code>). Khoá <code>ITSAppUsesNonExemptEncryption</code> không có trong <code>app.json</code> lẫn Info.plist của archive.</p>
+    <div class="label">Tác động</div>
+    <p>Mỗi lần upload, App Store Connect sẽ giữ build ở trạng thái “Missing Compliance”. Nếu khai báo sai, có thể vi phạm quy định xuất khẩu của Mỹ (EAR).</p>
+    <div class="label">Cách sửa</div>
+    <ul>
+      <li>Trả lời bảng câu hỏi Export Compliance trên App Store Connect.</li>
+      <li>Ứng dụng chỉ dùng thuật toán chuẩn, không dùng thuật toán tự chế, nên thường thuộc diện miễn trừ mass-market. Có thể vẫn phải nộp báo cáo tự phân loại (self-classification report) hằng năm cho BIS. Cần xác nhận theo hướng dẫn của Apple.</li>
+      <li>Sau khi xác định, khai báo trong <code>app.json</code>:<pre><code>"ios": { "infoPlist": { "ITSAppUsesNonExemptEncryption": false } }</code></pre>Nếu không thuộc diện miễn trừ thì đặt <code>true</code> và upload tài liệu.</li>
+    </ul>
+  </article>
+
+  <article class="card" data-sev="high">
+    <div class="card-head"><span class="badge b-high">Cao</span><h3>H4. Ứng dụng xử lý thông tin nhạy cảm, nên tài khoản nhà phát triển phải là tổ chức</h3><span class="gl">5.1.1(ix)</span></div>
+    <p>Guideline 5.1.1(ix) quy định ứng dụng “yêu cầu thông tin nhạy cảm của người dùng” nên được nộp bởi pháp nhân, không phải cá nhân. Trình quản lý mật khẩu thường thuộc nhóm này. Team ID là <code>943C9WTE6D</code> (<code>package.json:88</code>).</p>
+    <div class="label">Cách sửa</div>
+    <p>Xác nhận tài khoản Apple Developer đăng ký dưới dạng Organization, và tên người bán (Seller) khớp với AppKiro. Nếu là tài khoản cá nhân, nên chuyển sang tổ chức trước khi nộp.</p>
+  </article>
+
+  <!-- MEDIUM -->
+  <article class="card" data-sev="med">
+    <div class="card-head"><span class="badge b-med">Trung bình</span><h3>M1. Đóng gói sẵn 37 logo thương hiệu bên thứ ba, có cả logo Apple và các ngân hàng</h3><span class="gl">5.2.1 · 4.1(c) · Apple Trademark Guidelines</span></div>
+    <div class="label">Bằng chứng</div>
+    <p>Logo nằm trong <code>assets/brands/*.png</code> và <code>catalog.json</code>, gồm Apple, Google, Microsoft, PayPal, HSBC, Chase, Bank of America, Barclays, Deutsche Bank, Claude, ChatGPT… Chúng hiển thị trong bộ chọn icon (<code>src/features/items/item-icon-picker.tsx:64-74</code>). Giấy phép Apache-2.0/CC0 của bộ icon <b>không</b> cấp quyền sử dụng nhãn hiệu.</p>
+    <div class="label">Cách sửa</div>
+    <ul>
+      <li>Gỡ logo Apple. Guidelines về thương hiệu của Apple không cho phép dùng logo Apple trong ứng dụng.</li>
+      <li>Cân nhắc gỡ logo ngân hàng. Thay vào đó, dùng favicon do người dùng chủ động tải, hoặc icon chữ cái.</li>
+      <li>Không dùng bất kỳ logo nào trong số này cho ảnh chụp màn hình App Store (2.3.9).</li>
+    </ul>
+  </article>
+
+  <article class="card" data-sev="med">
+    <div class="card-head"><span class="badge b-med">Trung bình</span><h3>M2. Nhật ký phát hành sai phiên bản và nhắc tới “Apple Human Interface Guidelines”</h3><span class="gl">2.3 · 2.3.12 · 5.2.4(a)</span></div>
+    <div class="label">Bằng chứng</div>
+    <ul>
+      <li><code>src/features/about/release-notes.ts:11</code> ghi <code>version: '1.0.23'</code>, trong khi bản build là 1.0.22, nên nhãn “Mới nhất” không bao giờ hiện.</li>
+      <li>Nội dung nhắc tới “giao diện phong cách macOS” và “theo Apple Human Interface Guidelines”. Câu sau dễ bị hiểu là có liên kết hoặc được Apple chứng nhận.</li>
+    </ul>
+    <div class="label">Cách sửa</div>
+    <ul>
+      <li>Đồng bộ phiên bản trong release notes với phiên bản do <code>scripts/build-version.ts</code> tạo ra, hoặc gắn tự động.</li>
+      <li>Viết lại nội dung theo hướng mô tả tính năng, không nhắc tên Apple hay HIG.</li>
+      <li>Dùng chính nội dung này cho mục “What’s New”.</li>
+    </ul>
+  </article>
+
+  <article class="card" data-sev="med">
+    <div class="card-head"><span class="badge b-med">Trung bình</span><h3>M3. Chuỗi “Windows Hello” trong catalog dùng chung</h3><span class="gl">2.3.10</span></div>
+    <p>Chuỗi nằm ở <code>src/core/i18n/quick-unlock.ts:8</code>: “Use Face ID, Touch ID, Windows Hello, or a security key…”. Theo <code>src/shared/i18n/quick-unlock.ts:9</code>, chuỗi chỉ dùng cho phương thức <code>passkey</code> (web/desktop), nên hiện không thấy trên iOS.</p>
+    <div class="label">Cách sửa</div>
+    <p>Kiểm tra lại màn mở khoá nhanh trên iOS. Nên tách chuỗi theo nền tảng để tránh tên nền tảng khác lọt vào bản iOS sau này.</p>
+  </article>
+
+  <article class="card" data-sev="med">
+    <div class="card-head"><span class="badge b-med">Trung bình</span><h3>M4. Cần kiểm thử trên đúng thiết bị review: iPad Air 11" (M3) và iPhone 17 Pro Max</h3><span class="gl">2.1(a) · 2.4.1</span></div>
+    <p>Cấu hình hiện tại: <code>supportsTablet: true</code>, <code>TARGETED_DEVICE_FAMILY "1,2"</code>, cả 4 hướng màn hình, <code>UIRequiresFullScreen=false</code> (bật Split View/Stage Manager). Layout dùng breakpoint và <code>maxWidth: 660</code>, và màn Welcome có bố cục hai cột. Đây là cấu hình tốt, nhưng chưa thấy bằng chứng đã chạy kiểm thử trên iPad.</p>
+    <div class="label">Cách sửa</div>
+    <p>Chạy thử trên simulator iPad Air 11" (M3), ở cả chiều dọc, chiều ngang, Split View 1/3 và Stage Manager. Kiểm tra các luồng tạo kho, mở <code>.kdbx</code>, Face ID, xuất qua share sheet (popover trên iPad cần anchor) và màn Giới thiệu.</p>
+  </article>
+
+  <!-- LOW -->
+  <article class="card" data-sev="low">
+    <div class="card-head"><span class="badge b-low">Thấp</span><h3>L1. Còn sót file của template Expo</h3><span class="gl">2.1 (gọn gàng)</span></div>
+    <p>Các file còn sót: <code>assets/images/expo-logo.png</code>, <code>react-logo*.png</code>, <code>tutorial-web.png</code>, <code>src/components/app-tabs*.tsx</code>, <code>external-link.tsx</code> (link tới docs.expo.dev), <code>themed-*.tsx</code> và <code>collapsible.tsx</code>. Hiện chúng không được route tới, nhưng nên xoá để tránh lộ nội dung mẫu và giảm dung lượng bundle.</p>
+  </article>
+
+  <article class="card" data-sev="low">
+    <div class="card-head"><span class="badge b-low">Thấp</span><h3>L2. <code>expo-dev-client</code> nằm trong <code>dependencies</code></h3><span class="gl">2.1 · 2.5.19</span></div>
+    <p>Đã xác minh archive 1.0.22 <b>không</b> chứa EXDevLauncher, <code>NSLocalNetworkUsageDescription</code> hay <code>NSBonjourServices</code>, nên hiện tại đạt. Cần tiếp tục kiểm tra mỗi lần build Release, vì Info.plist khi dev có khoá local network của Dev Launcher. Nếu khoá này lọt vào bản phát hành, reviewer sẽ thấy hộp thoại xin quyền Local Network vô lý.</p>
+  </article>
+
+  <article class="card" data-sev="low">
+    <div class="card-head"><span class="badge b-low">Thấp</span><h3>L3. Hai chuỗi Face ID khác nhau giữa hai plugin</h3><span class="gl">5.1.1(ii)</span></div>
+    <p>Ở <code>app.json:50</code>, <code>expo-secure-store</code> dùng “Use Face ID to unlock your encrypted vault on this device.”. Ở dòng 56, <code>expo-local-authentication</code> dùng “Use Face ID to confirm access to your vault.”. Chỉ chuỗi đầu được ghi vào Info.plist. Cả hai đều cụ thể và đạt yêu cầu, nhưng nên thống nhất một chuỗi và bản địa hoá qua <code>InfoPlist.strings</code>.</p>
+  </article>
+
+  <article class="card" data-sev="low">
+    <div class="card-head"><span class="badge b-low">Thấp</span><h3>L4. Tên “KeePass” trong giao diện</h3><span class="gl">2.3.7 · 4.1(c)</span></div>
+    <p>Câu “Bring your passwords from KeePass” (<code>welcome-screen.tsx:91</code>) mô tả khả năng tương thích định dạng, nên chấp nhận được. <b>Không</b> đưa “KeePass”, “1Password”, “Bitwarden” vào tên ứng dụng, phụ đề hay keywords. Trong mô tả, có thể ghi “nhập tệp .kdbx (KeePass)”.</p>
+  </article>
+
+  <h2 id="pass">2. Mục đã tuân thủ</h2>
+  <div class="tbl"><table>
+    <thead><tr><th style="width:110px">Guideline</th><th>Nội dung</th><th>Bằng chứng</th></tr></thead>
+    <tbody>
+      <tr><td><span class="badge b-ok">1.2</span></td><td>Không có nội dung do người dùng tạo hay mạng xã hội, nên không cần cơ chế báo cáo hay chặn.</td><td>Không có feed hay chia sẻ công khai</td></tr>
+      <tr><td><span class="badge b-ok">1.6</span></td><td>Bảo mật dữ liệu: AES-256-GCM, Argon2id (64 MiB, 3 vòng), khoá sinh trắc học trong Keychain <code>WHEN_PASSCODE_SET_THIS_DEVICE_ONLY</code>.</td><td><code>crypto/provider.ts</code>, <code>biometric/index.ts:10-13</code></td></tr>
+      <tr><td><span class="badge b-ok">1.6</span></td><td>Clipboard dùng <code>localOnly</code>, có thời hạn và tự xoá sau 30 giây. Chặn chụp màn hình và che nội dung trong App Switcher. Tự khoá khi rảnh hoặc khi khoá máy.</td><td><code>KiroSecurityModule.swift:24-42</code>, <code>use-session.tsx:88-89</code></td></tr>
+      <tr><td><span class="badge b-ok">1.6 / 5.1</span></td><td>Không có <code>console.log</code> nào làm lộ bí mật.</td><td>Không tìm thấy trong <code>src/</code> và <code>modules/</code></td></tr>
+      <tr><td><span class="badge b-ok">2.5.1</span></td><td>Chỉ dùng API công khai, không có selector riêng tư.</td><td><code>modules/vault-security/ios</code></td></tr>
+      <tr><td><span class="badge b-ok">2.5.2 / 2.5.19</span></td><td>Không có <code>eval</code>, <code>new Function</code>, WASM tải từ xa, OTA hay feature flag từ xa. <code>EXUpdatesEnabled=false</code>.</td><td><code>Supporting/Expo.plist</code></td></tr>
+      <tr><td><span class="badge b-ok">2.5.4</span></td><td>Không khai báo <code>UIBackgroundModes</code>.</td><td>Info.plist</td></tr>
+      <tr><td><span class="badge b-ok">2.5.5</span></td><td>Không ghi cứng địa chỉ IPv4. Request favicon dùng hostname.</td><td><code>fetch-icon.ts</code></td></tr>
+      <tr><td><span class="badge b-ok">2.5.13</span></td><td>Face ID dùng LocalAuthentication và Keychain, không tự nhận diện khuôn mặt.</td><td><code>biometric/index.ts</code></td></tr>
+      <tr><td><span class="badge b-ok">2.5.15</span></td><td>Chọn tệp qua Document Picker, hỗ trợ Files và iCloud Drive.</td><td><code>filesystem/transfer.ts:11</code></td></tr>
+      <tr><td><span class="badge b-ok">3.1</span></td><td>Không có IAP, subscription hay link mua hàng bên ngoài.</td><td>Không tìm thấy</td></tr>
+      <tr><td><span class="badge b-ok">4.2</span></td><td>Chức năng native đầy đủ: kho mã hoá, TOTP, trình tạo mật khẩu, nhập KDBX, sao lưu. Không phải web wrapper.</td><td><code>src/features/*</code></td></tr>
+      <tr><td><span class="badge b-ok">4.8</span></td><td>Không có đăng nhập bên thứ ba, nên không cần Sign in with Apple.</td><td>Không có tài khoản</td></tr>
+      <tr><td><span class="badge b-ok">5.1.1(v)</span></td><td>Không tạo tài khoản, nên không áp dụng yêu cầu xoá tài khoản. Vẫn có chức năng “Xoá vault” (cần mật khẩu chính).</td><td><code>vault-settings-screen.tsx:34-40</code></td></tr>
+      <tr><td><span class="badge b-ok">5.1.1(ii)</span></td><td>Chỉ xin quyền Face ID, với chuỗi mô tả cụ thể. Không xin camera, vị trí hay danh bạ.</td><td>Info.plist archive</td></tr>
+      <tr><td><span class="badge b-ok">5.1.2</span></td><td>Không có tracking hay IDFA. <code>NSPrivacyTracking=false</code>, nên không cần ATT.</td><td><code>PrivacyInfo.xcprivacy</code></td></tr>
+      <tr><td><span class="badge b-ok">5.6.1 / 4.5.4</span></td><td>Không có lời nhắc đánh giá tự chế và không có push notification.</td><td>Không tìm thấy</td></tr>
+      <tr><td><span class="badge b-ok">ATS</span></td><td><code>NSAllowsArbitraryLoads=false</code>. Xuất JSON dạng plaintext có cảnh báo và yêu cầu xác thực lại.</td><td><code>export-screen.tsx:27-38</code></td></tr>
+    </tbody>
+  </table></div>
+
+  <h2 id="asc">3. Cần kiểm tra trên App Store Connect (không có trong mã nguồn)</h2>
+  <div class="tbl"><table>
+    <thead><tr><th style="width:110px">Guideline</th><th>Việc cần làm</th></tr></thead>
+    <tbody>
+      <tr><td><span class="badge b-verify">5.1.1(i)</span></td><td>Điền Privacy Policy URL. Đây là URL của C2.</td></tr>
+      <tr><td><span class="badge b-verify">1.5</span></td><td>Điền Support URL có thông tin liên hệ thật. Đây là URL của C3.</td></tr>
+      <tr><td><span class="badge b-verify">App Privacy</span></td><td>Nhãn quyền riêng tư: “Data Not Collected” là hợp lý, với điều kiện AppKiro thật sự không nhận dữ liệu nào. Nên đối chiếu thêm với H1.</td></tr>
+      <tr><td><span class="badge b-verify">2.3.6</span></td><td>Trả lời bảng câu hỏi xếp hạng tuổi, gồm các câu về mạng xã hội (bắt buộc từ 09/2026). Ở đây trả lời là Không có, nên dự kiến xếp 4+.</td></tr>
+      <tr><td><span class="badge b-verify">2.3.7</span></td><td>Tên “Kiro Password Manager” dài 21 ký tự, đạt giới hạn 30. Phụ đề, keywords và ảnh chụp màn hình không được có “Free”, “Miễn phí” hay “No cost”, kể cả chữ nằm trong giao diện ứng dụng. Không chèn tên ứng dụng của đối thủ.</td></tr>
+      <tr><td><span class="badge b-verify">2.3.3 / 2.3.9</span></td><td>Ảnh chụp màn hình phải cho thấy ứng dụng đang được dùng, không chỉ màn Welcome. Dữ liệu trong ảnh phải là dữ liệu giả, tránh logo thương hiệu thật (M1). Cần đủ bộ cho iPhone 6.9" và iPad 13".</td></tr>
+      <tr><td><span class="badge b-verify">2.3.1</span></td><td>Phần Notes for Review nên nói rõ:
+        <ul>
+          <li>Ứng dụng không có tài khoản, nên không cần demo account.</li>
+          <li>Cách tạo kho: mật khẩu chính từ 12 ký tự trở lên.</li>
+          <li>Có thể đính kèm tệp <code>.kdbx</code> mẫu kèm mật khẩu để thử nhập.</li>
+          <li>Mạng chỉ dùng để tải favicon.</li>
+        </ul>
+      </td></tr>
+      <tr><td><span class="badge b-verify">2.3.14</span></td><td>Nếu dùng creative assets (header trang sản phẩm hay kết quả tìm kiếm), chúng phải phù hợp 4+ và không nêu giá hay tuyên bố không kiểm chứng được, ví dụ “an toàn tuyệt đối”.</td></tr>
+      <tr><td><span class="badge b-verify">Export</span></td><td>Trả lời Export Compliance, xem H3.</td></tr>
+      <tr><td><span class="badge b-verify">2.3.5</span></td><td>Chọn danh mục Productivity hoặc Utilities.</td></tr>
+    </tbody>
+  </table></div>
+
+  <h2 id="plan">4. Thứ tự xử lý đề xuất</h2>
+  <div class="tbl"><table>
+    <thead><tr><th style="width:44px">#</th><th>Việc</th><th style="width:120px">Mức</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>Sửa icon: xoá <code>assets/expo.icon</code>, chạy prebuild sạch, rồi kiểm tra <code>CFBundleIconName</code> trong archive.</td><td><span class="badge b-crit">C1</span></td></tr>
+      <tr><td>2</td><td>Đăng trang Privacy Policy và Support, thêm liên kết vào màn Giới thiệu/Cài đặt và App Store Connect.</td><td><span class="badge b-crit">C2 · C3</span></td></tr>
+      <tr><td>3</td><td>Thêm toggle tự tải favicon, đổi câu chữ “stays on this device”, ghi vào privacy policy.</td><td><span class="badge b-high">H1</span></td></tr>
+      <tr><td>4</td><td>Lấy ngôn ngữ theo thiết bị, thêm bộ chọn ngôn ngữ trên iOS, i18n hoá các chuỗi ghi cứng.</td><td><span class="badge b-high">H2</span></td></tr>
+      <tr><td>5</td><td>Khai báo <code>ITSAppUsesNonExemptEncryption</code> sau khi trả lời Export Compliance.</td><td><span class="badge b-high">H3</span></td></tr>
+      <tr><td>6</td><td>Xác nhận tài khoản developer là Organization.</td><td><span class="badge b-high">H4</span></td></tr>
+      <tr><td>7</td><td>Gỡ logo Apple và logo ngân hàng, sửa release notes, dọn file template.</td><td><span class="badge b-med">M1 · M2</span> <span class="badge b-low">L1</span></td></tr>
+      <tr><td>8</td><td>Kiểm thử trên iPad Air 11" (M3) và iPhone 17 Pro Max, rồi build bằng <code>bun run build:ios:appstore</code> (tự tăng phiên bản).</td><td><span class="badge b-med">M4</span></td></tr>
+    </tbody>
+  </table></div>
+
+  <footer>
+    <p>Báo cáo này đánh giá tĩnh từ mã nguồn và bản archive 1.0.22. Ứng dụng chưa được chạy trên thiết bị, và chưa xem metadata hay ảnh chụp màn hình trên App Store Connect. Các mục 2.3.x phụ thuộc metadata cần kiểm tra riêng.</p>
+    <p>Tham chiếu: <a href="https://developer.apple.com/app-store/review/guidelines/">App Store Review Guidelines</a> · <a href="https://developer.apple.com/support/offering-account-deletion-in-your-app/">Account deletion</a> · <a href="https://developer.apple.com/documentation/security/complying-with-encryption-export-regulations">Encryption export regulations</a> · <a href="https://www.apple.com/legal/intellectual-property/guidelinesfor3rdparties.html">Apple trademark guidelines</a></p>
+  </footer>
+</div>
+<script>
+(function(){
+  var buttons=document.querySelectorAll('.filters button');
+  var cards=document.querySelectorAll('article.card');
+  buttons.forEach(function(btn){
+    btn.addEventListener('click',function(){
+      var f=btn.getAttribute('data-f');
+      buttons.forEach(function(b){b.setAttribute('aria-pressed',String(b===btn));});
+      cards.forEach(function(c){c.classList.toggle('hidden',f!=='all'&&c.getAttribute('data-sev')!==f);});
+    });
+  });
+})();
+</script>
+</body>
+</html>

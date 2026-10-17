@@ -2,7 +2,7 @@
   "expo": {
     "name": "Kiro Password Manager",
     "slug": "appkiro-password-manager",
-    "version": "1.0.17",
+    "version": "1.0.22",
     "orientation": "default",
     "icon": "./assets/images/icon.png",
     "scheme": "appkiropasswordmanager",
@@ -15,19 +15,19 @@
         "UIFileSharingEnabled": false,
         "LSSupportsOpeningDocumentsInPlace": false
       },
-      "buildNumber": "18"
+      "buildNumber": "23"
     },
     "android": {
       "package": "com.appkiro.vault",
       "allowBackup": false,
       "adaptiveIcon": {
-        "backgroundColor": "#030621",
+        "backgroundColor": "#FFFFFF",
         "foregroundImage": "./assets/images/android-icon-foreground.png",
         "backgroundImage": "./assets/images/android-icon-background.png",
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
       "predictiveBackGestureEnabled": false,
-      "versionCode": 18
+      "versionCode": 23
     },
     "web": {
       "output": "server",
@@ -38,7 +38,7 @@
       [
         "expo-splash-screen",
         {
-          "backgroundColor": "#121212",
+          "backgroundColor": "#000000",
           "image": "./assets/images/splash-icon.png",
           "imageWidth": 128
         }

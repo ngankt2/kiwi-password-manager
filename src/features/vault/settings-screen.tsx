@@ -3,7 +3,7 @@ import { version as appVersion } from '../../../package.json';
 import { vaultFileName } from '@/core/vault-format/file-names';
 import { ScrollView, View } from 'react-native';
 import { router } from 'expo-router';
-import { Download, LockKeyhole } from 'lucide-react-native';
+import { Download, Info, LockKeyhole, ShieldCheck } from 'lucide-react-native';
 import { Button, Divider, Eyebrow, PageHeader, Select, T, ToggleRow } from '@/design-system/components/ui';
 import { ReauthDialog } from '@/design-system/components/reauth-dialog';
 import { weakensSecurity, type Settings } from '@/core/security/settings';
@@ -31,7 +31,7 @@ export function SettingsScreen() {
       <View style={{ width: '100%', maxWidth: 660 }}>
         <PageHeader title="Settings" detail="A vault that works your way." onBack={() => router.replace('/vault')} />
         <QuickUnlockSettings />
-        <Eyebrow>SECURITY</Eyebrow>
+        <Eyebrow>Security</Eyebrow>
         <View style={{ gap: 18, marginTop: 20 }}>
           <Select label="Lock after inactivity" value={String(settings.autoLockSeconds)} onChange={(value) => update({ autoLockSeconds: Number(value) as Settings['autoLockSeconds'] })} options={[
             { label: '1 minute', value: '60' }, { label: '3 minutes', value: '180' }, { label: '5 minutes', value: '300' }, { label: '15 minutes', value: '900' }, { label: '30 minutes', value: '1800' }, { label: 'Never', value: '-1' },
@@ -45,7 +45,7 @@ export function SettingsScreen() {
           ]} />
           <T muted style={{ fontSize: 12, lineHeight: 20 }}>Copied secrets are cleared after the selected time, unless the clipboard has changed.</T>
         </View>
-        <Divider /><Eyebrow>YOUR VAULT</Eyebrow>
+        <Divider /><Eyebrow>Your vault</Eyebrow>
         <View style={{ gap: 16, marginTop: 20 }}>
           <T weight="semibold">{vaultFileName(vault?.name ?? 'Vault')}</T>
           <T muted style={{ lineHeight: 22 }}>Your vault is stored on this device. Export an encrypted copy to keep a backup in a location you choose.</T>
@@ -55,10 +55,12 @@ export function SettingsScreen() {
           })} />
           <ToggleRow title="Automatic local backups" detail="Keep earlier encrypted versions when saving changes." value={settings.automaticBackups} onChange={(value) => update({ automaticBackups: value })} />
         </View>
-        <Divider /><Eyebrow>APPEARANCE</Eyebrow>
+        <Divider /><Eyebrow>Appearance</Eyebrow>
         <ToggleRow title="Compact item rows" detail="Fit more items in your list." value={settings.compactRows} onChange={(value) => update({ compactRows: value })} />
         <ToggleRow title="Reduce motion" detail="Use simpler transitions." value={settings.reduceMotion} onChange={(value) => update({ reduceMotion: value })} />
         <Divider /><Button title="Lock vault" icon={LockKeyhole} variant="secondary" onPress={lockVault} />
+        <Button title={t('Giới thiệu')} icon={Info} variant="secondary" style={{ marginTop: 12 }} onPress={() => router.push('/about')} />
+        <Button title={t('Chính sách quyền riêng tư')} icon={ShieldCheck} variant="secondary" style={{ marginTop: 12 }} onPress={() => router.push('/privacy')} />
         <T muted style={{ fontSize: 12, textAlign: 'center', marginTop: 24 }}>{t('Phiên bản ứng dụng {version}', { version: appVersion })}</T>
       </View>
     </ScrollView>

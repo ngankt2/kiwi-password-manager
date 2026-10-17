@@ -47,7 +47,7 @@ export function ImportScreen() {
         <Logo small />
         <PageHeader title="Bring your passwords home." detail="Import your KeePass database into a new encrypted vault." onBack={() => router.replace({ pathname: '/', params: { chooseVault: '1' } })} />
         {!preview ? <>
-          <Eyebrow>YOUR KEEPASS FILE</Eyebrow>
+          <Eyebrow>Your KeePass file</Eyebrow>
           <Button title={file?.name ?? 'Choose a .kdbx file'} icon={file ? FileKey2 : FolderOpen} variant="secondary" disabled={pending} onPress={() => run(async () => {
             const picked = await pickFile();
             if (picked) setFile(picked);
@@ -59,7 +59,7 @@ export function ImportScreen() {
           })} />
           <Button title="Preview import" icon={ArrowRight} disabled={!file} loading={pending} onPress={inspect} />
         </> : <>
-          <Eyebrow>READY TO BRING OVER</Eyebrow>
+          <Eyebrow>Ready to bring over</Eyebrow>
           <View style={{ padding: 20, gap: 12, borderWidth: 1, borderColor: colors.border, borderRadius: 12, backgroundColor: colors.surface }}>
             <T weight="semibold">{preview.counts.entries} items · {preview.counts.folders} folders</T>
             <T muted>{preview.counts.attachments} attachments · {preview.counts.history} previous versions</T>

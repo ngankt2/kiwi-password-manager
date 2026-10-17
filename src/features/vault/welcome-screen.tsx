@@ -22,15 +22,15 @@ import { UnlockPasswordInput } from './unlock-password-input';
 function VaultIllustration() {
   return <View style={{ alignItems: 'center', marginVertical: 24 }} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
     <Svg width={310} height={248} viewBox="0 0 310 248">
-      <Rect x={40} y={17} width={230} height={206} rx={34} fill="#161916" stroke="#282D29" />
-      <Rect x={63} y={40} width={184} height={160} rx={23} fill="#181D19" stroke="#303B32" />
-      <Rect x={84} y={59} width={142} height={122} rx={17} fill="#1D251F" stroke="#435046" />
-      <Circle cx={155} cy={119} r={30} fill="#182C1E" stroke="#366F47" />
-      <Path d="M155 99c-7 0-12 5-12 12 0 5 3 9 7 11v14h10v-14c4-2 7-6 7-11 0-7-5-12-12-12Z" fill="#1DB954" />
-      <Path d="M76 90v60M234 90v60" stroke="#506053" strokeWidth={4} strokeLinecap="round" />
-      <Circle cx={108} cy={82} r={2} fill="#506053" /><Circle cx={202} cy={82} r={2} fill="#506053" />
-      <Circle cx={108} cy={159} r={2} fill="#506053" /><Circle cx={202} cy={159} r={2} fill="#506053" />
-      <Path d="M36 236h238" stroke="#282D29" strokeWidth={2} strokeLinecap="round" />
+      <Rect x={40} y={17} width={230} height={206} rx={34} fill="#1C1C1E" stroke="#2C2C2E" />
+      <Rect x={63} y={40} width={184} height={160} rx={23} fill="#1F2229" stroke="#2F3542" />
+      <Rect x={84} y={59} width={142} height={122} rx={17} fill="#1A2638" stroke="#2D4466" />
+      <Circle cx={155} cy={119} r={30} fill="#0B2A4F" stroke="#0A84FF" />
+      <Path d="M155 99c-7 0-12 5-12 12 0 5 3 9 7 11v14h10v-14c4-2 7-6 7-11 0-7-5-12-12-12Z" fill="#0A84FF" />
+      <Path d="M76 90v60M234 90v60" stroke="#3A3A3C" strokeWidth={4} strokeLinecap="round" />
+      <Circle cx={108} cy={82} r={2} fill="#48484A" /><Circle cx={202} cy={82} r={2} fill="#48484A" />
+      <Circle cx={108} cy={159} r={2} fill="#48484A" /><Circle cx={202} cy={159} r={2} fill="#48484A" />
+      <Path d="M36 236h238" stroke="#2C2C2E" strokeWidth={2} strokeLinecap="round" />
     </Svg>
   </View>;
 }
@@ -89,7 +89,7 @@ export function WelcomeScreen({ mode = 'welcome' }: { mode?: 'welcome' | 'create
         {mode === 'welcome' ? <>
           <View style={{ gap: 12 }}><Button title="Create a vault" icon={Plus} onPress={() => router.push('/create-vault')} /><Button title="Open a vault" icon={FolderOpen} variant="secondary" loading={pending} onPress={open} /></View>
           <Pressable accessibilityRole="button" onPress={() => router.push('/import')} style={styles.importLink}><ArrowDownToLine size={15} color={colors.secondary} /><T muted style={{ fontSize: 12 }}>Bring your passwords from KeePass</T><ChevronRight size={14} color={colors.secondary} /></Pressable>
-          {state.recents.length > 0 && <View><Divider /><Eyebrow>RECENT VAULTS</Eyebrow><View style={{ marginTop: 12, gap: 4 }}>{state.recents.map((vault) => <Pressable key={vault.id} accessibilityRole="button" accessibilityLabel={`Unlock ${vault.name}`} onPress={() => router.push({ pathname: '/unlock', params: { id: vault.id } })} style={({ pressed }) => [styles.recentRow, pressed && { backgroundColor: colors.elevated }]}>
+          {state.recents.length > 0 && <View><Divider /><Eyebrow>Recent vaults</Eyebrow><View style={{ marginTop: 12, gap: 4 }}>{state.recents.map((vault) => <Pressable key={vault.id} accessibilityRole="button" accessibilityLabel={`Unlock ${vault.name}`} onPress={() => router.push({ pathname: '/unlock', params: { id: vault.id } })} style={({ pressed }) => [styles.recentRow, pressed && { backgroundColor: colors.fill }]}>
             <FileKey2 size={20} color={colors.secondary} /><View style={{ flex: 1 }}><T weight="medium">{vault.name}</T><T muted style={{ fontSize: 11 }}>Encrypted vault file</T></View><ChevronRight size={15} color={colors.secondary} />
           </Pressable>)}</View></View>}
         </> : <>
@@ -110,7 +110,7 @@ export function WelcomeScreen({ mode = 'welcome' }: { mode?: 'welcome' | 'create
 }
 const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: colors.background }, page: { flexGrow: 1, flexDirection: 'row', minHeight: 680 }, mobilePage: { flexDirection: 'column', minHeight: '100%' },
-  story: { flex: 1, padding: 48, alignItems: 'flex-start', backgroundColor: '#141614' }, hero: { fontSize: 43, lineHeight: 50, letterSpacing: -1.6, marginTop: 17, marginBottom: 20 },
+  story: { flex: 1, padding: 48, alignItems: 'flex-start', backgroundColor: colors.surface }, hero: { fontSize: 43, lineHeight: 50, letterSpacing: -1.6, marginTop: 17, marginBottom: 20 },
   actionPanel: { flex: 1, padding: 48, borderLeftWidth: 1, borderColor: colors.border, justifyContent: 'center', backgroundColor: colors.background }, title: { fontSize: 29, lineHeight: 36, letterSpacing: -0.9 },
   importLink: { minHeight: 44, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 7 }, recentRow: { minHeight: 68, gap: 13, padding: 10, flexDirection: 'row', alignItems: 'center', borderRadius: 10 },
   passwordNote: { flexDirection: 'row', gap: 10, padding: 13, backgroundColor: colors.surface, borderRadius: 9 }, footer: { flexDirection: 'row', justifyContent: 'center', gap: 7, alignItems: 'center', marginTop: 44 },

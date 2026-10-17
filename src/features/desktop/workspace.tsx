@@ -226,10 +226,12 @@ export function DesktopWorkspace({ children, detailId, search = false, fullWidth
             </> : <>{folders}{tagCloud}</>}
           </nav>
           {rail ? <>
+            <IconButton icon="info" data-nav="about" label={t('Giới thiệu')} onClick={() => navigate(() => router.push('/about'))} />
             <IconButton icon="keyboard" data-nav="shortcuts" label={t("Phím tắt (⌘/)")} onClick={() => setShortcuts(true)} />
             <IconButton icon="lock" data-nav="lock" label={t("Khoá Vault (⌘L)")} onClick={() => navigate(lockVault)} />
             {flyout && <div className="desktop-folder-flyout">{flyout === 'folders' ? folders : tagCloud}<Button variant="ghost" small onClick={() => setFlyout(null)}>{t("Đóng")}</Button></div>}
           </> : <>
+            <button className={'desktop-nav-item desktop-about-nav' + (pathname === '/about' ? ' selected' : '')} data-nav="about" aria-current={pathname === '/about' ? 'page' : undefined} onClick={() => navigate(() => router.push('/about'))}><Icon name="info" /><span className="grow">{t('Giới thiệu')}</span></button>
             <div className="desktop-sidebar-footer"><button className="desktop-nav-item" data-nav="lock" onClick={() => navigate(lockVault)}><Icon name="lock" /><span className="grow">{t("Khoá Vault")}</span><span className="desktop-nav-count">⌘L</span></button><IconButton icon="keyboard" data-nav="shortcuts" label={t("Phím tắt (⌘/)")} onClick={() => setShortcuts(true)} /></div>
           </>}
         </aside>
@@ -237,8 +239,12 @@ export function DesktopWorkspace({ children, detailId, search = false, fullWidth
         {!fullWidth && <section className="desktop-list" aria-label={t("Danh sách mục")}>
           <div className="desktop-list-header">
             <button className="desktop-icon-button desktop-mobile-only" aria-label={t("Mở thanh bên")} onClick={() => setMobileSidebar(true)}><Icon name="menu" /></button>
-            <div className="desktop-list-title"><h1>{title}</h1><span>{found.length}</span></div>
-            <div ref={newButton}><Button variant="primary" small icon="add" title={t("Mục mới (⌘N)")} onClick={showNewMenu}>{t("Mới")}</Button></div>
+            <div className="desktop-list-title"><h1>{title}</h1><span>{t('{count} mục', { count: found.length })}</span></div>
+            <div ref={newButton} className="desktop-toolbar-group">
+              <button type="button" title={t("Khoá Vault (⌘L)")} aria-label={t("Khoá Vault")} onClick={() => navigate(lockVault)}><Icon name="lock" /></button>
+              <i aria-hidden="true" />
+              <button type="button" title={t("Mục mới (⌘N)")} aria-label={t("Mới")} onClick={showNewMenu}><Icon name="add" /></button>
+            </div>
           </div>
           <div className="desktop-search-container"><button className="desktop-search-trigger" onClick={() => setPalette(true)}><Icon name="search" /><span className="grow">{t("Tìm trong vault…")}</span><kbd className="desktop-kbd">⌘K</kbd></button></div>
           {!!selected.length && <div className="desktop-bulkbar"><span className="grow">{t('Đã chọn {count}', { count: selected.length })}</span>
@@ -268,7 +274,7 @@ export function DesktopWorkspace({ children, detailId, search = false, fullWidth
                 onClick={(event) => choose(event, item)} onDoubleClick={() => { if (!item.deletedAt) editItem(item.id); }}
                 onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); navigate(() => openItem(item.id)); } }}
                 onContextMenu={(event) => { event.preventDefault(); showItemMenu(item, { x: event.clientX, y: event.clientY }); }}>
-                <ItemTile type={item.type} metadata={item.metadata} size={preferences.comfortable ? 34 : 28} />
+                <ItemTile type={item.type} metadata={item.metadata} size={preferences.comfortable ? 36 : 32} />
                 <div className="desktop-row-text"><div className="desktop-row-title"><span>{item.title}</span>{item.favorite && <Icon name="star" filled />}</div><div className="desktop-row-subtitle">{subtitle === 'No additional details' ? itemTypes[item.type].label : subtitle}</div></div>
                 <time className="desktop-row-updated" dateTime={item.updatedAt} title={updatedDescription}>{updatedDate}</time>
                 <div className="desktop-table-columns desktop-table-row"><span>{item.title}</span><span>{subtitle === 'No additional details' ? '—' : subtitle}</span><span>{folderPath(vault, item.folderId) || t("Vault gốc")}</span><span><time dateTime={item.updatedAt} title={updatedDescription}>{updatedDate}</time></span></div>
@@ -294,7 +300,7 @@ export function DesktopWorkspace({ children, detailId, search = false, fullWidth
       <Menu anchor={menu?.anchor ?? null} onClose={closeMenu} label={menu?.kind === 'new' ? t("Tạo mục mới") : t("Thao tác")}>
         {menu?.kind === 'new' && <><div className="desktop-menu-heading">{t("Mục mới")}</div>{ITEM_TYPES.map((type) => <button key={type} role="menuitem" className="desktop-menu-item" onClick={() => navigate(() => {
           setMenu(null); router.push({ pathname: '/item/new', params: { type, ...(currentFolder ? { folder: currentFolder.id } : {}) } });
-        })}><ItemTile type={type} size={24} /><span>{itemTypes[type].label}</span></button>)}<div className="desktop-menu-separator" /><MenuItem icon="create_new_folder" onClick={() => { setMenu(null); createFolder(currentFolder?.id); }}>{t("Thư mục mới")}</MenuItem></>}
+        })}><ItemTile type={type} size={22} /><span>{itemTypes[type].label}</span></button>)}<div className="desktop-menu-separator" /><MenuItem icon="create_new_folder" onClick={() => { setMenu(null); createFolder(currentFolder?.id); }}>{t("Thư mục mới")}</MenuItem></>}
         {menu?.kind === 'list' && <><div className="desktop-menu-heading">{t("Sắp xếp theo")}</div>
           <MenuItem icon={sort === 'updated' ? 'check' : 'schedule'} onClick={() => { setSort('updated'); closeMenu(); }}>{t("Cập nhật gần nhất")}</MenuItem>
           <MenuItem icon={sort === 'created' ? 'check' : 'calendar_today'} onClick={() => { setSort('created'); closeMenu(); }}>{t("Ngày tạo")}</MenuItem>

@@ -1,87 +1,124 @@
-/* Shared by the desktop UI and React Native Web data tools. */
+/*
+ * Shared by the desktop UI and React Native Web data tools.
+ * Apple Human Interface Guidelines palette (macOS 26 / Liquid Glass).
+ * Light values come first, dark values second; dark follows the KeyNest reference.
+ */
 :root {
   color-scheme: light dark;
-  --color-canvas: light-dark(#D8DADF, #0F1117);
-  --color-background: light-dark(#FFFFFF, #191C24);
-  --color-surface: light-dark(#F7F7F9, #1E212B);
-  --color-sidebar: light-dark(#F3F4F6, #20232D);
-  --color-elevated: light-dark(#F1F2F5, #272B37);
-  --color-inset: light-dark(#F6F7F9, #222631);
-  --color-hover-subtle: light-dark(#FAFAFB, #1D212B);
-  --color-banner: light-dark(#F4F5F7, #272B36);
-  --color-hover: light-dark(#EEF0F4, #2C313F);
-  --color-nav-hover: light-dark(#E9EBEF, #2C313E);
-  --color-icon-hover: light-dark(#ECEDF1, #2D3240);
-  --color-language-hover: light-dark(#EBEDF1, #2C313F);
-  --color-nav-selected: light-dark(#E1E5EE, #303748);
-  --color-rail-selected: light-dark(#E1E7F8, #2E3954);
-  --color-selected: light-dark(#E6ECFB, #2A3652);
-  --color-drop-fill: light-dark(#DCE4F9, #303D5B);
-  --color-accent-muted: light-dark(#E9EEFB, #2B3755);
-  --color-accent-hover-bg: light-dark(#EDF1FC, #303D5C);
-  --color-flyout: light-dark(#F7F8FA, #222630);
-  --color-drop-bg: light-dark(#F7F9FE, #232B3C);
-  --color-selection: light-dark(#CBD6F6, #3F5382);
-  --color-border: light-dark(#E3E5EA, #353A48);
-  --color-border-soft: light-dark(#E8EAEE, #303541);
-  --color-divider: light-dark(#EEEFF2, #2C313D);
-  --color-rail-divider: light-dark(#E0E2E7, #363C49);
-  --color-control-border: light-dark(#D6D9DF, #444B5E);
-  --color-control-hover: light-dark(#CDD1D8, #59637A);
-  --color-scrollbar-thumb: light-dark(#B4B8C2, #4B5365);
-  --color-scrollbar-thumb-hover: light-dark(#8B929F, #6E7B92);
-  --color-focus-border: light-dark(#B9C7F0, #718DD1);
-  --color-drop-border: light-dark(#A7B5D4, #5A6A8E);
-  --color-text: light-dark(#15171C, #F0F2F7);
-  --color-text-strong: light-dark(#2A2E36, #E2E6EF);
-  --color-label: light-dark(#4A505B, #CBD2E0);
-  --color-secondary: light-dark(#5B616D, #B4BECE);
-  --color-muted: light-dark(#7A808B, #9AA6B9);
-  --color-dim: light-dark(#8B919C, #95A0B2);
-  --color-description: light-dark(#6B717C, #AAB5C7);
-  --color-tag-text: light-dark(#3A404B, #D5DCE8);
-  --color-folder-menu: light-dark(#606875, #B6BFCE);
-  --color-nav-all: light-dark(#59718A, #9AAFC4);
-  --color-nav-favorites: light-dark(#AB5473, #E7A2B9);
-  --color-nav-recent: light-dark(#287D64, #72CBA7);
-  --color-nav-archive: light-dark(#A46935, #E5B18A);
-  --color-nav-trash: light-dark(#AD6266, #D9979E);
-  --color-nav-folders: light-dark(#6866B5, #A4A0E7);
-  --color-nav-generator: light-dark(#7960AE, #BDA4E6);
-  --color-nav-settings: light-dark(#537A8C, #95BFCE);
-  --color-nav-lock: light-dark(#398079, #92C9BF);
-  --color-nav-shortcuts: light-dark(#707B8C, #A4AFBE);
-  --color-folder-group: light-dark(#667B89, #92A7B6);
-  --color-folder-list: light-dark(#6265B6, #9B9DE5);
-  --color-drop-text: light-dark(#4B607E, #AEC1E8);
-  --color-placeholder: light-dark(#A8AFBD, #7F8CA2);
-  --color-empty-icon: light-dark(#B4B8C0, #69758D);
-  --color-accent: light-dark(#3559C7, #9BB4FF);
-  --color-accent-strong: light-dark(#2D4DB0, #AEC2FF);
-  --color-link-hover: light-dark(#2A47A3, #C3D1FF);
-  --color-inverse-bg: light-dark(#1D2230, #31394D);
-  --color-danger: light-dark(#C4372C, #FF9A90);
-  --color-danger-border: light-dark(#E7C4C0, #6B484B);
-  --color-danger-bg: light-dark(#FBEFEE, #3B292E);
-  --color-removed-text: light-dark(#8E2A22, #FFB2A8);
-  --color-success-bg: light-dark(#EAF5EF, #223930);
-  --color-added-text: light-dark(#1B6B45, #95D8B4);
-  --color-success-soft: light-dark(#3F8A5E, #91CBA7);
-  --color-success: light-dark(#1E8455, #87D7AD);
-  --color-warning: light-dark(#A86A12, #E4B777);
-  --color-favorite: light-dark(#C98A16, #E2B974);
-  --color-warning-bg: light-dark(#FBF6EC, #352F25);
-  --color-warning-text: light-dark(#6B4A12, #E4C79C);
-  --color-toast-success: light-dark(#8FD3AE, #A2D8B9);
-  --color-toast-danger: light-dark(#F6A49A, #FFB5AB);
-  --color-primary-fill: light-dark(#3559C7, #4666CD);
-  --color-primary-hover: light-dark(#2D4DB0, #5575DC);
+  --font-sans: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro', 'Helvetica Neue', system-ui, sans-serif;
+  --font-display: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro', 'Helvetica Neue', system-ui, sans-serif;
+  --font-mono: ui-monospace, 'SF Mono', SFMono-Regular, Menlo, monospace;
+
+  /* Window and panes */
+  --color-canvas: light-dark(#E3E3E8, #101114);
+  --color-background: light-dark(#FFFFFF, #1C1C1E);
+  --color-surface: light-dark(#F5F5F7, #1C1C1E);
+  --color-sidebar: light-dark(rgba(0,0,0,.035), rgba(255,255,255,.055));
+  --color-detail: light-dark(rgba(0,0,0,.018), rgba(0,0,0,.12));
+  --color-elevated: light-dark(#F2F2F7, #2C2C2E);
+  --color-inset: light-dark(rgba(0,0,0,.04), rgba(255,255,255,.05));
+  --color-card: light-dark(rgba(0,0,0,.028), rgba(255,255,255,.04));
+  --color-card-ring: light-dark(rgba(0,0,0,.075), rgba(255,255,255,.07));
+  --color-hover-subtle: light-dark(rgba(0,0,0,.02), rgba(255,255,255,.025));
+  --color-banner: light-dark(rgba(0,0,0,.04), rgba(255,255,255,.05));
+  --color-hover: light-dark(rgba(0,0,0,.045), rgba(255,255,255,.06));
+  --color-nav-hover: light-dark(rgba(0,0,0,.045), rgba(255,255,255,.05));
+  --color-icon-hover: light-dark(rgba(0,0,0,.06), rgba(255,255,255,.1));
+  --color-language-hover: light-dark(rgba(0,0,0,.05), rgba(255,255,255,.08));
+  --color-nav-selected: light-dark(rgba(0,0,0,.075), rgba(255,255,255,.11));
+  --color-rail-selected: light-dark(rgba(0,0,0,.075), rgba(255,255,255,.11));
+  --color-selected: light-dark(rgba(0,0,0,.065), rgba(255,255,255,.1));
+  --color-drop-fill: light-dark(rgba(0,122,255,.12), rgba(10,132,255,.2));
+  --color-accent-muted: light-dark(rgba(0,122,255,.1), rgba(10,132,255,.18));
+  --color-accent-hover-bg: light-dark(rgba(0,122,255,.1), rgba(10,132,255,.2));
+  --color-flyout: light-dark(rgba(246,246,248,.92), rgba(44,44,48,.94));
+  --color-drop-bg: light-dark(rgba(0,122,255,.05), rgba(10,132,255,.08));
+  --color-selection: light-dark(rgba(0,122,255,.22), rgba(10,132,255,.38));
+
+  /* Separators and control outlines */
+  --color-border: light-dark(rgba(0,0,0,.1), rgba(255,255,255,.08));
+  --color-border-soft: light-dark(rgba(0,0,0,.07), rgba(255,255,255,.07));
+  --color-divider: light-dark(rgba(0,0,0,.08), rgba(255,255,255,.07));
+  --color-rail-divider: light-dark(rgba(0,0,0,.1), rgba(255,255,255,.1));
+  --color-control-border: light-dark(rgba(0,0,0,.14), rgba(255,255,255,.14));
+  --color-control-hover: light-dark(rgba(0,0,0,.22), rgba(255,255,255,.22));
+  --color-scrollbar-thumb: light-dark(rgba(0,0,0,.2), rgba(255,255,255,.14));
+  --color-scrollbar-thumb-hover: light-dark(rgba(0,0,0,.34), rgba(255,255,255,.26));
+  --color-focus-border: light-dark(rgba(0,122,255,.5), rgba(10,132,255,.6));
+  --color-drop-border: light-dark(rgba(0,122,255,.35), rgba(10,132,255,.45));
+
+  /* Glass materials */
+  --glass-control: light-dark(rgba(0,0,0,.045), rgba(255,255,255,.07));
+  --glass-control-hover: light-dark(rgba(0,0,0,.08), rgba(255,255,255,.12));
+  --glass-control-ring: light-dark(rgba(0,0,0,.08), rgba(255,255,255,.12));
+  --glass-highlight: light-dark(rgba(255,255,255,.7), rgba(255,255,255,.06));
+  --glass-sheet: light-dark(rgba(248,248,250,.96), rgba(42,42,46,.95));
+  --glass-menu: light-dark(rgba(246,246,248,.94), rgba(44,44,48,.94));
+  --glass-toast: light-dark(rgba(250,250,252,.9), rgba(56,56,60,.88));
+  --glass-ring: light-dark(rgba(0,0,0,.1), rgba(255,255,255,.16));
+  --glass-shadow: light-dark(0 20px 60px rgba(0,0,0,.18), 0 30px 80px rgba(0,0,0,.55));
+  --menu-shadow: light-dark(0 12px 36px rgba(0,0,0,.16), 0 16px 40px rgba(0,0,0,.5));
+  --field-bg: light-dark(#FFFFFF, rgba(0,0,0,.25));
+  --field-ring: light-dark(rgba(0,0,0,.14), rgba(255,255,255,.14));
+  --tile-highlight: inset 0 1px 0 rgba(255,255,255,.2), inset 0 0 0 .5px rgba(255,255,255,.12);
+
+  /* Labels (Apple label, secondaryLabel, tertiaryLabel, quaternaryLabel) */
+  --color-text: light-dark(rgba(0,0,0,.86), rgba(255,255,255,.9));
+  --color-text-strong: light-dark(rgba(0,0,0,.86), rgba(255,255,255,.9));
+  --color-label: light-dark(rgba(0,0,0,.62), rgba(255,255,255,.65));
+  --color-secondary: light-dark(rgba(0,0,0,.56), rgba(255,255,255,.6));
+  --color-muted: light-dark(rgba(0,0,0,.5), rgba(255,255,255,.5));
+  --color-dim: light-dark(rgba(0,0,0,.45), rgba(255,255,255,.45));
+  --color-description: light-dark(rgba(0,0,0,.52), rgba(255,255,255,.5));
+  --color-tag-text: light-dark(rgba(0,0,0,.75), rgba(255,255,255,.82));
+  --color-folder-menu: light-dark(rgba(0,0,0,.55), rgba(255,255,255,.6));
+  --color-placeholder: light-dark(rgba(0,0,0,.3), rgba(255,255,255,.35));
+  --color-empty-icon: light-dark(rgba(0,0,0,.25), rgba(255,255,255,.28));
+
+  /* System colors used as sidebar tiles */
+  --color-nav-all: light-dark(#8E8E93, #8E8E93);
+  --color-nav-favorites: light-dark(#FF9500, #FF9F0A);
+  --color-nav-recent: light-dark(#34C759, #30D158);
+  --color-nav-archive: light-dark(#A2845E, #AC8E68);
+  --color-nav-trash: light-dark(#8E8E93, #636366);
+  --color-nav-folders: light-dark(#5856D6, #5E5CE6);
+  --color-nav-generator: light-dark(#AF52DE, #BF5AF2);
+  --color-nav-settings: light-dark(#8E8E93, #8E8E93);
+  --color-nav-lock: light-dark(#007AFF, #0A84FF);
+  --color-nav-shortcuts: light-dark(#8E8E93, #8E8E93);
+  --color-folder-group: light-dark(#007AFF, #0A84FF);
+  --color-folder-list: light-dark(#5856D6, #7D7AFF);
+  --color-drop-text: light-dark(#0062CC, #64B5FF);
+
+  /* Accent and status */
+  --color-accent: light-dark(#007AFF, #0A84FF);
+  --color-accent-strong: light-dark(#0062CC, #409CFF);
+  --color-link-hover: light-dark(#0062CC, #409CFF);
+  --color-inverse-bg: light-dark(rgba(40,40,44,.92), rgba(72,72,76,.92));
+  --color-danger: light-dark(#D70015, #FF6961);
+  --color-danger-border: light-dark(rgba(255,59,48,.3), rgba(255,69,58,.3));
+  --color-danger-bg: light-dark(rgba(255,59,48,.1), rgba(255,69,58,.12));
+  --color-removed-text: light-dark(#C41E1A, #FF8A82);
+  --color-success-bg: light-dark(rgba(52,199,89,.12), rgba(48,209,88,.14));
+  --color-added-text: light-dark(#1F7A36, #5EDB7E);
+  --color-success-soft: light-dark(#34C759, #30D158);
+  --color-success: light-dark(#248A3D, #30D158);
+  --color-warning: light-dark(#C93400, #FF9F0A);
+  --color-favorite: light-dark(#FFB800, #FFD60A);
+  --color-warning-bg: light-dark(rgba(255,149,0,.12), rgba(255,159,10,.1));
+  --color-warning-ring: light-dark(rgba(255,149,0,.3), rgba(255,159,10,.3));
+  --color-warning-text: light-dark(#8A4B00, #FFC266);
+  --color-toast-text: light-dark(rgba(0,0,0,.86), rgba(255,255,255,.92));
+  --color-toast-success: light-dark(#248A3D, #30D158);
+  --color-toast-danger: light-dark(#D70015, #FF6961);
+  --color-primary-fill: light-dark(#0071E3, #0071E3);
+  --color-primary-hover: light-dark(#0077ED, #0A84FF);
   --color-on-primary: #FFFFFF;
-  --color-overlay: light-dark(rgba(22,24,30,.22), rgba(5,8,13,.62));
-  --color-focus-ring: light-dark(rgba(53,89,199,.16), rgba(155,180,255,.23));
-  --color-resizer-hover: light-dark(rgba(53,89,199,.15), rgba(155,180,255,.18));
-  --color-window-outline: light-dark(rgba(0,0,0,.14), rgba(195,211,241,.14));
-  --color-floating-outline: light-dark(rgba(0,0,0,.08), rgba(195,211,241,.16));
+  --color-overlay: light-dark(rgba(0,0,0,.2), rgba(0,0,0,.38));
+  --color-focus-ring: light-dark(rgba(0,122,255,.25), rgba(10,132,255,.35));
+  --color-resizer-hover: light-dark(rgba(0,122,255,.15), rgba(10,132,255,.2));
+  --color-window-outline: light-dark(rgba(0,0,0,.14), rgba(255,255,255,.14));
+  --color-floating-outline: light-dark(rgba(0,0,0,.1), rgba(255,255,255,.16));
 }
 
 :root[data-theme="light"] { color-scheme: light; }
@@ -90,9 +127,11 @@
 .desktop-canvas input::placeholder,
 .desktop-canvas textarea::placeholder,
 .desktop-dialog input::placeholder,
-.desktop-dialog textarea::placeholder { color: var(--color-muted); opacity: 1; }
+.desktop-dialog textarea::placeholder { color: var(--color-placeholder); opacity: 1; }
 
+/* Item tiles are solid system-colored squircles with a white glyph, as in Apple Passwords. */
 .desktop-item-tile {
-  color: light-dark(oklch(0.47 var(--tile-chroma) var(--tile-hue)), oklch(0.79 var(--tile-chroma) var(--tile-hue)));
-  background: light-dark(oklch(0.95 calc(var(--tile-chroma) * 0.3) var(--tile-hue)), oklch(0.28 calc(var(--tile-chroma) * 0.4) var(--tile-hue)));
+  color: #FFFFFF;
+  background: oklch(0.62 calc(var(--tile-chroma) * 1.25 + 0.04) var(--tile-hue));
+  box-shadow: var(--tile-highlight);
 }

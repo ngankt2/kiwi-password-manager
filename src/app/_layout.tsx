@@ -2,11 +2,8 @@ import { useEffect } from 'react';
 import { DarkTheme, Stack, ThemeProvider } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
-import { useFonts } from 'expo-font';
 import { ActivityIndicator, View } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { DMSans_400Regular, DMSans_500Medium, DMSans_600SemiBold, DMSans_700Bold } from '@expo-google-fonts/dm-sans';
-import { JetBrainsMono_400Regular } from '@expo-google-fonts/jetbrains-mono';
 import { SessionBoundary, SessionProvider, useSession } from '@/shared/hooks/use-session';
 import { Toast } from '@/design-system/components/toast';
 import { colors } from '@/design-system/tokens';
@@ -14,8 +11,8 @@ import { colors } from '@/design-system/tokens';
 void SplashScreen.preventAutoHideAsync().catch(() => undefined);
 function Navigation() {
   const { status, settings } = useSession();
-  const [fonts, error] = useFonts({ DMSans_400Regular, DMSans_500Medium, DMSans_600SemiBold, DMSans_700Bold, JetBrainsMono_400Regular });
-  const ready = status !== 'loading' && (fonts || Boolean(error));
+  // The app uses the platform system font (San Francisco on iOS), so no font files need loading.
+  const ready = status !== 'loading';
   useEffect(() => { if (ready) void SplashScreen.hideAsync(); }, [ready]);
   if (!ready) return <View style={{ flex: 1, backgroundColor: colors.background, justifyContent: 'center' }}><ActivityIndicator color={colors.primary} /></View>;
   return <SessionBoundary><Stack screenOptions={{ headerShown: false, animation: settings.reduceMotion ? 'none' : 'fade', contentStyle: { backgroundColor: colors.background } }}>
