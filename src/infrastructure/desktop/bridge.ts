@@ -1,4 +1,5 @@
 import { VaultError, type VaultErrorCode } from '@/core/errors';
+import type { QuickUnlockSupport } from '@/core/security/quick-unlock';
 import type { Settings } from '@/core/security/settings';
 import type { FilePort, LinkedVaultPort } from '@/core/storage/types';
 import { createTauriBridge } from './tauri';
@@ -21,6 +22,15 @@ export interface DesktopBridge {
   chooseBackupFolder(): Promise<{ path: string | null; failed: boolean }>;
   updates?: DesktopUpdatesBridge;
   fetchIconResource?(url: string, kind: 'image' | 'html'): Promise<{ bytes: string; url: string; contentType: string }>;
+  /** Native Touch ID quick unlock; keys cross the bridge as base64. */
+  biometrics?: DesktopBiometrics;
+}
+export interface DesktopBiometrics {
+  support(): Promise<QuickUnlockSupport>;
+  enrolled(id: string): Promise<boolean>;
+  enroll(id: string, binding: string, key: string): Promise<void>;
+  recover(id: string, binding: string, prompt: string): Promise<string | null>;
+  revoke(id: string): Promise<void>;
 }
 
 declare global { interface Window { kiroDesktop?: DesktopBridge } }

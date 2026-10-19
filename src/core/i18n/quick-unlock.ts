@@ -5,6 +5,8 @@ export const quickUnlock = {
   'Passkey': ['Passkey', 'Clave de acceso', 'Clé d’accès', '通行密钥'],
   'Sinh trắc học': ['Biometrics', 'Biometría', 'Biométrie', '生物识别'],
   'Mở khoá bằng {method}': ['Unlock with {method}', 'Desbloquear con {method}', 'Déverrouiller avec {method}', '使用{method}解锁'],
+  // Completes macOS's "Kiwi Password is trying to …" Touch ID sentence.
+  'mở khoá kho mật khẩu': ['unlock your password vault', 'desbloquear tu bóveda de contraseñas', 'déverrouiller votre coffre de mots de passe', '解锁密码库'],
   'Dùng Face ID, Touch ID, Windows Hello hoặc khoá bảo mật theo thiết bị của bạn.': ['Use Face ID, Touch ID, Windows Hello, or a security key, depending on your device.', 'Usa Face ID, Touch ID, Windows Hello o una llave de seguridad, según tu dispositivo.', 'Utilisez Face ID, Touch ID, Windows Hello ou une clé de sécurité selon votre appareil.', '根据设备使用面容 ID、触控 ID、Windows Hello 或安全密钥。'],
   'Xác thực bằng {method} để mở kho trên thiết bị này.': ['Use {method} to unlock this vault on your device.', 'Usa {method} para desbloquear esta bóveda en tu dispositivo.', 'Utilisez {method} pour déverrouiller ce coffre sur cet appareil.', '通过{method}验证，在此设备上解锁密码库。'],
   'Luôn có thể dùng để mở kho và các bản sao lưu.': ['Always available to open your vault and backups.', 'Siempre puedes usarla para abrir la bóveda y sus copias de seguridad.', 'Toujours utilisable pour ouvrir le coffre et ses sauvegardes.', '始终可以用来打开密码库及其备份。'],

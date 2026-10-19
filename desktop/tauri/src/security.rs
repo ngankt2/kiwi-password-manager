@@ -15,48 +15,62 @@ pub struct Clipboard {
     pub helper: PathBuf,
     pub token: Option<u64>,
 }
-impl Clipboard {
-    fn request(&self, mut request: Value) -> Result<Value> {
-        let mut payload = serde_json::to_vec(&request).map_err(|_| "VALIDATION")?;
-        if let Some(Value::String(value)) = request.get_mut("value") {
+/// Run one JSON request through the native helper. Secrets in `value` and `key` are
+/// zeroized once serialized; `wait` bounds how long a request (such as Touch ID) may take.
+pub fn helper_request(helper: &PathBuf, mut request: Value, wait: Duration) -> Result<Value> {
+    let mut payload = serde_json::to_vec(&request).map_err(|_| "VALIDATION")?;
+    for field in ["value", "key"] {
+        if let Some(Value::String(value)) = request.get_mut(field) {
             value.zeroize();
         }
-        let mut child = Command::new(&self.helper)
-            .stdin(Stdio::piped())
-            .stdout(Stdio::piped())
-            .stderr(Stdio::null())
-            .spawn()
-            .map_err(|_| "PERMISSION")?;
-        let sent = child.stdin.take().ok_or("PERMISSION")?.write_all(&payload);
-        payload.zeroize();
-        if sent.is_err() {
-            let _ = child.kill();
-            let _ = child.wait();
-            return Err("PERMISSION");
-        }
-        let status = child
-            .wait_timeout(Duration::from_secs(5))
-            .map_err(|_| "PERMISSION")?;
-        if status.is_none() {
-            let _ = child.kill();
-            let _ = child.wait();
-            return Err("PERMISSION");
-        }
-        if !status.unwrap().success() {
-            return Err("PERMISSION");
-        }
-        let mut output = Vec::new();
-        child
-            .stdout
-            .take()
-            .ok_or("PERMISSION")?
-            .take(4097)
-            .read_to_end(&mut output)
-            .map_err(|_| "PERMISSION")?;
-        if output.len() > 4096 {
-            return Err("PERMISSION");
-        }
-        serde_json::from_slice(&output).map_err(|_| "PERMISSION")
+    }
+    let mut child = Command::new(helper)
+        .stdin(Stdio::piped())
+        .stdout(Stdio::piped())
+        .stderr(Stdio::null())
+        .spawn()
+        .map_err(|_| "PERMISSION")?;
+    let sent = child.stdin.take().ok_or("PERMISSION")?.write_all(&payload);
+    payload.zeroize();
+    if sent.is_err() {
+        let _ = child.kill();
+        let _ = child.wait();
+        return Err("PERMISSION");
+    }
+    let status = child.wait_timeout(wait).map_err(|_| "PERMISSION")?;
+    if status.is_none() {
+        let _ = child.kill();
+        let _ = child.wait();
+        return Err("CANCELLED");
+    }
+    if !status.unwrap().success() {
+        return Err("PERMISSION");
+    }
+    let mut output = Vec::new();
+    child
+        .stdout
+        .take()
+        .ok_or("PERMISSION")?
+        .take(4097)
+        .read_to_end(&mut output)
+        .map_err(|_| "PERMISSION")?;
+    if output.len() > 4096 {
+        output.zeroize();
+        return Err("PERMISSION");
+    }
+    let reply = serde_json::from_slice(&output).map_err(|_| "PERMISSION");
+    output.zeroize();
+    reply
+}
+impl Clipboard {
+    fn request(&self, request: Value) -> Result<Value> {
+        helper_request(&self.helper, request, Duration::from_secs(5)).map_err(|code| {
+            if code == "CANCELLED" {
+                "PERMISSION"
+            } else {
+                code
+            }
+        })
     }
     pub fn copy(&mut self, mut value: String) -> Result<String> {
         let result = self.request(json!({"action": "copy", "value": value}));

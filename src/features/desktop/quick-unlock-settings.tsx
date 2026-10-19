@@ -13,7 +13,7 @@ export function QuickUnlockSettings() {
   const copy = quickUnlockCopy(t, unlock.support?.method);
   const [action, setAction] = useState<'enable' | 'disable' | null>(null);
   const configure = async (password: string) => {
-    if (action === 'enable') await session.enableBiometrics(password, { prompt: copy.unlock });
+    if (action === 'enable') await session.enableBiometrics(password, { prompt: copy.reason });
     else await session.disableQuickUnlock(password);
     await unlock.refresh();
   };

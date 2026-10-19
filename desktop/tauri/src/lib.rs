@@ -1,4 +1,5 @@
 pub mod backup;
+pub mod biometric;
 pub mod commands;
 pub mod files;
 pub mod icons;
@@ -28,6 +29,8 @@ use tauri::{
 
 pub struct Host {
     pub directory: PathBuf,
+    /// Native helper for clipboard, activity monitoring and Touch ID.
+    pub helper: PathBuf,
     pub files: FileStore,
     pub linked: Mutex<linked_files::LinkedVaultFiles>,
     pub mirror: Mutex<backup::BackupMirror>,
@@ -50,6 +53,7 @@ impl Host {
             linked: Mutex::new(linked_files::LinkedVaultFiles::new(directory.clone())?),
             mirror: Mutex::new(backup::BackupMirror::new(directory.clone())),
             directory,
+            helper: helper.clone(),
             files: FileStore { root },
             settings: Mutex::new(settings),
             clipboard: Mutex::new(security::Clipboard {

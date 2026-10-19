@@ -6,6 +6,8 @@ export function quickUnlockCopy(t: Translator, method: QuickUnlockMethod = 'pass
   return {
     name,
     unlock: t('Mở khoá bằng {method}', { method: name }),
+    /** Reason shown inside the system Touch ID prompt. */
+    reason: t('mở khoá kho mật khẩu'),
     description: method === 'passkey' ? t('Dùng Face ID, Touch ID, Windows Hello hoặc khoá bảo mật theo thiết bị của bạn.')
       : t('Xác thực bằng {method} để mở kho trên thiết bị này.', { method: name }),
   };

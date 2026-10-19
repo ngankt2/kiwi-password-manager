@@ -73,6 +73,13 @@ export function createTauriBridge(): DesktopBridge {
     backupStatus: () => call('backup:status'),
     chooseBackupFolder: () => call('backup:folder'),
     fetchIconResource: (url, kind) => call('icons:fetch', url, kind),
+    biometrics: {
+      support: () => call('biometric:support'),
+      enrolled: (id) => call('biometric:enrolled', id),
+      enroll: (id, binding, key) => call('biometric:enroll', id, binding, key),
+      recover: (id, binding, prompt) => call('biometric:recover', id, binding, prompt),
+      revoke: (id) => call('biometric:revoke', id),
+    },
     updates: {
       getState: () => invoke<UpdateState>('desktop_update_state'),
       check: () => invoke<UpdateState>('desktop_update_check'),

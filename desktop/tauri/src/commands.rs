@@ -1,4 +1,4 @@
-use crate::{files::*, preferences, security, Host};
+use crate::{biometric, files::*, preferences, security, Host};
 use base64::{engine::general_purpose::STANDARD, Engine};
 use serde::Serialize;
 use serde_json::{json, Value};
@@ -181,17 +181,16 @@ pub fn validate_external_url(value: &str) -> Result<tauri::Url> {
 pub fn expected_args(channel: &str) -> Option<usize> {
     match channel {
         "vault-files:list" | "dialog:open" | "preferences:read" | "security:locked"
-        | "backup:status" | "backup:folder" => Some(0),
+        | "backup:status" | "backup:folder" | "biometric:support" => Some(0),
         "files:read" | "files:remove" | "files:list" | "vault-files:read"
-        | "vault-files:forget" | "preferences:write" | "clipboard:clear" | "external:open" => {
-            Some(1)
-        }
+        | "vault-files:forget" | "preferences:write" | "clipboard:clear" | "external:open"
+        | "biometric:enrolled" | "biometric:revoke" => Some(1),
         "files:write"
         | "files:promote"
         | "vault-files:choose-location"
         | "clipboard:copy"
         | "icons:fetch" => Some(2),
-        "dialog:save" => Some(3),
+        "dialog:save" | "biometric:enroll" | "biometric:recover" => Some(3),
         "vault-files:attach" | "vault-files:write" => Some(4),
         "vault-files:relocate" => Some(5),
         _ => None,
@@ -384,6 +383,15 @@ pub fn dispatch(
             Ok(json!(host.clipboard.lock().unwrap().clear(Some(owner))?))
         }
         "security:locked" => Ok(json!(host.device_locked.load(Ordering::Acquire))),
+        "biometric:support" => biometric::support(host),
+        "biometric:enrolled" => biometric::enrolled(host, string(args, 0)?),
+        "biometric:enroll" => {
+            biometric::enroll(host, string(args, 0)?, string(args, 1)?, string(args, 2)?)
+        }
+        "biometric:recover" => {
+            biometric::recover(host, string(args, 0)?, string(args, 1)?, string(args, 2)?)
+        }
+        "biometric:revoke" => biometric::revoke(host, string(args, 0)?),
         "backup:status" => Ok(host.mirror.lock().unwrap().status()),
         "backup:folder" => {
             let _activity = security::DialogActivity::new(app);

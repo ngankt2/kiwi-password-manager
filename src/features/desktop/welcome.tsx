@@ -72,6 +72,20 @@ export function DesktopWelcome({ mode = 'welcome' }: { mode?: 'welcome' | 'creat
   }, [canFocusPassword, selectedId, file, hidePassword]));
 
   useEffect(() => () => { file?.bytes.fill(0); }, [file]);
+  const unlockWithBiometrics = useCallback(() => {
+    if (!selectedId) return;
+    void run(async () => { await session.quickUnlock(selectedId, { prompt: unlockCopy.reason }); router.replace('/vault'); });
+  }, [run, selectedId, unlockCopy.reason]);
+  // Native Touch ID asks once when the unlock screen opens in a focused window; the button stays for retries.
+  const autoPrompted = useRef<string | null>(null);
+  const canAutoPrompt = mode === 'unlock' && state.status === 'locked' && !file && !!selectedId && !!desktopBridge()?.biometrics
+    && quickUnlock.enabled && !!quickUnlock.support?.available && !pending && !state.busy && !state.error;
+  useEffect(() => {
+    if (!canAutoPrompt || autoPrompted.current === selectedId || !document.hasFocus()) return;
+    autoPrompted.current = selectedId ?? null;
+    unlockWithBiometrics();
+  }, [canAutoPrompt, selectedId, unlockWithBiometrics]);
+
   const openFile = () => run(async () => {
     const picked = await pickFile();
     if (!picked) return;
@@ -158,7 +172,7 @@ export function DesktopWelcome({ mode = 'welcome' }: { mode?: 'welcome' | 'creat
       </div>
       {state.error && <div className="desktop-error">{text(state.error)}</div>}
       {state.error && !file && selectedId && <Button icon="restore" onClick={() => router.push({ pathname: '/recovery', params: { id: selectedId } })}>{t("Mở bản phục hồi")}</Button>}
-      {!file && quickUnlock.enabled && quickUnlock.support?.available && selectedId && <Button icon={quickUnlock.support.method === 'passkey' ? 'key' : 'fingerprint'} busy={pending || state.busy} onClick={() => run(async () => { await session.quickUnlock(selectedId, { prompt: unlockCopy.unlock }); router.replace('/vault'); })}>{unlockCopy.unlock}</Button>}
+      {!file && quickUnlock.enabled && quickUnlock.support?.available && selectedId && <Button icon={quickUnlock.support.method === 'passkey' ? 'key' : 'fingerprint'} busy={pending || state.busy} onClick={unlockWithBiometrics}>{unlockCopy.unlock}</Button>}
       {!file && !selectedId && <Button icon="folder_open" onClick={openFile}>{t("Chọn file Vault…")}</Button>}
       <button type="button" className="desktop-link-button muted" onClick={() => setHelp(true)}>{t("Quên Master Password?")}</button>
       <button type="button" className="desktop-link-button" style={{ marginTop: 12 }} onClick={() => router.replace({ pathname: '/', params: { chooseVault: '1' } })}>{t("Mở Vault khác")}</button>
