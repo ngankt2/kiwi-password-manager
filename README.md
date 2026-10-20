@@ -11,7 +11,8 @@
 | | |
 | --- | --- |
 | **What it is** | A local-first password manager and authenticator for Mac |
-| **Platform** | macOS 13 Ventura or later, universal app (Apple Silicon and Intel) |
+| **Platform** | macOS 13 Ventura or later — separate builds for Apple Silicon and Intel Macs |
+| **Code signing** | Signed with an Apple Developer ID and notarized by Apple |
 | **Where data lives** | Only on your device, in encrypted `.akpr` vault files |
 | **Encryption** | AES-256-GCM; key derived from your master password with Argon2id (64 MiB memory) |
 | **Unlock** | Master password (12+ characters) or Touch ID |
@@ -37,9 +38,13 @@
 
 ## Install on Mac
 
-1. Download `KiwiPassword_<version>_universal.dmg` from the [latest release](https://github.com/ngankt2/kiwi-password-manager/releases/latest).
-2. Open the `.dmg` and drag **Kiwi Password** into **Applications**.
-3. On first launch, macOS may say the app cannot be verified because it is not yet notarized by Apple. Control-click the app and choose **Open**, or open **System Settings → Privacy & Security** and click **Open Anyway**.
+1. Check your Mac's chip: Apple menu  → **About This Mac**. A **Chip** line such as "Apple M1" means Apple Silicon; a **Processor** line with "Intel" means an Intel Mac.
+2. From the [latest release](https://github.com/ngankt2/kiwi-password-manager/releases/latest), download the matching installer:
+   - **Apple Silicon (M1, M2, M3, M4…):** `KiwiPassword_<version>_apple-silicon.dmg`
+   - **Intel:** `KiwiPassword_<version>_intel.dmg`
+3. Open the `.dmg` and drag **Kiwi Password** into **Applications**, then open it.
+
+The app and installers are signed with an Apple Developer ID and notarized by Apple, so macOS opens them without security warnings.
 
 After that, Kiwi Password checks for new versions on its own. When an update is available it shows the version and what changed, and installs only when you click **Download and install**. Every update is verified with the app's Minisign key before it is installed.
 
@@ -67,7 +72,10 @@ Yes. Open a KeePass `.kdbx` file, preview the data, and import it into a new Kiw
 Yes. Turn on Touch ID in **Settings → Sign-in & unlock**. The master password is still required to enable it and after a password change.
 
 ### Does it work on Intel Macs?
-Yes. The app is a universal build for both Apple Silicon (M-series) and Intel Macs running macOS 13 or later.
+Yes. Kiwi Password has a separate build for Intel Macs and for Apple Silicon (M-series) Macs, both for macOS 13 or later. Download `intel.dmg` for an Intel Mac and `apple-silicon.dmg` for an M-series Mac; in-app updates always install the build for your Mac.
+
+### Is Kiwi Password safe to install?
+The app and its installers are signed with AppKiro's Apple Developer ID and notarized by Apple, which scans them for malware before macOS allows them to open. Every in-app update is additionally verified with the app's own Minisign signature before installation.
 
 ### What happens if I forget my master password?
 The vault cannot be recovered. Because encryption happens only on your device, there is no reset link. Keep your master password and an encrypted backup somewhere safe.
@@ -92,12 +100,17 @@ Not yet. Kiwi Password has not undergone an independent security audit.
 - Lịch sử phiên bản cho từng mục, sao lưu mã hoá tự động và thủ công.
 - Tự khoá khi rời ứng dụng, khi máy khoá màn hình hoặc ngủ; tự xoá mật khẩu đã sao chép.
 - Hỗ trợ tiếng Việt, tiếng Anh, tiếng Tây Ban Nha, tiếng Pháp và tiếng Trung giản thể.
-- Chạy trên macOS 13 trở lên, cả Mac Apple Silicon và Mac Intel.
+- Chạy trên macOS 13 trở lên, có bản riêng cho Mac chip Apple và Mac Intel.
+- Được ký bằng Apple Developer ID và đã qua kiểm tra (notarize) của Apple.
 
 **Cài đặt**
-1. Tải tệp `.dmg` ở [bản phát hành mới nhất](https://github.com/ngankt2/kiwi-password-manager/releases/latest).
-2. Mở tệp `.dmg` và kéo **Kiwi Password** vào thư mục **Applications**.
-3. Lần đầu mở, nếu macOS báo không xác minh được ứng dụng, hãy Control-click vào ứng dụng rồi chọn **Open**, hoặc vào **System Settings → Privacy & Security** và bấm **Open Anyway**.
+1. Xem loại chip của máy: menu Apple  → **About This Mac** (Giới thiệu về máy Mac này). Dòng **Chip** ghi "Apple M…" là Mac chip Apple; dòng **Processor** ghi "Intel" là Mac Intel.
+2. Ở [bản phát hành mới nhất](https://github.com/ngankt2/kiwi-password-manager/releases/latest), tải đúng bộ cài:
+   - **Mac chip Apple (M1, M2, M3, M4…):** `KiwiPassword_<version>_apple-silicon.dmg`
+   - **Mac Intel:** `KiwiPassword_<version>_intel.dmg`
+3. Mở tệp `.dmg`, kéo **Kiwi Password** vào thư mục **Applications** rồi mở ứng dụng.
+
+Ứng dụng và bộ cài đã được ký bằng Apple Developer ID và notarize bởi Apple, nên macOS mở được ngay mà không cảnh báo.
 
 Sau đó ứng dụng tự kiểm tra bản mới, hiển thị nội dung thay đổi và chỉ cài khi bạn bấm **Tải và cài đặt**. Mọi bản cập nhật đều được xác minh chữ ký trước khi cài.
 
@@ -107,10 +120,12 @@ Sau đó ứng dụng tự kiểm tra bản mới, hiển thị nội dung thay 
 
 **Không có mạng có dùng được không?** Có. Mọi thao tác với kho đều chạy ngoại tuyến. Ứng dụng chỉ kết nối mạng để kiểm tra cập nhật và tải biểu tượng website nếu bạn dùng.
 
+**Máy Mac Intel có dùng được không?** Có. Tải bộ cài `intel.dmg` cho Mac Intel và `apple-silicon.dmg` cho Mac chip Apple. Khi cập nhật trong ứng dụng, máy luôn nhận đúng bản của mình.
+
 **Quên mật khẩu chính thì sao?** Không thể khôi phục kho. Dữ liệu chỉ được mã hoá trên máy bạn nên không có cách đặt lại mật khẩu. Hãy giữ mật khẩu chính và bản sao lưu mã hoá ở nơi an toàn.
 
 ---
 
 Kiwi Password is made by [AppKiro](https://appkiro.com). Privacy questions: [appkiro.com/contact](https://appkiro.com/contact).
 
-<!-- Keywords: offline password manager for Mac, local password manager macOS, KeePass alternative for Mac, password manager without cloud, Touch ID password manager, TOTP authenticator Mac, encrypted password vault, trình quản lý mật khẩu, quản lý mật khẩu offline cho Mac -->
+<!-- Keywords: offline password manager for Mac, local password manager macOS, KeePass alternative for Mac, password manager without cloud, Touch ID password manager, notarized password manager for Mac, password manager for Intel Mac, password manager for Apple Silicon, TOTP authenticator Mac, encrypted password vault, trình quản lý mật khẩu, quản lý mật khẩu offline cho Mac -->
