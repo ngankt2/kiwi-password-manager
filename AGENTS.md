@@ -35,8 +35,9 @@ Run lint and typecheck before declaring any task done.
 
 When a desktop build is meant for users (a "release", "phát hành", "build bản mới cho người dùng"), ship it through the update channel. Details: `docs/AUTOUPDATE.md`.
 
-- Release command: `bun run release:macos --notes-file <file>`. It is the only path that bumps, builds the universal app, signs the update archive, creates the DMG and `latest.json`, and publishes to GitHub Releases. `build:macos` alone builds without publishing (local testing only).
+- Release command: `bun run release:macos --notes-file <file>`. It is the only path that bumps, builds separate Apple Silicon and Intel apps, signs them with Developer ID and notarizes them, signs the update archives, creates notarized DMGs and `latest.json`, and publishes to GitHub Releases. `build:macos` alone builds without publishing (local testing only).
 - Write user-facing release notes (what changed, in the app's languages if appropriate) to a file outside the repo, e.g. the scratchpad, and show them to the user before releasing. Never publish with empty or placeholder notes.
+- Release builds must be Developer ID signed and notarized; never publish ad-hoc (`--no-updater`) builds or skip notarization.
 - Publishing to GitHub is outward-facing: confirm with the user before running `release:macos` or `publish:macos`.
 - `https://github.com/ngankt2/kiwi-password-manager` is distribution-only. Never push source code, history, branches or tags from this repo there; never add it as a git remote. Upload only the assets produced by the release script.
 - Tags are `v<version>`. Never delete, replace or re-upload assets of a published release; fix problems with a newer version. If only the publish step failed, retry with `bun run publish:macos <version>` (no rebuild, no extra bump).

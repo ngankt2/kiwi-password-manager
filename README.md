@@ -14,13 +14,13 @@ bun run desktop:prepare
 bun run desktop:start
 ```
 
-Package a universal (Apple Silicon + Intel) app:
+Package signed and notarized apps for Apple Silicon and Intel:
 
 ```sh
 bun run build:macos
 ```
 
-The `.app`, `.dmg` installer, `.app.tar.gz` update package, signature, and `latest.json` are written to `desktop-release/tauri-<version>/`. To build and publish a release that installed apps update to, run `bun run release:macos --notes-file <notes.md>`; it uploads the artifacts to [GitHub Releases](https://github.com/ngankt2/kiwi-password-manager/releases). The default build requires an app-specific update signing key; see the [update guide](docs/AUTOUPDATE.md). Use `bun run build:macos --no-updater` to create a local package without an update signing key. The app is currently ad hoc signed. Update signatures do not replace Apple Developer ID signing or notarization.
+Each architecture's `.app` (in `aarch64/` and `x86_64/`), notarized `.dmg` installer, `.app.tar.gz` update package and signature, plus `latest.json`, are written to `desktop-release/tauri-<version>/`. To build and publish a release that installed apps update to, run `bun run release:macos --notes-file <notes.md>`; it uploads the artifacts to [GitHub Releases](https://github.com/ngankt2/kiwi-password-manager/releases). The default build requires an app-specific update signing key; see the [update guide](docs/AUTOUPDATE.md). Use `bun run build:macos --no-updater` to create a local package without an update signing key. Release builds require the Developer ID Application certificate and a `notarytool` keychain profile; `--no-updater` builds are ad hoc signed for local use.
 
 Every application build, including `desktop:prepare` and rebuilds, increases the patch version before export. The build wrapper synchronizes `package.json`, `app.json`, the Rust manifest and lockfile, and the iOS and Android build counters. Keep the increased versions even if the build fails. Use the build commands in `package.json`; direct Expo export/run or EAS build commands bypass this versioning requirement. Worker compilation, tests, and development servers do not increase the application version.
 

@@ -2,7 +2,7 @@
   "expo": {
     "name": "Kiwi Password",
     "slug": "appkiro-password-manager",
-    "version": "1.0.29",
+    "version": "1.0.30",
     "orientation": "default",
     "icon": "./assets/images/icon.png",
     "scheme": "appkiropasswordmanager",
@@ -15,7 +15,7 @@
         "UIFileSharingEnabled": false,
         "LSSupportsOpeningDocumentsInPlace": false
       },
-      "buildNumber": "30"
+      "buildNumber": "31"
     },
     "android": {
       "package": "com.appkiro.kiwipassword",
@@ -27,7 +27,7 @@
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
       "predictiveBackGestureEnabled": false,
-      "versionCode": 30
+      "versionCode": 31
     },
     "web": {
       "output": "server",

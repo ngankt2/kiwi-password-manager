@@ -1,7 +1,7 @@
 import { readFile, stat } from 'node:fs/promises';
 import { join, resolve } from 'node:path';
 import { spawnSync } from 'node:child_process';
-import { RELEASE_REPOSITORY, releaseAssets, releaseTag } from './prepare-desktop-release';
+import { RELEASE_REPOSITORY, releaseAssets, releaseTag, releaseUrl } from './prepare-desktop-release';
 
 // The release repository only distributes binaries. Nothing from this source tree
 // is pushed there: the only commit is a generated README that lets tags exist.
@@ -9,7 +9,7 @@ const README = `# Kiwi Password releases
 
 This repository distributes signed macOS builds of Kiwi Password. It contains no source code.
 
-Download the latest \`.dmg\` from [Releases](https://github.com/${RELEASE_REPOSITORY}/releases/latest). Installed apps update themselves from \`latest.json\` in the latest release; every update archive is verified with the app's Minisign key before installation.
+Download the \`.dmg\` for your Mac (Apple Silicon or Intel) from [Releases](https://github.com/${RELEASE_REPOSITORY}/releases/latest). Installed apps update themselves from \`latest.json\` in the latest release; every update archive is verified with the app's Minisign key before installation.
 `;
 
 function gh(args: string[], options: { allowFailure?: boolean; input?: string } = {}) {
@@ -32,11 +32,11 @@ export async function publishDesktopRelease(directory: string) {
   const assets = releaseAssets(version);
   const notes = (await readFile(join(directory, assets.notes), 'utf8')).trim();
   if (!notes || notes === `Kiwi Password ${version}.`) throw new Error('Release notes are required. Rebuild with --notes-file describing the changes.');
-  const files = [assets.installer, assets.archive, assets.signature, assets.manifest].map((name) => join(directory, name));
+  const files = [...assets.builds.flatMap((build) => [build.installer, build.archive, build.signature]), assets.manifest].map((name) => join(directory, name));
   for (const file of files) if (!(await stat(file)).isFile()) throw new Error(`Missing release asset ${file}.`);
   const tag = releaseTag(version);
-  for (const platform of Object.values<{ url: string }>(manifest.platforms)) {
-    if (platform.url !== `https://github.com/${RELEASE_REPOSITORY}/releases/download/${tag}/${assets.archive}`) throw new Error('latest.json points outside this release.');
+  for (const build of assets.builds) {
+    if (manifest.platforms?.[build.platform]?.url !== releaseUrl(version, build.archive)) throw new Error(`latest.json must point ${build.platform} at ${build.archive} in this release.`);
   }
 
   gh(['auth', 'status']);

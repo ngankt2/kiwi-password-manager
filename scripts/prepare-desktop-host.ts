@@ -16,7 +16,7 @@ export async function prepareDesktopHost(root: string) {
     }
   }
   runBuildCommand(root, 'iconutil', ['--convert', 'icns', '--output', join(root, '.desktop-stage/appkiro.icns'), iconset]);
-  // The helper ships inside the universal app, so it must carry both architectures.
+  // Debug builds use the universal helper; release builds bundle the matching slice.
   const slices = ['arm64', 'x86_64'].map((arch) => {
     const slice = join(root, `.desktop-stage/kiro-security-${arch}`);
     runBuildCommand(root, 'xcrun', ['swiftc', '-O', '-target', `${arch}-apple-macos13.0`, 'desktop/macos-security.swift', '-o', slice]);

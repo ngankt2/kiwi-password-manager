@@ -12,11 +12,11 @@ The Rust host owns the checked release; the UI supplies only its version. It acc
 
 [`ngankt2/kiwi-password-manager`](https://github.com/ngankt2/kiwi-password-manager) is a distribution-only repository. Never push this source tree or its history there. Its only commit is a generated README, created by the publish script when the repository is empty, so release tags have something to point at. Release tags are `v<version>`.
 
-Each release contains:
+Each release has a separate build for Apple Silicon and for Intel Macs:
 
-- `KiwiPassword_<version>_universal.dmg` — installer for new users
-- `KiwiPassword_<version>_universal.app.tar.gz` and its `.sig` — the signed update payload
-- `latest.json` — the update manifest, listing the same universal archive for `darwin-aarch64` and `darwin-x86_64`
+- `KiwiPassword_<version>_apple-silicon.dmg` and `KiwiPassword_<version>_intel.dmg` — signed, notarized installers for new users
+- `KiwiPassword_<version>_aarch64.app.tar.gz` and `KiwiPassword_<version>_x86_64.app.tar.gz`, each with its `.sig` — the update payloads
+- `latest.json` — the update manifest, pointing `darwin-aarch64` and `darwin-x86_64` at their own archive
 
 The release body is the release notes. Published releases are never replaced; fix a bad release by building a newer version.
 
@@ -26,6 +26,23 @@ The public key is kept in `desktop/tauri/updater.pub` and in the Tauri configura
 
 Builds read `TAURI_SIGNING_PRIVATE_KEY` when supplied, otherwise that local path. Encrypted keys use `TAURI_SIGNING_PRIVATE_KEY_PASSWORD`. Never put a private key in source, a release folder, a command argument or a public manifest.
 
+## Apple signing and notarization
+
+Release builds are signed with the **Developer ID Application** certificate of team `943C9WTE6D` (hardened runtime, secure timestamp) and notarized by Apple, so Gatekeeper opens them without warnings. The build:
+
+1. signs the bundled `kiro-security` helper, then lets Tauri sign each app with the same identity;
+2. notarizes each app with `xcrun notarytool`, staples the ticket and checks it with `spctl`;
+3. builds the updater archive from the stapled app and signs it with Minisign (`tauri signer sign --app-version`);
+4. signs, notarizes and staples each DMG.
+
+Requirements: the Developer ID Application certificate and its private key in the login keychain (override the identity with `APPLE_SIGNING_IDENTITY`), and a notarytool keychain profile named `notarytool` (override with `APPLE_NOTARY_PROFILE`). Create the profile once with:
+
+```sh
+xcrun notarytool store-credentials notarytool --apple-id <apple-id> --team-id 943C9WTE6D
+```
+
+Builds fail rather than fall back to ad-hoc signing when the certificate or profile is missing. `--no-updater` builds remain ad-hoc signed for local use only and build just this Mac's architecture.
+
 ## Build → sign → publish
 
 Write the release notes for users to a UTF-8 file, then run one command:
@@ -34,9 +51,9 @@ Write the release notes for users to a UTF-8 file, then run one command:
 bun run release:macos --notes-file /absolute/path/to/release-notes.md
 ```
 
-It bumps the patch version (package.json, app.json, native counters, Cargo), builds a universal app (Apple Silicon + Intel), signs the update archive, creates the DMG, writes `latest.json`, and publishes everything to GitHub Releases with `gh`. Assets are uploaded into a draft that is published only once complete, and the script then confirms the public channel reports the new version. It refuses to publish without notes, over an existing tag, or a version that is not newer than the latest release.
+It bumps the patch version (package.json, app.json, native counters, Cargo), builds separate apps for Apple Silicon and Intel, signs and notarizes them, signs the update archives, creates notarized DMGs, writes `latest.json`, and publishes everything to GitHub Releases with `gh`. Assets are uploaded into a draft that is published only once complete, and the script then confirms the public channel reports the new version. It refuses to publish without notes, over an existing tag, or a version that is not newer than the latest release.
 
-Requirements: `gh` signed in with write access to the release repository, Rust targets `aarch64-apple-darwin` and `x86_64-apple-darwin`, and the signing key.
+Requirements: `gh` signed in with write access to the release repository, Rust targets `aarch64-apple-darwin` and `x86_64-apple-darwin`, the updater signing key, and the Apple signing requirements above.
 
 If publishing fails after a successful build (for example, a network error), publish the existing artifacts without rebuilding:
 
@@ -46,7 +63,7 @@ bun run publish:macos <version>
 
 `bun run build:macos [--notes-file …]` builds the same artifacts in `desktop-release/tauri-<version>/` without publishing. `bun run build:macos --no-updater` builds a local app without an update payload on machines without the key.
 
-The app is ad-hoc signed. Updater signatures authenticate payloads; they do not replace Apple Developer ID signing or notarization, so first-time installs from the DMG must be opened with Control-click → Open. Read-only/translocated bundles must be moved to `/Applications` before updating. Installations from before this channel (1.0.28 and earlier, which used the `ngankt2/appkiro.com` channel) need one manual install from the DMG.
+Updater signatures (Minisign) and Apple signatures are independent: the first authenticates update payloads for the in-app updater, the second lets Gatekeeper trust the app and DMG. Releases up to 1.0.29 were ad-hoc signed and updating from them installs the Developer ID build in place. Read-only/translocated bundles must be moved to `/Applications` before updating. Installations from before this channel (1.0.28 and earlier, which used the `ngankt2/appkiro.com` channel) need one manual install from the DMG.
 
 ## Verification
 

@@ -361,7 +361,7 @@ mod tests {
     }
     #[test]
     fn releases_are_scoped_to_the_product_and_exact_version() {
-        let good = "https://github.com/ngankt2/kiwi-password-manager/releases/download/v1.2.3/KiwiPassword_1.2.3_universal.app.tar.gz";
+        let good = "https://github.com/ngankt2/kiwi-password-manager/releases/download/v1.2.3/KiwiPassword_1.2.3_aarch64.app.tar.gz";
         assert!(valid_download(&good.parse().unwrap(), "1.2.3"));
         for bad in [
             good.replace("https:", "http:"),
