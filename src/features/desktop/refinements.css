@@ -69,6 +69,11 @@
 .desktop-section-heading{flex-wrap:wrap}
 .desktop-form-actions,.desktop-editor-save{flex-wrap:wrap}
 .desktop-attachment .desktop-icon-button{flex-shrink:0}
+.desktop-attachment{padding-right:6px}.desktop-attachment>.muted{flex-shrink:0}
+.desktop-attachment-name{min-width:0;height:44px;padding:0;border:0;background:none;color:inherit;font:inherit;text-align:left;cursor:pointer;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.desktop-attachment-dialog.wide{width:min(760px,calc(100vw - 32px))}.desktop-attachment-dialog .desktop-dialog-header h2{overflow-wrap:anywhere}
+.desktop-attachment-preview{margin:0;max-height:min(56vh,520px);overflow:auto;padding:12px 14px;border-radius:10px;background:var(--color-card);box-shadow:inset 0 0 0 .5px var(--color-card-ring);color:var(--color-text);font-size:12.5px;line-height:1.55;white-space:pre;tab-size:2;user-select:text;-webkit-user-select:text;overscroll-behavior:contain}
+.desktop-attachment-preview:focus-visible{outline:2px solid var(--color-accent);outline-offset:2px}
 .desktop-setting-row select{max-width:100%}
 .desktop-menu{max-width:min(360px,calc(100vw - 16px))}
 .desktop-menu-heading{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}

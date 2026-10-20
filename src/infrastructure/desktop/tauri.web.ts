@@ -59,6 +59,10 @@ export function createTauriBridge(): DesktopBridge {
       const value = await call<{ name: string; bytes: string; sourceToken?: string; sourceLocation?: string } | null>('dialog:open');
       return value ? { ...value, bytes: fromBase64(value.bytes) } : null;
     },
+    pickAttachment: async () => {
+      const value = await call<{ name: string; bytes: string } | null>('dialog:attach');
+      return value ? { name: value.name, bytes: fromBase64(value.bytes) } : null;
+    },
     exportFile: (name, bytes, plaintext) => call('dialog:save', name, toBase64(bytes), plaintext),
     preferences: { read: () => call('preferences:read'), write: (settings) => call('preferences:write', settings) },
     clipboard: { copy: (value, seconds) => call('clipboard:copy', value, seconds), clearIfOwned: (token) => call('clipboard:clear', token) },

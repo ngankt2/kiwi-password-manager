@@ -1,7 +1,7 @@
 {
   "name": "appkiro-password-manager",
   "main": "expo-router/entry",
-  "version": "1.0.28",
+  "version": "1.0.29",
   "dependencies": {
     "@expo-google-fonts/dm-sans": "^0.4.2",
     "@expo-google-fonts/jetbrains-mono": "^0.4.1",
@@ -84,6 +84,8 @@
     "desktop:prepare": "bun scripts/build-desktop.ts --prepare",
     "desktop:start": "bun scripts/start-desktop.ts",
     "build:macos": "bun scripts/build-desktop.ts",
+    "release:macos": "bun scripts/build-desktop.ts --publish",
+    "publish:macos": "bun scripts/publish-desktop-release.ts",
     "build:ios": "bun scripts/build-native.ts ios",
     "build:ios:appstore": "bun scripts/build-native.ts ios --local --archive --team 943C9WTE6D",
     "build:android": "bun scripts/build-native.ts android",

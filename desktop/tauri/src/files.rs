@@ -10,6 +10,8 @@ use std::{
 
 pub type Result<T> = std::result::Result<T, &'static str>;
 pub const MAX_BYTES: usize = 67_108_864;
+/// Mirrors `MAX_ATTACHMENT_BYTES` in the renderer.
+pub const MAX_ATTACHMENT_BYTES: usize = 8_388_608;
 pub fn io_error(error: std::io::Error) -> &'static str {
     match error.raw_os_error() {
         Some(libc::ENOENT) => "NOT_FOUND",

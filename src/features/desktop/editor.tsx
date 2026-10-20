@@ -6,10 +6,10 @@ import { isKeePassOtpSecret, isOtpField } from '@/domain/entities/otp';
 import { invalidOtpFieldIds } from '@/domain/services/otp';
 import { fieldsForType } from '@/domain/entities/templates';
 import { createItem, saveItem } from '@/domain/services/items';
-import { toBase64, wipe } from '@/core/bytes';
+import { wipe } from '@/core/bytes';
 import { VaultError } from '@/core/errors';
 import { session } from '@/infrastructure/session';
-import { pickFile } from '@/infrastructure/filesystem/transfer';
+import { pickAttachment } from '@/infrastructure/filesystem/transfer';
 import { useSession } from '@/shared/hooks/use-session';
 import { useAction } from '@/shared/hooks/use-action';
 import { useConfirmation } from '@/shared/hooks/use-confirmation';
@@ -22,6 +22,7 @@ import { useLabels } from './labels';
 import { Button, Dialog, EmptyState, Icon, IconButton, Input, PasswordStrength } from './ui';
 import { ItemIconPicker } from './item-icon-picker';
 import { ENV_FIELD_ID } from '@/domain/entities/env';
+import { attachmentSizeLabel, createAttachment } from '@/domain/entities/attachment';
 
 const kindLabels: Record<FieldKind, string> = { text: 'Văn bản', secret: 'Bí mật', number: 'Số', url: 'URL', email: 'Email', date: 'Ngày', otp: 'OTP' };
 const parseTags = (value: string) => [...new Set(value.split(',').map((tag) => tag.trim()).filter(Boolean))];
@@ -101,11 +102,10 @@ function EditorForm({ existing, editing, itemType, folder, generate }: {
   const templates = new Set(fieldsForType(draft.type).map((field) => field.id));
   const cancel = () => workspace.navigate(() => existing ? workspace.openItem(existing.id) : workspace.backToList());
   const attach = () => run(async () => {
-    const file = await pickFile(false);
+    const file = await pickAttachment();
     if (!file) return;
     try {
-      if (file.bytes.length > 8_388_608) throw new VaultError('LIMIT_EXCEEDED');
-      update('attachments', [...draft.attachments, { id: session.id(), name: file.name, data: toBase64(file.bytes), size: file.bytes.length, mimeType: 'application/octet-stream' }]);
+      update('attachments', [...draft.attachments, createAttachment(session.id(), file.name, file.bytes)]);
     } finally { wipe(file.bytes); }
   });
   return <>
@@ -147,7 +147,7 @@ function EditorForm({ existing, editing, itemType, folder, generate }: {
         <Input label={t("Thẻ")} value={tags} onChange={(event) => { setTags(event.target.value); touch(); }} placeholder={t("Phân cách bằng dấu phẩy")} />
         <label className="desktop-generator-option"><input type="checkbox" checked={draft.favorite} onChange={(event) => update('favorite', event.target.checked)} />{t("Thêm vào Yêu thích")}</label>
         <section className="desktop-detail-section"><h2>{t("Tệp đính kèm")}</h2>
-          {draft.attachments.map((file) => <div className="desktop-attachment" key={file.id}><Icon name="attach_file" /><span className="grow">{file.name}</span><span className="muted tiny">{Math.max(1, Math.round(file.size / 1024))} KB</span><IconButton icon="close" label={t('Xoá tệp {name}', { name: file.name })} onClick={() => confirm({ title: t("Gỡ tệp đính kèm?"), description: t('Tệp “{name}” sẽ bị gỡ khỏi bản chỉnh sửa. File gốc trên thiết bị vẫn được giữ nguyên. Thay đổi chỉ được áp dụng khi bạn lưu mục.', { name: file.name }), confirmLabel: t("Gỡ tệp"), onConfirm: () => update('attachments', draft.attachments.filter((entry) => entry.id !== file.id)) })} /></div>)}
+          {draft.attachments.map((file) => <div className="desktop-attachment" key={file.id}><Icon name="attach_file" /><span className="grow">{file.name}</span><span className="muted tiny">{attachmentSizeLabel(file.size)}</span><IconButton icon="close" label={t('Xoá tệp {name}', { name: file.name })} onClick={() => confirm({ title: t("Gỡ tệp đính kèm?"), description: t('Tệp “{name}” sẽ bị gỡ khỏi bản chỉnh sửa. File gốc trên thiết bị vẫn được giữ nguyên. Thay đổi chỉ được áp dụng khi bạn lưu mục.', { name: file.name }), confirmLabel: t("Gỡ tệp"), onConfirm: () => update('attachments', draft.attachments.filter((entry) => entry.id !== file.id)) })} /></div>)}
           <Button className="desktop-add-field" icon="attach_file" busy={pending} onClick={attach}>{t("Đính kèm tệp")}</Button>
           <span className="desktop-hint">{t("Tối đa 8 MB mỗi tệp. Được mã hoá cùng Vault.")}</span>
         </section>

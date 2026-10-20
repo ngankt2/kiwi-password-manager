@@ -1,6 +1,6 @@
 # Kiwi Password
 
-[Appkiro website](https://appkiro.com) · [App overview](https://github.com/ngankt2/appkiro.com/tree/main/apps/appkiro-password-manager) · [Downloads](https://github.com/ngankt2/appkiro.com/releases?q=appkiro-password-manager)
+[Appkiro website](https://appkiro.com) · [App overview](https://github.com/ngankt2/appkiro.com/tree/main/apps/appkiro-password-manager) · [Downloads](https://github.com/ngankt2/kiwi-password-manager/releases/latest)
 
 A password manager that keeps vault data on your device. Vaults are stored as encrypted `.akpr` files, with no online account, cloud sync, or telemetry. The desktop app uses **Tauri v2**, an Expo Web interface, a TypeScript core, and Expo Router. Expo iOS and Android use separate runtimes and platform adapters. Network connections are used to check for updates and download icons or favicons when creating or editing entries.
 
@@ -14,13 +14,13 @@ bun run desktop:prepare
 bun run desktop:start
 ```
 
-Package the app for the current machine's architecture:
+Package a universal (Apple Silicon + Intel) app:
 
 ```sh
 bun run build:macos
 ```
 
-The `.app`, `.app.tar.gz` update package, signature, and `latest.json` are written to `desktop-release/tauri-<version>/`. The default build requires an app-specific update signing key; see the [update guide](docs/AUTOUPDATE.md). Use `bun run build:macos --no-updater` to create a local package without an update signing key. The app is currently ad hoc signed. Update signatures do not replace Apple Developer ID signing or notarization.
+The `.app`, `.dmg` installer, `.app.tar.gz` update package, signature, and `latest.json` are written to `desktop-release/tauri-<version>/`. To build and publish a release that installed apps update to, run `bun run release:macos --notes-file <notes.md>`; it uploads the artifacts to [GitHub Releases](https://github.com/ngankt2/kiwi-password-manager/releases). The default build requires an app-specific update signing key; see the [update guide](docs/AUTOUPDATE.md). Use `bun run build:macos --no-updater` to create a local package without an update signing key. The app is currently ad hoc signed. Update signatures do not replace Apple Developer ID signing or notarization.
 
 Every application build, including `desktop:prepare` and rebuilds, increases the patch version before export. The build wrapper synchronizes `package.json`, `app.json`, the Rust manifest and lockfile, and the iOS and Android build counters. Keep the increased versions even if the build fails. Use the build commands in `package.json`; direct Expo export/run or EAS build commands bypass this versioning requirement. Worker compilation, tests, and development servers do not increase the application version.
 

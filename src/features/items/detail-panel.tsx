@@ -4,11 +4,12 @@ import { useEffect, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { router } from 'expo-router';
 import * as Linking from 'expo-linking';
-import { Archive, ArrowLeft, ArrowUpRight, Check, ChevronRight, Copy, Eye, EyeOff, FolderInput, History, MoreHorizontal, Paperclip, Pencil, RotateCcw, Star, Trash2 } from 'lucide-react-native';
+import { Archive, ArrowLeft, ArrowUpRight, Check, ChevronRight, Copy, Download, Eye, EyeOff, FileText, FolderInput, History, MoreHorizontal, Paperclip, Pencil, RotateCcw, Star, Trash2 } from 'lucide-react-native';
 import { Button, Chip, Dialog, EmptyState, Eyebrow, IconButton, Select, T } from '@/design-system/components/ui';
 import { ReauthDialog } from '@/design-system/components/reauth-dialog';
 import { colors } from '@/design-system/tokens';
-import { isSecret, type CustomField, type VaultItem } from '@/domain/entities/vault';
+import { isSecret, type Attachment, type CustomField, type VaultItem } from '@/domain/entities/vault';
+import { attachmentSizeLabel, canPreviewAttachment, readAttachmentText } from '@/domain/entities/attachment';
 import { fieldsForType, TYPE_LABELS } from '@/domain/entities/templates';
 import { saveItem, updateItems } from '@/domain/services/items';
 import { folderPath } from '@/domain/services/search';
@@ -88,6 +89,52 @@ export function NoteSection({ notes, authorize }: { notes: string; authorize: (a
   </View>;
 }
 
+async function downloadAttachment(file: Attachment) {
+  const bytes = fromBase64(file.data);
+  try { await exportFile(file.name, bytes, true); } finally { wipe(bytes); }
+}
+
+/** Contents open inline under the row so a second modal never stacks on the re-authentication sheet. */
+function AttachmentSection({ attachments, authorize }: { attachments: Attachment[]; authorize: (action: () => Promise<void>) => void }) {
+  const { t } = useI18n();
+  const { settings, privacyEpoch } = useSession();
+  const { run } = useAction();
+  const [open, setOpen] = useState<{ id: string; content: string | null; epoch: number } | null>(null);
+  const viewing = open?.epoch === privacyEpoch ? open : null;
+  const view = (file: Attachment) => authorize(async () => setOpen({ id: file.id, content: readAttachmentText(file), epoch: privacyEpoch }));
+  const download = (file: Attachment) => viewing?.id === file.id ? run(() => downloadAttachment(file)) : authorize(() => downloadAttachment(file));
+  const copy = (content: string) => run(async () => {
+    const result = await clipboard.copy(content, settings.clipboardSeconds);
+    session.notify(result.autoClears ? t('Đã sao chép. Tự xoá sau {count} giây.', { count: settings.clipboardSeconds }) : t('Đã sao chép vào clipboard.'));
+  });
+  return <View style={styles.section}><Eyebrow>{t('Tệp đính kèm')}</Eyebrow>
+    {attachments.map((file) => {
+      const previewable = canPreviewAttachment(file);
+      const current = viewing?.id === file.id ? viewing : null;
+      return <View key={file.id} style={styles.attachmentCard}>
+        <Pressable accessibilityRole="button" accessibilityLabel={t(previewable ? 'Xem {name}' : 'Tải về {name}', { name: file.name })} style={styles.attachment}
+          onPress={() => current ? setOpen(null) : previewable ? view(file) : download(file)}>
+          {previewable ? <FileText size={17} color={colors.primary} /> : <Paperclip size={17} color={colors.primary} />}
+          <T style={{ flex: 1, fontSize: 17 }} numberOfLines={1}>{file.name}</T><T muted style={{ fontSize: 13 }}>{attachmentSizeLabel(file.size)}</T>
+          {previewable && <IconButton icon={current ? EyeOff : Eye} active={!!current} label={t(current ? 'Ẩn {name}' : 'Xem {name}', { name: file.name })} onPress={() => current ? setOpen(null) : view(file)} />}
+          <IconButton icon={Download} label={t('Tải về {name}', { name: file.name })} onPress={() => download(file)} />
+        </Pressable>
+        {current && (current.content === null
+          ? <View style={styles.attachmentBody}><T weight="bold" style={{ fontSize: 15 }}>{t('Không xem trước được tệp này')}</T><T muted style={{ fontSize: 13, lineHeight: 18 }}>{t('Chỉ xem trực tiếp được tệp văn bản đến 512 KB. Hãy tải về để mở bằng ứng dụng phù hợp.')}</T></View>
+          : <View style={styles.attachmentBody}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
+              <T muted style={{ flex: 1, fontSize: 13 }}>{t('{count} dòng', { count: current.content.split('\n').length })}</T>
+              <IconButton icon={Copy} label={t('Sao chép {name}', { name: file.name })} onPress={() => copy(current.content!)} />
+            </View>
+            <ScrollView style={styles.attachmentPreview} nestedScrollEnabled>
+              <ScrollView horizontal nestedScrollEnabled showsHorizontalScrollIndicator><T mono selectable style={{ fontSize: 12, lineHeight: 18 }}>{current.content}</T></ScrollView>
+            </ScrollView>
+          </View>)}
+      </View>;
+    })}
+  </View>;
+}
+
 export function DetailPanel({ item, onBack }: { item?: VaultItem; onBack?: () => void }) {
   const { t } = useI18n();
   const { confirm: confirmRemoval, confirmationDialog } = useConfirmation();
@@ -109,9 +156,7 @@ export function DetailPanel({ item, onBack }: { item?: VaultItem; onBack?: () =>
       {fields.some((field) => field.value) && <View style={styles.section}><Eyebrow>{item.type === 'login' ? 'Credentials' : 'Details'}</Eyebrow><View style={styles.fieldBox}>{fields.map((field) => <CredentialField key={item.id + ':' + field.id} field={field} fields={item.fields} authorize={authorize} />)}</View></View>}
       {(item.notes || item.type === 'secure-note') && <NoteSection key={item.id} notes={item.notes} authorize={authorize} />}
       {custom.length > 0 && <View style={styles.section}><Eyebrow>Custom fields</Eyebrow><View style={styles.fieldBox}>{custom.map((field) => <CredentialField key={item.id + ':' + field.id} field={field} fields={item.fields} authorize={authorize} />)}</View></View>}
-      {item.attachments.length > 0 && <View style={styles.section}><Eyebrow>Attachments</Eyebrow>{item.attachments.map((attachment) => <Pressable accessibilityRole="button" accessibilityLabel={`Export attachment ${attachment.name}`} key={attachment.id} style={styles.attachment} onPress={() => authorize(async () => { const bytes = fromBase64(attachment.data); try { await exportFile(attachment.name, bytes, true); } finally { wipe(bytes); } })}>
-        <Paperclip size={17} color={colors.primary} /><T style={{ flex: 1, fontSize: 17 }} numberOfLines={1}>{attachment.name}</T><T muted style={{ fontSize: 13 }}>{Math.max(1, Math.round(attachment.size / 1024))} KB</T><ArrowUpRight size={15} color={colors.secondary} />
-      </Pressable>)}</View>}
+      {item.attachments.length > 0 && <AttachmentSection key={item.id} attachments={item.attachments} authorize={authorize} />}
       {item.tags.length > 0 && <View style={styles.section}><Eyebrow>Tags</Eyebrow><View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 7 }}>{item.tags.map((tag) => <Chip key={tag} label={tag} onPress={() => router.push({ pathname: '/vault', params: { filter: `tag:${tag}` } })} />)}</View></View>}
       <View style={{ gap: 8 }}><Eyebrow>Information</Eyebrow><View style={{ borderRadius: 12, overflow: 'hidden' }}><View style={styles.information}><T muted style={{ fontSize: 17 }}>Created</T><T style={{ fontSize: 17, fontVariant: ['tabular-nums'] }}>{infoDate(item.createdAt)}</T></View><View style={[styles.information, { borderTopWidth: StyleSheet.hairlineWidth, borderColor: colors.border }]}><T muted style={{ fontSize: 17 }}>Last modified</T><T style={{ fontSize: 17, fontVariant: ['tabular-nums'] }}>{infoDate(item.updatedAt)}</T></View></View>
         <Pressable accessibilityRole="button" accessibilityLabel="Version history" onPress={() => router.push({ pathname: '/item/[id]/history', params: { id: item.id } })} style={styles.historyLink}><History size={18} color={colors.primary} /><T style={{ flex: 1, fontSize: 17 }}>Version history</T><T muted style={{ fontSize: 17 }}>{item.history.length}</T><ChevronRight size={16} color={colors.muted} /></Pressable>
@@ -135,5 +180,8 @@ const styles = StyleSheet.create({
   identity: { flexDirection: 'row', alignItems: 'center', gap: 16, marginBottom: 28, marginTop: 4 }, title: { fontSize: 28, lineHeight: 34, letterSpacing: 0.2 }, section: { gap: 8, marginBottom: 26 },
   fieldBox: { borderRadius: 12, overflow: 'hidden', backgroundColor: colors.surface }, field: { paddingLeft: 16, paddingRight: 4, paddingVertical: 10, minHeight: 64, gap: 6, flexDirection: 'row', alignItems: 'center', borderBottomWidth: StyleSheet.hairlineWidth, borderColor: colors.border },
   information: { flexDirection: 'row', justifyContent: 'space-between', gap: 12, minHeight: 44, alignItems: 'center', paddingHorizontal: 16, backgroundColor: colors.surface }, historyLink: { flexDirection: 'row', alignItems: 'center', minHeight: 48, gap: 10, paddingHorizontal: 16, backgroundColor: colors.surface, borderRadius: 12, marginTop: 14 },
-  attachment: { flexDirection: 'row', alignItems: 'center', minHeight: 50, backgroundColor: colors.surface, paddingHorizontal: 16, borderRadius: 12, gap: 10 }, lifecycleBanner: { flexDirection: 'row', alignItems: 'center', paddingLeft: 16, backgroundColor: colors.surface, borderRadius: 12, marginBottom: 20 },
+  attachmentCard: { backgroundColor: colors.surface, borderRadius: 12, overflow: 'hidden' },
+  attachment: { flexDirection: 'row', alignItems: 'center', minHeight: 50, paddingLeft: 16, paddingRight: 4, gap: 10 },
+  attachmentBody: { gap: 6, paddingHorizontal: 16, paddingBottom: 14, borderTopWidth: StyleSheet.hairlineWidth, borderColor: colors.border, paddingTop: 8 },
+  attachmentPreview: { maxHeight: 360, padding: 12, borderRadius: 8, backgroundColor: colors.background }, lifecycleBanner: { flexDirection: 'row', alignItems: 'center', paddingLeft: 16, backgroundColor: colors.surface, borderRadius: 12, marginBottom: 20 },
 });

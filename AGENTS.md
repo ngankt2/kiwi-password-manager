@@ -26,10 +26,22 @@ Run lint and typecheck before declaring any task done.
 ## Mandatory version increase for every app build
 
 - Every application build, including rebuilds and `desktop:prepare`, MUST increase the patch version before exporting or packaging. Auxiliary worker compilation, lint, tests, and development servers are not application builds.
-- Use the versioned package commands: `build:web`, `build:desktop:web`, `desktop:prepare`, `build:macos`, `build:ios`, `build:ios:appstore`, `build:android`, `build:native`, `build:mobile:cloud`, `ios`, or `android`. Do not bypass them with raw Expo export/run, EAS build, Tauri build/dev, or Cargo build commands. Direct execution of `scripts/build-desktop.ts` also performs the required bump and fresh export. `cargo check`, `cargo test` and `cargo fmt` are checks, not app builds.
+- Use the versioned package commands: `build:web`, `build:desktop:web`, `desktop:prepare`, `build:macos`, `release:macos`, `build:ios`, `build:ios:appstore`, `build:android`, `build:native`, `build:mobile:cloud`, `ios`, or `android`. Do not bypass them with raw Expo export/run, EAS build, Tauri build/dev, or Cargo build commands. Direct execution of `scripts/build-desktop.ts` also performs the required bump and fresh export. `cargo check`, `cargo test` and `cargo fmt` are checks, not app builds.
 - `scripts/build-version.ts` synchronizes `package.json`, `app.json`, iOS `buildNumber`, Android `versionCode`, `desktop/tauri/Cargo.toml` and the app entry in `Cargo.lock` before building. Keep these updated values after a build, including a failed build; do not roll versions back or reuse an old renderer export.
 - One complete build receives one version increase. Nested worker/export/packaging steps must not bump again. Keep EAS version source local and automatic increment disabled because the wrapper increments both native counters.
 - Report the resulting version and verify the packaged application and visible version agree. When committing build work at the user's request, include the synchronized version files.
+
+## Desktop release & auto update (macOS)
+
+When a desktop build is meant for users (a "release", "phát hành", "build bản mới cho người dùng"), ship it through the update channel. Details: `docs/AUTOUPDATE.md`.
+
+- Release command: `bun run release:macos --notes-file <file>`. It is the only path that bumps, builds the universal app, signs the update archive, creates the DMG and `latest.json`, and publishes to GitHub Releases. `build:macos` alone builds without publishing (local testing only).
+- Write user-facing release notes (what changed, in the app's languages if appropriate) to a file outside the repo, e.g. the scratchpad, and show them to the user before releasing. Never publish with empty or placeholder notes.
+- Publishing to GitHub is outward-facing: confirm with the user before running `release:macos` or `publish:macos`.
+- `https://github.com/ngankt2/kiwi-password-manager` is distribution-only. Never push source code, history, branches or tags from this repo there; never add it as a git remote. Upload only the assets produced by the release script.
+- Tags are `v<version>`. Never delete, replace or re-upload assets of a published release; fix problems with a newer version. If only the publish step failed, retry with `bun run publish:macos <version>` (no rebuild, no extra bump).
+- Never change the updater public key (`desktop/tauri/updater.pub`, `tauri.conf.json`) or move the channel URL without the user's explicit request: existing installs would stop receiving updates. Never commit, print or upload the private signing key.
+- After publishing, report the version, the release URL and that `releases/latest/download/latest.json` reports the new version.
 
 ## Navigation & Routing
 

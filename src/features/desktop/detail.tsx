@@ -1,6 +1,7 @@
 import { useI18n } from '@/shared/hooks/use-i18n';
 import { useEffect, useId, useState, type MouseEvent } from 'react';
-import { isSecret, type CustomField, type VaultItem } from '@/domain/entities/vault';
+import { isSecret, type Attachment, type CustomField, type VaultItem } from '@/domain/entities/vault';
+import { attachmentSizeLabel, canPreviewAttachment, readAttachmentText } from '@/domain/entities/attachment';
 import { fieldsForType } from '@/domain/entities/templates';
 import { folderPath } from '@/domain/services/search';
 import { updateItems } from '@/domain/services/items';
@@ -14,7 +15,7 @@ import { fromBase64, wipe } from '@/core/bytes';
 import { exportFile } from '@/infrastructure/filesystem/transfer';
 import { useSecretActions } from './actions';
 import { useLabels } from './labels';
-import { Button, EmptyState, Icon, IconButton, ItemTile } from './ui';
+import { Button, Dialog, EmptyState, Icon, IconButton, ItemTile } from './ui';
 import { envContent, ENV_FIELD_ID } from '@/domain/entities/env';
 import { EnvPanel } from '@/features/items/env-panel';
 
@@ -89,6 +90,47 @@ function Notes({ notes }: { notes: string }) {
   </section>;
 }
 
+async function downloadAttachment(file: Attachment) {
+  const bytes = fromBase64(file.data);
+  try { await exportFile(file.name, bytes, true); } finally { wipe(bytes); }
+}
+
+function Attachments({ attachments }: { attachments: Attachment[] }) {
+  const { t } = useI18n();
+  const { run } = useAction();
+  const { privacyEpoch } = useSession();
+  const { authorize, copy, authDialog } = useSecretActions();
+  const [open, setOpen] = useState<{ file: Attachment; content: string | null; epoch: number } | null>(null);
+  // Leaving the app or locking bumps the epoch, which drops the plaintext view.
+  const viewing = open?.epoch === privacyEpoch ? open : null;
+    const view = (file: Attachment) => authorize(async () => setOpen({ file, content: readAttachmentText(file), epoch: privacyEpoch }), true);
+  const download = (file: Attachment) => authorize(() => downloadAttachment(file), true);
+  const content = viewing?.content ?? null;
+  return <section className="desktop-detail-section"><h2>{t("Tệp đính kèm")}</h2>
+    {attachments.map((file) => {
+      const previewable = canPreviewAttachment(file);
+      return <div key={file.id} className="desktop-attachment">
+        <Icon name={previewable ? 'description' : 'attach_file'} />
+        <button type="button" className="desktop-attachment-name grow" title={file.name} onClick={() => previewable ? view(file) : download(file)}>{file.name}</button>
+        <span className="muted tiny">{attachmentSizeLabel(file.size)}</span>
+        {previewable && <IconButton icon="visibility" label={t('Xem {name}', { name: file.name })} onClick={() => view(file)} />}
+        <IconButton icon="download" label={t('Tải về {name}', { name: file.name })} onClick={() => download(file)} />
+      </div>;
+    })}
+    <Dialog open={!!viewing} wide className="desktop-attachment-dialog" title={viewing?.file.name ?? ''} onClose={() => setOpen(null)}
+      description={viewing ? attachmentSizeLabel(viewing.file.size) + (content === null ? '' : ' · ' + t('{count} dòng', { count: content.split('\n').length })) : undefined}
+      footer={viewing && <>
+        <Button icon="download" onClick={() => run(() => downloadAttachment(viewing.file))}>{t('Tải về')}</Button>
+        {content !== null && <Button variant="primary" icon="content_copy" onClick={() => copy(content)}>{t('Sao chép')}</Button>}
+      </>}>
+      {viewing && (content === null
+        ? <div className="desktop-banner"><Icon name="visibility_off" /><div className="grow"><strong>{t('Không xem trước được tệp này')}</strong><p className="muted tiny">{t('Chỉ xem trực tiếp được tệp văn bản đến 512 KB. Hãy tải về để mở bằng ứng dụng phù hợp.')}</p></div></div>
+        : <pre className="desktop-attachment-preview mono" tabIndex={0}>{content}</pre>)}
+    </Dialog>
+    {authDialog}
+  </section>;
+}
+
 export function Detail({ item, onEdit, onHistory, onMenu, onBack, onTag }: {
   item?: VaultItem; onEdit: () => void; onHistory: () => void; onMenu: (event: MouseEvent<HTMLButtonElement>) => void; onBack: () => void; onTag: (tag: string) => void;
 }) {
@@ -96,7 +138,6 @@ export function Detail({ item, onEdit, onHistory, onMenu, onBack, onTag }: {
   const { itemTypes, dateTime } = useLabels();
   const { vault } = useSession();
   const { run } = useAction();
-  const { authorize, authDialog } = useSecretActions();
   if (!item || !vault) return <><div className="desktop-detail-toolbar" /><EmptyState>
     <div className="desktop-empty-shortcuts"><span>⌘K</span><span>{t("Tìm kiếm")}</span><span>⌘N</span><span>{t("Mục mới")}</span><span>↑ ↓</span><span>{t("Di chuyển trong danh sách")}</span><span>⌘L</span><span>{t("Khoá Vault")}</span></div>
   </EmptyState></>;
@@ -120,14 +161,10 @@ export function Detail({ item, onEdit, onHistory, onMenu, onBack, onTag }: {
       {fields.length > 0 && <section className="desktop-detail-section"><h2>{item.type === 'login' ? t("Thông tin đăng nhập") : t('Thông tin')}</h2><div className="desktop-credential-group">{fields.map((field) => <Credential key={item.id + ':' + field.id} field={field} fields={item.fields} itemType={item.type} />)}</div></section>}
       {(item.notes || item.type === 'secure-note') && <Notes key={item.id} notes={item.notes} />}
       {custom.length > 0 && <section className="desktop-detail-section"><h2>{t("Trường tuỳ chỉnh")}</h2><div className="desktop-credential-group">{custom.map((field) => <Credential key={item.id + ':' + field.id} field={field} fields={item.fields} itemType={item.type} />)}</div></section>}
-      {item.attachments.length > 0 && <section className="desktop-detail-section"><h2>{t("Tệp đính kèm")}</h2>{item.attachments.map((file) => <button key={file.id} className="desktop-attachment" onClick={() => authorize(async () => {
-        const bytes = fromBase64(file.data);
-        try { await exportFile(file.name, bytes, true); } finally { wipe(bytes); }
-      }, true)}><Icon name="attach_file" /><span className="grow">{file.name}</span><span className="muted tiny">{Math.max(1, Math.round(file.size / 1024))} KB</span><Icon name="download" /></button>)}</section>}
+      {item.attachments.length > 0 && <Attachments key={item.id} attachments={item.attachments} />}
       {item.tags.length > 0 && <section className="desktop-detail-section"><h2>{t("Thẻ")}</h2><div className="desktop-tags">{item.tags.map((tag) => <button key={tag} className="desktop-tag" onClick={() => onTag(tag)}>{tag}</button>)}</div></section>}
       <section className="desktop-detail-section"><h2>{t("Thông tin")}</h2><div className="desktop-information"><span>{t("Loại")}</span><span>{itemTypes[item.type].label}</span><span>{t("Thư mục")}</span><span>{folderPath(vault, item.folderId) || t("Vault gốc")}</span><span>{t("Ngày tạo")}</span><span>{dateTime(item.createdAt)}</span><span>{t("Cập nhật")}</span><span>{dateTime(item.updatedAt)}</span></div></section>
       <button className="desktop-history-link" onClick={onHistory}><Icon name="history" size={19} /><span className="grow">{t("Lịch sử phiên bản")}<span className="muted" style={{ marginLeft: 8 }}>{item.history.length + 1}</span></span><Icon name="chevron_right" /></button>
     </div></div>
-    {authDialog}
   </>;
 }

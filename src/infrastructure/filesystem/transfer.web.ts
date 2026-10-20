@@ -1,6 +1,7 @@
 import { buffer } from '@/core/bytes';
 import { VaultError } from '@/core/errors';
 import { MAX_VAULT_BYTES } from '@/core/vault-format/codec';
+import { MAX_ATTACHMENT_BYTES } from '@/domain/entities/attachment';
 import { VAULT_FILE_EXTENSIONS, vaultFileName } from '@/core/vault-format/file-names';
 import { desktopBridge, desktopCall } from '@/infrastructure/desktop/bridge';
 
@@ -22,6 +23,24 @@ export async function pickFile(_encrypted = true): Promise<PickedFile | null> {
   });
 }
 
+/** Any file type; the desktop host opens an unfiltered panel so keys and dotfiles stay selectable. */
+export async function pickAttachment(): Promise<PickedFile | null> {
+  const desktop = desktopBridge();
+  if (desktop) return desktopCall(() => desktop.pickAttachment ? desktop.pickAttachment() : desktop.pickFile());
+  return new Promise((resolve, reject) => {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.addEventListener('cancel', () => { input.remove(); resolve(null); }, { once: true });
+    input.addEventListener('change', () => {
+      const file = input.files?.[0]; input.remove();
+      if (!file) { resolve(null); return; }
+      if (file.size > MAX_ATTACHMENT_BYTES) { reject(new VaultError('LIMIT_EXCEEDED')); return; }
+      file.arrayBuffer().then((bytes) => resolve({ name: file.name, bytes: new Uint8Array(bytes) }), reject);
+    }, { once: true });
+    input.click();
+  });
+}
+
 export async function exportFile(name: string, bytes: Uint8Array, plaintext = false): Promise<void> {
   if (!plaintext) name = vaultFileName(name);
   const desktop = desktopBridge();
@@ -29,7 +48,7 @@ export async function exportFile(name: string, bytes: Uint8Array, plaintext = fa
     if (!await desktopCall(() => desktop.exportFile(name, bytes, plaintext))) throw new VaultError('CANCELLED');
     return;
   }
-  const url = URL.createObjectURL(new Blob([buffer(bytes)], { type: plaintext ? name.endsWith('.csv') ? 'text/csv;charset=utf-8' : 'application/json' : 'application/octet-stream' }));
+  const url = URL.createObjectURL(new Blob([buffer(bytes)], { type: plaintext && name.endsWith('.csv') ? 'text/csv;charset=utf-8' : plaintext && name.endsWith('.json') ? 'application/json' : 'application/octet-stream' }));
   const link = document.createElement('a'); link.href = url; link.download = name.replace(/[/\\]/g, '-'); link.rel = 'noopener'; link.click();
   setTimeout(() => URL.revokeObjectURL(url), 30_000);
 }

@@ -10,18 +10,19 @@ import { AppShell, CreateFolderDialog } from '@/features/vault/app-shell';
 import { GeneratorPanel } from '@/features/generator/generator-panel';
 import { ItemIconPicker } from './item-icon-picker';
 import { ENV_FIELD_ID } from '@/domain/entities/env';
+import { createAttachment } from '@/domain/entities/attachment';
 import { FIELD_KINDS, ITEM_TYPES, ItemSchema, isSecret, type FieldKind, type ItemType, type VaultItem } from '@/domain/entities/vault';
 import { isKeePassOtpSecret, isOtpField } from '@/domain/entities/otp';
 import { invalidOtpFieldIds } from '@/domain/services/otp';
 import { TYPE_LABELS, fieldsForType } from '@/domain/entities/templates';
 import { createItem, saveItem } from '@/domain/services/items';
 import { folderPath } from '@/domain/services/search';
-import { toBase64, wipe } from '@/core/bytes';
+import { wipe } from '@/core/bytes';
 import { VaultError } from '@/core/errors';
 import { useAction } from '@/shared/hooks/use-action';
 import { useSession } from '@/shared/hooks/use-session';
 import { session } from '@/infrastructure/session';
-import { pickFile } from '@/infrastructure/filesystem/transfer';
+import { pickAttachment } from '@/infrastructure/filesystem/transfer';
 
 export function EditorScreen({ editing = false }: { editing?: boolean }) {
   const { t } = useI18n();
@@ -62,8 +63,8 @@ export function EditorScreen({ editing = false }: { editing?: boolean }) {
   if (!vault || editing && !existing) return null;
   const templateIds = new Set(fieldsForType(draft.type).map((field) => field.id));
   const attachment = () => run(async () => {
-    const file = await pickFile(false); if (!file) return;
-    try { if (file.bytes.length > 8_388_608) throw new VaultError('LIMIT_EXCEEDED'); update('attachments', [...draft.attachments, { id: session.id(), name: file.name, size: file.bytes.length, data: toBase64(file.bytes), mimeType: 'application/octet-stream' }]); }
+    const file = await pickAttachment(); if (!file) return;
+    try { update('attachments', [...draft.attachments, createAttachment(session.id(), file.name, file.bytes)]); }
     finally { wipe(file.bytes); }
   });
   return <AppShell bottomNav={false}><ScrollView contentContainerStyle={styles.page} keyboardShouldPersistTaps="handled"><View style={styles.form}>

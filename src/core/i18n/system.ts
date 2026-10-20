@@ -30,6 +30,7 @@ export const system = {
   'Kho mã hoá': ['Encrypted vault', 'Bóveda cifrada', 'Coffre chiffré', '加密密码库'],
   'Mở kho hoặc file để nhập': ['Open a vault or import file', 'Abrir bóveda o archivo para importar', 'Ouvrir un coffre ou un fichier à importer', '打开密码库或导入文件'],
   'Kho và file nhập': ['Vaults and import files', 'Bóvedas y archivos de importación', 'Coffres et fichiers à importer', '密码库和导入文件'],
+  'Chọn tệp đính kèm': ['Choose an attachment', 'Elegir un archivo adjunto', 'Choisir une pièce jointe', '选择附件'],
   'Tất cả file': ['All files', 'Todos los archivos', 'Tous les fichiers', '所有文件'],
   'Chọn thư mục sao lưu mã hoá': ['Choose encrypted backup folder', 'Elegir carpeta para copias cifradas', 'Choisir le dossier des sauvegardes chiffrées', '选择加密备份文件夹'],
   'Xem': ['View', 'Ver', 'Présentation', '视图'],

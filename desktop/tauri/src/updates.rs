@@ -10,7 +10,8 @@ use std::{
 use tauri::{AppHandle, Emitter, Manager, State, WebviewWindow};
 use tauri_plugin_updater::{Update, UpdaterExt};
 
-pub const CHANNEL: &str = "https://raw.githubusercontent.com/ngankt2/appkiro.com/main/updates/appkiro-password-manager/latest.json";
+pub const CHANNEL: &str =
+    "https://github.com/ngankt2/kiwi-password-manager/releases/latest/download/latest.json";
 type Result<T> = std::result::Result<T, &'static str>;
 
 #[derive(Clone, Serialize)]
@@ -123,8 +124,7 @@ fn classify(error: &tauri_plugin_updater::Error) -> &'static str {
     }
 }
 pub fn valid_download(url: &tauri::Url, version: &str) -> bool {
-    let prefix =
-        format!("/ngankt2/appkiro.com/releases/download/appkiro-password-manager-v{version}/");
+    let prefix = format!("/ngankt2/kiwi-password-manager/releases/download/v{version}/");
     let Some(file) = url.path().strip_prefix(&prefix) else {
         return false;
     };
@@ -361,13 +361,14 @@ mod tests {
     }
     #[test]
     fn releases_are_scoped_to_the_product_and_exact_version() {
-        let good = "https://github.com/ngankt2/appkiro.com/releases/download/appkiro-password-manager-v1.2.3/Appkiro_1.2.3_arm64.app.tar.gz";
+        let good = "https://github.com/ngankt2/kiwi-password-manager/releases/download/v1.2.3/KiwiPassword_1.2.3_universal.app.tar.gz";
         assert!(valid_download(&good.parse().unwrap(), "1.2.3"));
         for bad in [
             good.replace("https:", "http:"),
-            good.replace("appkiro-password-manager", "agentprofiles"),
+            good.replace("kiwi-password-manager", "agentprofiles"),
+            good.replace("/v1.2.3/", "/1.2.3/"),
             good.replace("github.com/", "github.com.evil.invalid/"),
-            good.replace("Appkiro_", "../Appkiro_"),
+            good.replace("KiwiPassword_", "../KiwiPassword_"),
             format!("{good}?token=private"),
         ] {
             assert!(!valid_download(&bad.parse().unwrap(), "1.2.3"));

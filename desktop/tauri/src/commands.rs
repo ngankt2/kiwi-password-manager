@@ -81,16 +81,14 @@ fn export_selected(
     } else {
         vault_filename(&safe)
     };
+    // Extensionless exports such as `.env` or `id_ed25519` get no filter, so the panel keeps the name as is.
     let extension = if plaintext {
-        Path::new(name)
-            .extension()
-            .and_then(|s| s.to_str())
-            .unwrap_or("txt")
+        Path::new(name).extension().and_then(|s| s.to_str())
     } else {
-        "akpr"
+        Some("akpr")
     };
     let _activity = security::DialogActivity::new(app);
-    let selected = app
+    let mut dialog = app
         .dialog()
         .file()
         .set_parent(window)
@@ -103,8 +101,9 @@ fn export_selected(
                 "Lưu kho mã hoá"
             },
         ))
-        .set_file_name(filename)
-        .add_filter(
+        .set_file_name(filename);
+    if let Some(extension) = extension {
+        dialog = dialog.add_filter(
             text(
                 host,
                 if plaintext {
@@ -114,8 +113,9 @@ fn export_selected(
                 },
             ),
             &[extension],
-        )
-        .blocking_save_file();
+        );
+    }
+    let selected = dialog.blocking_save_file();
     let Some(destination) = selected_path(selected)? else {
         return Ok(json!(false));
     };
@@ -180,8 +180,8 @@ pub fn validate_external_url(value: &str) -> Result<tauri::Url> {
 }
 pub fn expected_args(channel: &str) -> Option<usize> {
     match channel {
-        "vault-files:list" | "dialog:open" | "preferences:read" | "security:locked"
-        | "backup:status" | "backup:folder" | "biometric:support" => Some(0),
+        "vault-files:list" | "dialog:open" | "dialog:attach" | "preferences:read"
+        | "security:locked" | "backup:status" | "backup:folder" | "biometric:support" => Some(0),
         "files:read" | "files:remove" | "files:list" | "vault-files:read"
         | "vault-files:forget" | "preferences:write" | "clipboard:clear" | "external:open"
         | "biometric:enrolled" | "biometric:revoke" => Some(1),
@@ -331,6 +331,32 @@ pub fn dispatch(
                     json!({"name": path.file_name().unwrap().to_string_lossy(), "bytes": STANDARD.encode(data)}),
                 )
             }
+        }
+        "dialog:attach" => {
+            let _activity = security::DialogActivity::new(app);
+            #[cfg(feature = "runtime-tests")]
+            let picked = crate::runtime_tests::picked(app);
+            #[cfg(not(feature = "runtime-tests"))]
+            let picked: Option<PathBuf> = None;
+            let path = match picked {
+                Some(path) => path,
+                None => {
+                    let selection = app
+                        .dialog()
+                        .file()
+                        .set_parent(window)
+                        .set_title(text(host, "Chọn tệp đính kèm"))
+                        .blocking_pick_file();
+                    let Some(path) = selected_path(selection)? else {
+                        return Ok(none);
+                    };
+                    path
+                }
+            };
+            let (data, _) = read_bounded(&path, MAX_ATTACHMENT_BYTES)?;
+            Ok(
+                json!({"name": path.file_name().unwrap().to_string_lossy(), "bytes": STANDARD.encode(data)}),
+            )
         }
         "dialog:save" => export_selected(window, app, host, args),
         "preferences:read" => {

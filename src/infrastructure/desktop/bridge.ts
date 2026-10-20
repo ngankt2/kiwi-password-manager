@@ -11,6 +11,8 @@ export interface DesktopBridge {
   files: FilePort;
   vaultFiles: LinkedVaultPort;
   pickFile(): Promise<{ name: string; bytes: Uint8Array; sourceToken?: string; sourceLocation?: string } | null>;
+  /** Unfiltered picker for item attachments; never links a vault source. */
+  pickAttachment?(): Promise<{ name: string; bytes: Uint8Array } | null>;
   exportFile(name: string, bytes: Uint8Array, plaintext: boolean): Promise<boolean>;
   preferences: { read(): Promise<unknown>; write(settings: Settings): Promise<void> };
   clipboard: { copy(value: string, seconds: number): Promise<string>; clearIfOwned(token: string): Promise<boolean> };
