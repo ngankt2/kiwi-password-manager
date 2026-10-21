@@ -3,15 +3,6 @@ import { join, resolve } from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { RELEASE_REPOSITORY, releaseAssets, releaseTag, releaseUrl } from './prepare-desktop-release';
 
-// The release repository only distributes binaries. Nothing from this source tree
-// is pushed there: the only commit is a generated README that lets tags exist.
-const README = `# Kiwi Password releases
-
-This repository distributes signed macOS builds of Kiwi Password. It contains no source code.
-
-Download the \`.dmg\` for your Mac (Apple Silicon or Intel) from [Releases](https://github.com/${RELEASE_REPOSITORY}/releases/latest). Installed apps update themselves from \`latest.json\` in the latest release; every update archive is verified with the app's Minisign key before installation.
-`;
-
 function gh(args: string[], options: { allowFailure?: boolean; input?: string } = {}) {
   const result = spawnSync('gh', args, { encoding: 'utf8', input: options.input, stdio: ['pipe', 'pipe', 'pipe'] });
   if (result.error) throw result.error;
@@ -40,10 +31,6 @@ export async function publishDesktopRelease(directory: string) {
   }
 
   gh(['auth', 'status']);
-  const repository = JSON.parse(gh(['repo', 'view', RELEASE_REPOSITORY, '--json', 'isEmpty']).stdout);
-  if (repository.isEmpty) {
-    gh(['api', '-X', 'PUT', `repos/${RELEASE_REPOSITORY}/contents/README.md`, '-f', 'message=Describe the release channel', '-f', `content=${Buffer.from(README).toString('base64')}`]);
-  }
   if (gh(['release', 'view', tag, '-R', RELEASE_REPOSITORY], { allowFailure: true }).ok) throw new Error(`${tag} is already published. Build a new version instead of replacing a release.`);
   const latest = gh(['release', 'view', '-R', RELEASE_REPOSITORY, '--json', 'tagName', '--jq', '.tagName'], { allowFailure: true });
   if (latest.ok && latest.stdout && !newer(version, latest.stdout)) throw new Error(`${tag} is not newer than the published ${latest.stdout}.`);

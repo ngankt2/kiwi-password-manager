@@ -10,7 +10,7 @@ The Rust host owns the checked release; the UI supplies only its version. It acc
 
 ## Release repository
 
-[`ngankt2/kiwi-password-manager`](https://github.com/ngankt2/kiwi-password-manager) is a distribution-only repository. Never push this source tree or its history there. Its only commit is a generated README, created by the publish script when the repository is empty, so release tags have something to point at. Release tags are `v<version>`.
+[`ngankt2/kiwi-password-manager`](https://github.com/ngankt2/kiwi-password-manager) is the public open-source repository (GPL-3.0) and also hosts the releases. Everything pushed there is public, so never commit signing keys, certificates or private test data. Release tags are `v<version>`.
 
 Each release has a separate build for Apple Silicon and for Intel Macs:
 

@@ -39,7 +39,7 @@ When a desktop build is meant for users (a "release", "phát hành", "build bả
 - Write user-facing release notes (what changed, in the app's languages if appropriate) to a file outside the repo, e.g. the scratchpad, and show them to the user before releasing. Never publish with empty or placeholder notes.
 - Release builds must be Developer ID signed and notarized; never publish ad-hoc (`--no-updater`) builds or skip notarization.
 - Publishing to GitHub is outward-facing: confirm with the user before running `release:macos` or `publish:macos`.
-- `https://github.com/ngankt2/kiwi-password-manager` is distribution-only. Never push source code, history, branches or tags from this repo there; never add it as a git remote. Upload only the assets produced by the release script.
+- `https://github.com/ngankt2/kiwi-password-manager` is the public open-source repository (GPL-3.0) and the update channel. It is the `github` remote; push to it only when the user asks. Never commit secrets, signing keys, certificates, private vaults or machine-specific reports there: everything pushed is public.
 - Tags are `v<version>`. Never delete, replace or re-upload assets of a published release; fix problems with a newer version. If only the publish step failed, retry with `bun run publish:macos <version>` (no rebuild, no extra bump).
 - Never change the updater public key (`desktop/tauri/updater.pub`, `tauri.conf.json`) or move the channel URL without the user's explicit request: existing installs would stop receiving updates. Never commit, print or upload the private signing key.
 - After publishing, report the version, the release URL and that `releases/latest/download/latest.json` reports the new version.
