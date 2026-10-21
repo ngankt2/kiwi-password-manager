@@ -1,39 +1,51 @@
-# Kiwi Password — Offline Password Manager for Mac
+# Kiwi Password — Offline, Open-Source Password Manager
 
-**Kiwi Password is an offline password manager for macOS that stores your passwords in an encrypted vault on your own device — no account, no cloud sync, no tracking.** It is built by [AppKiro](https://appkiro.com), encrypts every vault with AES-256-GCM and an Argon2id-derived key, unlocks with Touch ID, and imports KeePass (`.kdbx`) databases.
+**Kiwi Password is an offline password manager for macOS, Windows, Linux, iOS and Android that stores your passwords in an encrypted vault on your own device — no account, no cloud sync, no tracking.** It is built by [AppKiro](https://appkiro.com), encrypts every vault with AES-256-GCM and an Argon2id-derived key, unlocks with biometrics, and imports KeePass (`.kdbx`) databases.
 
-[**⬇ Download the latest version for Mac (.dmg)**](https://github.com/ngankt2/kiwi-password-manager/releases/latest) · [Release notes](https://github.com/ngankt2/kiwi-password-manager/releases) · [AppKiro](https://appkiro.com) · [Tiếng Việt](#tiếng-việt)
+[**⬇ Download for Mac (.dmg)**](https://github.com/ngankt2/kiwi-password-manager/releases/latest) · [**Website**](https://appkiro.com/kiwi-password-manager) · [Release notes](https://github.com/ngankt2/kiwi-password-manager/releases) · [Build from source](#build-from-source) · [AppKiro](https://appkiro.com) · [Tiếng Việt](#tiếng-việt)
 
-> Kiwi Password is open source under the [GNU General Public License v3.0](LICENSE). This repository holds the full source code and distributes the signed macOS builds and in-app updates.
+> Kiwi Password is open source under the [GNU General Public License v3.0](LICENSE). This repository holds the full source code and distributes the signed builds and in-app updates.
+
+## Platforms
+
+One codebase — a TypeScript vault core with an Expo / React Native interface — runs as a desktop app (Tauri v2), on phones (iOS and Android) and in the browser. Vault files use the same `.akpr` format everywhere.
+
+| Platform | Status |
+| --- | --- |
+| **macOS** 13+ (Apple Silicon and Intel) | Available — signed and notarized `.dmg`, automatic updates |
+| **iOS** | Coming to the App Store |
+| **Android** | Coming to Google Play |
+| **Windows** | Coming soon |
+| **Linux** | Coming soon |
+
+Watch the [releases](https://github.com/ngankt2/kiwi-password-manager/releases) for new platforms.
 
 ## At a glance
 
 | | |
 | --- | --- |
-| **What it is** | A local-first password manager and authenticator for Mac |
-| **Platform** | macOS 13 Ventura or later — separate builds for Apple Silicon and Intel Macs |
-| **Code signing** | Signed with an Apple Developer ID and notarized by Apple |
+| **What it is** | A local-first password manager and authenticator |
 | **Where data lives** | Only on your device, in encrypted `.akpr` vault files |
 | **Encryption** | AES-256-GCM; key derived from your master password with Argon2id (64 MiB memory) |
-| **Unlock** | Master password (12+ characters) or Touch ID |
+| **Unlock** | Master password (12+ characters), Touch ID on Mac, Face ID / fingerprint on phones |
 | **Account required** | No — no sign-up, no email, no cloud |
 | **Analytics / ads** | None |
 | **Import** | KeePass `.kdbx`, Kiwi `.akpr` |
 | **Languages** | English, Tiếng Việt, Español, Français, 简体中文 |
-| **Updates** | Automatic in-app updates, signature-verified before installation |
+| **Source code** | Open source, GPL-3.0 |
 | **Developer** | [AppKiro](https://appkiro.com) |
 
 ## Features
 
-- **Offline encrypted vault** — passwords, logins, secure notes, custom fields and attachments are stored in one encrypted file on your Mac. Nothing is uploaded.
-- **Touch ID unlock** — the vault key is sealed by the Mac's Secure Enclave; changing your fingerprints invalidates it automatically.
+- **Offline encrypted vault** — passwords, logins, secure notes, custom fields and attachments are stored in one encrypted file on your device. Nothing is uploaded.
+- **Biometric unlock** — Touch ID on Mac (the key is sealed by the Secure Enclave), Face ID or fingerprint on iOS and Android.
 - **Built-in authenticator (TOTP)** — keep two-factor codes next to the login they protect.
 - **KeePass import** — open a `.kdbx` database, preview it, and keep groups, custom fields, history, attachments, tags and OTP settings. The original file is never modified.
 - **Secure attachments** — attach files such as `.env`, SSH keys or certificates (up to 8 MB), preview text files in the app, and download them when needed.
 - **Version history** — every entry keeps its previous versions, and every save is verified before the previous copy is replaced.
 - **Encrypted backups** — automatic and manual backups, plus copies in folders you choose, all encrypted.
-- **Auto-lock** — the vault locks when you leave the app, after inactivity, when the screen locks or when the Mac sleeps.
-- **Fast keyboard workflow** — `⌘K` search, `⌘N` new item, `⌘E` edit, `⌘S` save, `⌘L` lock.
+- **Auto-lock** — the vault locks when you leave the app, after inactivity, when the screen locks or when the device sleeps.
+- **Fast keyboard workflow on desktop** — `⌘K` search, `⌘N` new item, `⌘E` edit, `⌘S` save, `⌘L` lock.
 - **Clipboard protection** — copied passwords are cleared automatically, and secrets are masked until you reveal them.
 
 ## Install on Mac
@@ -51,16 +63,19 @@ After that, Kiwi Password checks for new versions on its own. When an update is 
 ## FAQ
 
 ### What is Kiwi Password?
-Kiwi Password is an offline password manager for Mac made by AppKiro. It keeps passwords, two-factor codes, notes and files in an encrypted vault stored only on your device.
+Kiwi Password is an offline, open-source password manager made by AppKiro. It keeps passwords, two-factor codes, notes and files in an encrypted vault stored only on your device.
+
+### Which platforms does it support?
+macOS is available today. iOS, Android, Windows and Linux share the same code and vault format and are on the way; new platforms are announced in the [releases](https://github.com/ngankt2/kiwi-password-manager/releases).
 
 ### Is Kiwi Password free?
-Yes. The macOS app can be downloaded from this page at no cost, with no account or subscription.
+Yes. It is free to download, with no account or subscription, and its source code is free under the GPL-3.0.
 
 ### Does Kiwi Password work without the internet?
 Yes. Creating, opening, searching and editing your vault works fully offline. The app only goes online to check for updates and, optionally, to download website icons for your entries. Passwords and vault contents are never sent.
 
 ### Where are my passwords stored?
-In an encrypted `.akpr` vault file on your Mac. AppKiro has no servers that hold your data, so it cannot see, reset or recover your vault.
+In an encrypted `.akpr` vault file on your device. AppKiro has no servers that hold your data, so it cannot see, reset or recover your vault.
 
 ### How does Kiwi Password encrypt my data?
 Each vault is encrypted with AES-256-GCM. The key is derived from your master password with Argon2id (64 MiB of memory, at least three passes, a fresh salt per vault). Your master password is never stored.
@@ -68,35 +83,34 @@ Each vault is encrypted with AES-256-GCM. The key is derived from your master pa
 ### Can I import from KeePass?
 Yes. Open a KeePass `.kdbx` file, preview the data, and import it into a new Kiwi vault. Groups, custom fields, history, attachments, tags and OTP settings are preserved, and the source file stays unchanged.
 
-### Does it support Touch ID?
-Yes. Turn on Touch ID in **Settings → Sign-in & unlock**. The master password is still required to enable it and after a password change.
+### Does it support biometric unlock?
+Yes. Turn it on in **Settings → Sign-in & unlock** — Touch ID on Mac, Face ID or fingerprint on phones. The master password is still required to enable it and after a password change.
 
-### Does it work on Intel Macs?
-Yes. Kiwi Password has a separate build for Intel Macs and for Apple Silicon (M-series) Macs, both for macOS 13 or later. Download `intel.dmg` for an Intel Mac and `apple-silicon.dmg` for an M-series Mac; in-app updates always install the build for your Mac.
-
-### Is Kiwi Password safe to install?
+### Is the Mac app safe to install?
 The app and its installers are signed with AppKiro's Apple Developer ID and notarized by Apple, which scans them for malware before macOS allows them to open. Every in-app update is additionally verified with the app's own Minisign signature before installation.
-
-### What happens if I forget my master password?
-The vault cannot be recovered. Because encryption happens only on your device, there is no reset link. Keep your master password and an encrypted backup somewhere safe.
 
 ### Is Kiwi Password open source?
 Yes. The full source code is in this repository under the GNU GPL v3.0, so anyone can review how vaults are encrypted and build the app themselves.
+
+### What happens if I forget my master password?
+The vault cannot be recovered. Because encryption happens only on your device, there is no reset link. Keep your master password and an encrypted backup somewhere safe.
 
 ### Has Kiwi Password been security audited?
 Not yet. Kiwi Password has not undergone an independent security audit.
 
 ## Build from source
 
-Requirements: macOS 13 or later, Bun 1.4.2, Node 24, stable Rust, and Xcode Command Line Tools.
+Requirements: Bun 1.4.2 and Node 24. The macOS desktop app also needs macOS 13 or later, stable Rust and Xcode Command Line Tools.
 
 ```sh
 bun install --frozen-lockfile
-bun run desktop:prepare
+bun run desktop:prepare   # desktop app (macOS)
 bun run desktop:start
+bun run ios               # iOS app (Xcode)
+bun run android           # Android app (Android Studio)
 ```
 
-Use `bun run build:macos --no-updater` for a local, ad hoc signed package. Tests, release signing, architecture and the vault format are described in the [development guide](docs/DEVELOPMENT.md), [architecture](docs/ARCHITECTURE.md), [vault format](docs/VAULT-FORMAT.md) and [threat model](docs/THREAT-MODEL.md). Report security issues privately through [appkiro.com/contact](https://appkiro.com/contact) rather than in public issues.
+Use `bun run build:macos --no-updater` for a local, ad hoc signed Mac package. Tests, release signing, architecture and the vault format are described in the [development guide](docs/DEVELOPMENT.md), [architecture](docs/ARCHITECTURE.md), [vault format](docs/VAULT-FORMAT.md) and [threat model](docs/THREAT-MODEL.md). Report security issues privately through [appkiro.com/contact](https://appkiro.com/contact) rather than in public issues.
 
 ## License
 
@@ -106,32 +120,35 @@ Kiwi Password is free software: you can redistribute it and/or modify it under t
 
 ## Tiếng Việt
 
-**Kiwi Password là trình quản lý mật khẩu ngoại tuyến cho Mac, lưu mật khẩu trong kho mã hoá ngay trên máy của bạn — không cần tài khoản, không đồng bộ đám mây, không theo dõi.** Ứng dụng do [AppKiro](https://appkiro.com) phát triển, mã hoá kho bằng AES-256-GCM với khoá dẫn xuất từ mật khẩu chính qua Argon2id, mở khoá bằng Touch ID và nhập được cơ sở dữ liệu KeePass (`.kdbx`).
+**Kiwi Password là trình quản lý mật khẩu ngoại tuyến, mã nguồn mở cho macOS, Windows, Linux, iOS và Android, lưu mật khẩu trong kho mã hoá ngay trên thiết bị của bạn — không cần tài khoản, không đồng bộ đám mây, không theo dõi.** Ứng dụng do [AppKiro](https://appkiro.com) phát triển, mã hoá kho bằng AES-256-GCM với khoá dẫn xuất từ mật khẩu chính qua Argon2id, mở khoá bằng sinh trắc học và nhập được cơ sở dữ liệu KeePass (`.kdbx`).
 
-[**⬇ Tải Kiwi Password cho Mac (.dmg)**](https://github.com/ngankt2/kiwi-password-manager/releases/latest)
+[**⬇ Tải Kiwi Password cho Mac (.dmg)**](https://github.com/ngankt2/kiwi-password-manager/releases/latest) · [**Trang giới thiệu**](https://appkiro.com/kiwi-password-manager)
+
+**Nền tảng**
+- **macOS** 13 trở lên (chip Apple và Intel): đã phát hành, có cập nhật tự động.
+- **iOS** và **Android**: sắp có trên App Store và Google Play.
+- **Windows** và **Linux**: sắp ra mắt.
+
+Mọi nền tảng dùng chung một mã nguồn và cùng định dạng kho `.akpr`.
 
 **Tính năng chính**
-- Kho mật khẩu mã hoá lưu hoàn toàn trên máy, không tải dữ liệu lên đâu cả.
-- Mở khoá bằng Touch ID, khoá được bảo vệ bởi Secure Enclave của Mac.
+- Kho mật khẩu mã hoá lưu hoàn toàn trên thiết bị, không tải dữ liệu lên đâu cả.
+- Mở khoá bằng Touch ID trên Mac, Face ID hoặc vân tay trên điện thoại.
 - Mã xác thực hai lớp (TOTP) ngay trong ứng dụng.
 - Nhập dữ liệu từ KeePass, giữ nguyên thư mục, trường tuỳ chỉnh, lịch sử, tệp đính kèm và OTP.
 - Đính kèm tệp như `.env`, SSH key, chứng chỉ (tối đa 8 MB), xem trực tiếp tệp văn bản.
 - Lịch sử phiên bản cho từng mục, sao lưu mã hoá tự động và thủ công.
-- Tự khoá khi rời ứng dụng, khi máy khoá màn hình hoặc ngủ; tự xoá mật khẩu đã sao chép.
+- Tự khoá khi rời ứng dụng, khi khoá màn hình hoặc thiết bị ngủ; tự xoá mật khẩu đã sao chép.
 - Hỗ trợ tiếng Việt, tiếng Anh, tiếng Tây Ban Nha, tiếng Pháp và tiếng Trung giản thể.
-- Chạy trên macOS 13 trở lên, có bản riêng cho Mac chip Apple và Mac Intel.
-- Được ký bằng Apple Developer ID và đã qua kiểm tra (notarize) của Apple.
 
-**Cài đặt**
+**Cài đặt trên Mac**
 1. Xem loại chip của máy: menu Apple  → **About This Mac** (Giới thiệu về máy Mac này). Dòng **Chip** ghi "Apple M…" là Mac chip Apple; dòng **Processor** ghi "Intel" là Mac Intel.
 2. Ở [bản phát hành mới nhất](https://github.com/ngankt2/kiwi-password-manager/releases/latest), tải đúng bộ cài:
    - **Mac chip Apple (M1, M2, M3, M4…):** `KiwiPassword_<version>_apple-silicon.dmg`
    - **Mac Intel:** `KiwiPassword_<version>_intel.dmg`
 3. Mở tệp `.dmg`, kéo **Kiwi Password** vào thư mục **Applications** rồi mở ứng dụng.
 
-Ứng dụng và bộ cài đã được ký bằng Apple Developer ID và notarize bởi Apple, nên macOS mở được ngay mà không cảnh báo.
-
-Sau đó ứng dụng tự kiểm tra bản mới, hiển thị nội dung thay đổi và chỉ cài khi bạn bấm **Tải và cài đặt**. Mọi bản cập nhật đều được xác minh chữ ký trước khi cài.
+Ứng dụng và bộ cài đã được ký bằng Apple Developer ID và notarize bởi Apple, nên macOS mở được ngay mà không cảnh báo. Sau đó ứng dụng tự kiểm tra bản mới, hiển thị nội dung thay đổi và chỉ cài khi bạn bấm **Tải và cài đặt**. Mọi bản cập nhật đều được xác minh chữ ký trước khi cài.
 
 **Mã nguồn mở**
 
@@ -139,16 +156,16 @@ Kiwi Password là phần mềm mã nguồn mở theo giấy phép [GPL-3.0](LICE
 
 **Câu hỏi thường gặp**
 
-**Kiwi Password có miễn phí không?** Có. Ứng dụng macOS được tải miễn phí tại đây, không cần tài khoản hay gói thuê bao.
+**Kiwi Password có miễn phí không?** Có. Ứng dụng tải miễn phí, không cần tài khoản hay gói thuê bao, và mã nguồn được mở theo GPL-3.0.
 
 **Không có mạng có dùng được không?** Có. Mọi thao tác với kho đều chạy ngoại tuyến. Ứng dụng chỉ kết nối mạng để kiểm tra cập nhật và tải biểu tượng website nếu bạn dùng.
 
-**Máy Mac Intel có dùng được không?** Có. Tải bộ cài `intel.dmg` cho Mac Intel và `apple-silicon.dmg` cho Mac chip Apple. Khi cập nhật trong ứng dụng, máy luôn nhận đúng bản của mình.
+**Khi nào có bản cho điện thoại, Windows và Linux?** Các bản này dùng chung mã nguồn và đang được hoàn thiện. Theo dõi trang [phát hành](https://github.com/ngankt2/kiwi-password-manager/releases) để nhận bản mới.
 
-**Quên mật khẩu chính thì sao?** Không thể khôi phục kho. Dữ liệu chỉ được mã hoá trên máy bạn nên không có cách đặt lại mật khẩu. Hãy giữ mật khẩu chính và bản sao lưu mã hoá ở nơi an toàn.
+**Quên mật khẩu chính thì sao?** Không thể khôi phục kho. Dữ liệu chỉ được mã hoá trên thiết bị của bạn nên không có cách đặt lại mật khẩu. Hãy giữ mật khẩu chính và bản sao lưu mã hoá ở nơi an toàn.
 
 ---
 
-Kiwi Password is made by [AppKiro](https://appkiro.com). Privacy questions: [appkiro.com/contact](https://appkiro.com/contact).
+Kiwi Password is made by [AppKiro](https://appkiro.com) · [Product page](https://appkiro.com/kiwi-password-manager). Privacy questions: [appkiro.com/contact](https://appkiro.com/contact).
 
-<!-- Keywords: offline password manager for Mac, local password manager macOS, KeePass alternative for Mac, password manager without cloud, Touch ID password manager, notarized password manager for Mac, password manager for Intel Mac, password manager for Apple Silicon, TOTP authenticator Mac, encrypted password vault, trình quản lý mật khẩu, quản lý mật khẩu offline cho Mac -->
+<!-- Keywords: open source password manager, offline password manager, password manager for Mac, Windows, Linux, iOS and Android, KeePass alternative, password manager without cloud, Touch ID password manager, TOTP authenticator, encrypted password vault, trình quản lý mật khẩu, quản lý mật khẩu offline, quản lý mật khẩu mã nguồn mở -->

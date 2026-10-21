@@ -1,6 +1,6 @@
 # Developing Kiwi Password
 
-[Appkiro website](https://appkiro.com) · [App overview](https://github.com/ngankt2/appkiro.com/tree/main/apps/appkiro-password-manager) · [Downloads](https://github.com/ngankt2/kiwi-password-manager/releases/latest)
+[Website](https://appkiro.com/kiwi-password-manager) · [Downloads](https://github.com/ngankt2/kiwi-password-manager/releases/latest)
 
 A password manager that keeps vault data on your device. Vaults are stored as encrypted `.akpr` files, with no online account, cloud sync, or telemetry. The desktop app uses **Tauri v2**, an Expo Web interface, a TypeScript core, and Expo Router. Expo iOS and Android use separate runtimes and platform adapters. Network connections are used to check for updates and download icons or favicons when creating or editing entries.
 
